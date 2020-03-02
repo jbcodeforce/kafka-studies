@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path=".apt_generated_tests">
+		<attributes>
+			<attribute name="test" value="true"/>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.ibm.ws.st.core.runtimeClasspathProvider/_Users_jeromeboyer_Code_GreenCompute_refarch-kc-container-ms_kstreams_target_liberty_wlp">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/bootstrap-agent.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.crypto.ibmkeycert_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.json4j_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.rls.jdbc_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.tx.jta_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.tx.ltc_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.tx.util_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.collective_1.5.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.collective.plugins_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.collective.singleton_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.filetransfer_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.interrupt_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.jsonsupport_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.rest.api.discovery_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.rest.handler_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.security_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.security.impl_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.websphere.security.wim.base_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.adaptable.module_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.anno_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.app.manager_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.app.manager.ejb_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.app.manager.lifecycle_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.app.manager.module_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.app.manager.ready_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.app.manager.wab_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.app.manager.war_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact.bundle_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact.equinox.module_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact.file_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact.loose_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact.overlay_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact.url_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.artifact.zip_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.beanvalidation_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.beanvalidation.v11_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.beanvalidation.v11.cdi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.bluemix.utility_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.1.2.ejb_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.1.2.jsf_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.1.2.web_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.1.2.weld_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.ejb.common_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.interfaces_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.internal_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.jndi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.security_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.transaction_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.web_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cdi.weld_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.cds.3.0.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.channel.ssl_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.channelfw_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.classloader.context_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.classloading_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.classloading.configuration_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.collective.member_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.collective.repository.client_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.collective.routing.member_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.collective.singleton_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.collective.utility_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.com.sun.mail.javax.mail.1.5_1.5.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.config_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.config.ext_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.config.schemagen_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.config.server.schemagen_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.config.utility_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.connectionpool.monitor_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.container.service_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.context_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.crypto.certificateutil_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.crypto.ltpakeyutil_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.crypto.passwordutil_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.diagnostics_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.dynacache_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.dynacache.monitor_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.dynacache.web_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.dynacache.web.servlet31_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.dynamic.bundle_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.eba.wab.integrator_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer.async_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer.jpa_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer.security_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer.session_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer.timer_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer.v32_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ejbcontainer.war_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.event_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.filetransfer_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.filetransfer.routing.archiveExpander_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.http.plugin.merge_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.injection_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.install_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.install.utility_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.dd_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.dd.common_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.dd.ejb_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.ddmodel_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.metadata.context_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.metadata.context.ejb_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.persistence.2.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.persistence.api.2.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.platform.defaultresource_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.platform.v7_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.platform.v7.jndi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.javaee.version_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrpc.stub_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.beanvalidation_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.cdi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.client_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.common_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.ejb_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.managedbeans_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.security_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.server_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.tools_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.0.web_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jaxrs.2.x.config_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jca.cm_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jdbc_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jdbc.4.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jdbc.4.1.feature_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jmx_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jmx.connector.client.rest_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jmx.connector.local_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jmx.connector.server.rest_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jmx.request_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jndi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jndi.url.contexts_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jpa.container_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jpa.container.beanvalidation.1.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jpa.container.eclipselink_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jpa.container.thirdparty_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jpa.container.v21_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jpa.container.v21.cdi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jsf.2.2_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jsf.beanvalidation_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jsf.shared_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jsp_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jsp.2.3_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.jsp.jstl.facade_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.boot_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.boot.archive_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.cmdline_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.equinox.module_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.feature_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.filemonitor_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.metatype.helper_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.service_1.3.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.kernel.service.location_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.logging_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.logging.hpel_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.logging.hpel.osgi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.logging.osgi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.managedbeans_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.managedobject_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.management.security_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.monitor_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.aries.jmx.api_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.aries.jmx.core.whiteboard_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.aries.jndi.api_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.aries.jndi.core_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.aries.util_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.bval.1.1.0_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.beanutils.1.8.3_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.codec.1.3_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.codec.1.4_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.collections.3.2.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.digester.1.8_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.discovery.0.2_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.fileupload.1.2.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.io.1.4_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.lang3.3.5_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.logging.1.0.3_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.commons.weaver.1.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.felix.scr_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.jasper.el.3.0_3.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.neethi.3.0.2_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.ws.xmlschema.core.2.0.3_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.apache.xml.resolver.1.2_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.eclipse.equinox.coordinator_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.eclipse.equinox.metatype_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.eclipse.equinox.region_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.eclipse.jdt.core.3.10.2.v20160712-0000_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.glassfish.json.1.0_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.jboss.classfilewriter.1.1.2_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.jboss.jdeparser.1.0.0_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.jboss.logging.3.3.0_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.jboss.weld.2.4.5_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.joda.time.1.6.2_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.objectweb.asm_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.slf4j.api.1.7.7_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.org.slf4j.jdk14.1.7.7_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.product.utility_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.recoverylog_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.repository_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.repository.liberty_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.repository.resolver_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.request.interrupt_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.request.probe.jdbc_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.request.probe.servlet_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.request.probes_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.request.timing_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.request.timing.jdbc_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.request.timing.servlet_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.require.java8_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.resource_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.rest.handler_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.runtime.update_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.appbnd_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.auth.data.common_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.authentication_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.authentication.builtin_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.authentication.tai_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.authorization_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.authorization.builtin_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.context_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.credentials_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.credentials.ssotoken_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.credentials.wscred_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.jaas.common_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.java2sec_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.jca_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.mp.jwt.proxy_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.quickstart_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.ready.service_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.registry_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.registry.basic_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.token_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.token.ltpa_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.token.s4u2_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.utility_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.wim.adapter.ldap_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.wim.core_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.security.wim.registry_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.serialization_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.session_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.session.db_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.session.monitor_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.ssl_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.threading_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.timer_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.transaction_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.transaction.cdi_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.transaction.context_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.transport.http_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.transport.http.welcomePage_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.tx.embeddable_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.tx.jta.extensions_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer_1.1.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.cors_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.monitor_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.security_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.security.admin_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.security.app_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.security.feature_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.security.provider_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.servlet.3.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webcontainer.servlet.3.1.factories_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webserver.plugin.runtime_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webserver.plugin.runtime.interfaces_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webserver.plugin.utility_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.webservices.handler_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.wsoc_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.wsoc.1.1_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/com.ibm.ws.wsoc.cdi.weld_1.0.19.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/org.eclipse.osgi_3.12.50.jar"/>
+	<classpathentry kind="lib" path="target/liberty/wlp/lib/ws-launch.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="target/generated-sources/annotations">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="ignore_optional_problems" value="true"/>
+			<attribute name="m2e-apt" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="target/generated-test-sources/test-annotations">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="ignore_optional_problems" value="true"/>
+			<attribute name="m2e-apt" value="true"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
