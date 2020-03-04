@@ -1,5 +1,5 @@
 site_name: Apache Kafka Studies
-repo_url: https://github.com/jbcodeforce/kafka-studies.github
+repo_url: https://github.com/jbcodeforce/kafka-studies.git
 nav:
   - Introduction: index.md
   - Apache Kafka summary: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/readme
