@@ -1,0 +1,1 @@
+/opt/kafka/bin/kafka-console-producer.sh --broker-list my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443 --producer.config /home/strimzi.properties --topic orders

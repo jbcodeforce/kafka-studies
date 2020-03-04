@@ -1,2 +1,11 @@
 site/
 kstreams/target/
+mirror-maker-2/kafka1/
+mirror-maker-2/kafka2/
+mirror-maker-2/kafka3/
+mirror-maker-2/zookeeper1/
+mirror-maker-2/zookeeper2/
+mirror-maker-2/eventstream.properties
+mirror-maker-2/mirror-maker.properties
+mirror-maker-2/ca.crt
+mirror-maker-2/truststore.jks
