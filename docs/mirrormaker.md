@@ -44,7 +44,8 @@ docker-compose up
     source->target.topics=orders
     ```
 
-    As the source cluster is deployed on Openshift, the exposed route to access the brokers is using TLS connection. So we need the certificate and create a truststore to be used by those Java programs. All kafka tools are done in java or scala so running in a JVM, which needs truststore for keep trusted TLS certificates. To get the certificate do the following steps:
+    As the source cluster is deployed on Openshift, the exposed route to access the brokers is using TLS connection. So we need the certificate and create a truststore to be used by those Java programs. All kafka tools are done in java or scala so running in a JVM, which needs truststore for keep trusted TLS certificates. 
+    When running from a remote system to get the certificate do the following steps:
 
     1. Get the host ip address from the Route resource
 
@@ -65,6 +66,23 @@ docker-compose up
         keytool -import -trustcacerts -alias root -file ca.crt -keystore truststore.jks -storepass password -noprompt
         ```
 
+    For Openshift or Kubernetes deployment, the mirror maker descriptor needs to declare the TLS stamza:
+
+    ```yaml
+      mirrors:
+  - sourceCluster: "my-cluster-source"
+    targetCluster: "my-cluster-target"
+    sourceConnector:
+      config:
+        replication.factor: 1
+        offset-syncs.topic.replication.factor: 1
+        sync.topic.acls.enabled: "false"
+    targetConnector:
+      tls:
+        trustedCertificates:
+          - secretName: my-cluster-cluster-cert
+            certificate: ca.crt
+    ```
 
 * The consumer may be started in second or third step. To start it, you can use a new container or use one of the running kafka broker container. Using the `Docker perspective` in Visual Code, we can get into a bash shell within one of the Kafka broker container. The local folder is mounted to `/home`. Then the script, `consumeFromLocal.sh source.orders` will get messages from the replicated topic: `source.orders`
 
@@ -104,3 +122,6 @@ On the the target cluster, mirror maker created the following topics:
 * connect-configs: This topic will store the connector and task configurations.
 * connect-offsets: This topic is used to store offsets for Kafka Connect.
 * connect-status: This topic will store status updates of connectors and tasks.
+
+## From Event Streams On Cloud to Strimzi Cluster on Openshift
+
