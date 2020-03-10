@@ -8,9 +8,10 @@ mirror-maker-2/zookeeper2/
 mirror-maker-2/eventstream.properties
 mirror-maker-2/kafka-mirror-maker-2.yaml
 mirror-maker-2/mirror-maker.properties
-mirror-maker-2/strimzi-to-es-mm2.properties
-mirror-maker-2/strimzi-to-es-mm2.yml
+mirror-maker-2/kafka-to-es-mm2.properties
+mirror-maker-2/kafka-to-es-mm2.yml
 mirror-maker-2/ca.crt
 mirror-maker-2/ca.pem
+mirror-maker-2/setenv.sh
 mirror-maker-2/mm2.logs
 mirror-maker-2/truststore.jks

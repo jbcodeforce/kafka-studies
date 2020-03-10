@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+
+[packages]
+pytest = ">=5.3.1"
+pytest-cov = ">=2.7.1"
+flake8 = ">=3.7.8"
+black = "==19.3b0"
+faust = ">=1.9.0"
+confluent_kafka = ""
+
+[requires]
+python_version = "3.7"
