@@ -5,6 +5,30 @@ The `mirror-maker-2` folder includes, scripts, code and configurations to suppor
 * Replicate from Event Streams on cloud being source cluster to local cluster running on local machine (started via docker-compose) using Strimzi Kafka docker image.
 * Replicate from [Strimzi](https://strimzi.io/) Kafka cluster running on OpenShift to Event Streams on Cloud. (See detail [in this section](#from-strimzi-local-as-source-to-event-streams-on-cloud-as-target))
 
+## General concepts
+
+Mirror maker 2.0 is using kafka Connect framework, so we recommend to review our summary [in this note](https://ibm-cloud-architecture.github.io/refarch-eda/kafka/connect/).
+
+The figure below illustrates the mirror maker internal components running in Kafka Connect.
+
+![](images/mm-k-connect.png)
+
+As Mirror maker is running Kafka Connect in distributed mode, it creates the following topics on the the target cluster:
+
+* mm2-configs.source.internal: This topic will store the connector and task configurations.
+* mm2-offsets.source.internal: This topic is used to store offsets for Kafka Connect.
+* mm2-status.source.internal: This topic will store status updates of connectors and tasks.
+
+
+* White listed topics is set with the `.topics` attribute and use Java regular expression syntax. 
+* Blacklisted topics: by default the following pattern is applied 
+```
+blacklist = [follower\.replication\.throttled\.replicas, leader\.replication\.throttled\.replicas, message\.timestamp\.difference\.max\.ms, message\.timestamp\.type, unclean\.leader\.election\.enable, min\.insync\.replicas]
+```
+
+Internally `MirrorSourceConnector` and `MirrorCheckpointConnector` will
+create multiple tasks (up to tasks.max), `MirrorHeartbeatConnector`
+creates only one single task. `MirrorSourceConnector` will have one task per topic-partition to replicate, while `MirrorCheckpointConnector` will have one task per consumer group. The Kafka connect framework uses the coordinator API, with assign API and so there is no consumer group while fetching data from source topic. There is no call to commit() neither: the rebalancing occurs only when there is a new topic created that matches the whitelist pattern.
 
 ## From Strimzi kafka cluster on Openshift cluster to local cluster
 
@@ -117,16 +141,6 @@ source->target.enabled=true
 source->target.topics=orders
 ```
 
-The figure below illustrates the mirror maker internal components running in Kafka Connect. 
-
-![](images/mm-k-connect.png)
-
-On the the target cluster, mirror maker created the following topics:
-
-* connect-configs: This topic will store the connector and task configurations.
-* connect-offsets: This topic is used to store offsets for Kafka Connect.
-* connect-status: This topic will store status updates of connectors and tasks.
-
 ## From Strimzi local as source to Event Streams on Cloud as Target.
 
 We have created an Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target cluster (Event Streams on Cloud).
@@ -143,7 +157,7 @@ What needs to be done:
 * Deploy Mirror maker 2.0 within this project
 * Define a secret for the API key of the target cluster
 `oc create secret generic es-apikey-target --from-literal=binding=am_`
-* Start a producer 
+* Start a producer (for example the below code send products reference data into products topic)
 
 ```shell
 export KAFKA_PWD="replace-with-event-streams-apikey"
@@ -152,7 +166,7 @@ docker run -ti -v $(pwd):/home --rm -e KAFKA_PWD=$KAFKA_PWD -e KAFKA_BROKERS=$KA
 python SendProductToKafka.py
 ```
 
-* Define a souce cluster properties file with truststore and bootstrap servers. This file is used for the different Kafka tools like kafka-topics.sh or console producer and consumer.
+* Define a source cluster properties file with truststore and bootstrap servers. This file is used for the different Kafka tools like kafka-topics.sh or console producer and consumer.
 
 ```properties
 bootstrap.servers=....
@@ -182,10 +196,30 @@ cd /opt/kafka/bin
 ```
 
 * Verify the created topics on target cluster (Event Streams)
-
 ```
 ./kafka-topics.sh --bootstrap-server $KAFKA_BROKERS --command-config /home/eventstream.properties --list
+```
+* In case you need it... looking at source cluster topic list:
+
+```
+kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443 --command-config /home/strinzi.properties --list 
+```
+
+Get detail on one topic:
+
+```
+./kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443  --command-config /home/strimzi.properties --describe --topic products
 ```
 
 ## From Event Streams On Cloud to Strimzi Cluster on Openshift
 
+
+## Typical errors in Mirror Maker 2 traces
+
+* Plugin class loader for connector: 'org.apache.kafka.connect.mirror.MirrorCheckpointConnector' was not found.
+* Error while fetching metadata with correlation id 2314 : {source.heartbeats=UNKNOWN_TOPIC_OR_PARTITION}:
+    * Those messages may come from multiple reasons. One is the topic is not created. It can also being related to the fact the consumer polls on a topic that has just been created and the leader for this topic-partition is not yet available, you are in the middle of a leadership election.
+    * The advertised listener may not be set or found. 
+* Exception on not being able to create Log directory: do the following: `export LOG_DIR=/tmp/logs`
+* ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to flush, timed out while waiting for producer to flush outstanding 1 messages
+* ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to commit offsets (org.apache.kafka.connect.runtime.SourceTaskOffsetCommitter:114)
