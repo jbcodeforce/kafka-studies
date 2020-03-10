@@ -1,0 +1,6 @@
+[ { "product_id": "P01", "description": "Carrots", "target_temperature": 4,"target_humidity_level": 0.4,"content_type": 1},
+   { "product_id": "P02", "description": "Banana", "target_temperature": 6,"target_humidity_level": 0.6,"content_type": 2},
+   { "product_id": "P03", "description": "Salad", "target_temperature": 4,"target_humidity_level": 0.4,"content_type": 1},
+   {"product_id": "P04", "description": "Avocado", "target_temperature": 6,"target_humidity_level": 0.4,"content_type": 1},
+   {"product_id": "P05", "description": "Tomato", "target_temperature": 4,"target_humidity_level": 0.4,"content_type": 2}
+]

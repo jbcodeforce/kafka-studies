@@ -1,6 +1,10 @@
 # Mirror Maker 2.0
 
-The `mirror-maker-2` folder includes the scripts and configurations to support the different tests
+The `mirror-maker-2` folder includes, scripts, code and configurations to support the different topic replication scenarios we want to validate:
+
+* Replicate from Event Streams on cloud being source cluster to local cluster running on local machine (started via docker-compose) using Strimzi Kafka docker image.
+* Replicate from [Strimzi](https://strimzi.io/) Kafka cluster running on OpenShift to Event Streams on Cloud. (See detail [in this section](#from-strimzi-local-as-source-to-event-streams-on-cloud-as-target))
+
 
 ## From Strimzi kafka cluster on Openshift cluster to local cluster
 
@@ -12,9 +16,9 @@ The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a
 
 * Start the target cluster runnning on your laptop using:
 
-```
-docker-compose up
-```
+    ```
+    docker-compose up
+    ```
 
 * Start [mirror maker2.0](https://cwiki.apache.org/confluence/display/KAFKA/KIP-382%3A+MirrorMaker+2.0): 
 
@@ -69,8 +73,8 @@ docker-compose up
     For Openshift or Kubernetes deployment, the mirror maker descriptor needs to declare the TLS stamza:
 
     ```yaml
-      mirrors:
-  - sourceCluster: "my-cluster-source"
+    mirrors:
+    - sourceCluster: "my-cluster-source"
     targetCluster: "my-cluster-target"
     sourceConnector:
       config:
@@ -122,6 +126,66 @@ On the the target cluster, mirror maker created the following topics:
 * connect-configs: This topic will store the connector and task configurations.
 * connect-offsets: This topic is used to store offsets for Kafka Connect.
 * connect-status: This topic will store status updates of connectors and tasks.
+
+## From Strimzi local as source to Event Streams on Cloud as Target.
+
+We have created an Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target cluster (Event Streams on Cloud).
+
+![](images/mm2-local-to-es.png)
+
+What needs to be done:
+
+* Get Broker list and API Key for Event Streams on cloud. Set environment variables
+* Get a Openshift cluster in the same data center as Event Streams service. 
+* Create a project in OpenShift: MirrorMakerToES.
+* Deploy Strimzi cluster and topic operators
+* Define consumer and producer properties in mirror maker yaml
+* Deploy Mirror maker 2.0 within this project
+* Define a secret for the API key of the target cluster
+`oc create secret generic es-apikey-target --from-literal=binding=am_`
+* Start a producer 
+
+```shell
+export KAFKA_PWD="replace-with-event-streams-apikey"
+export KAFKA_BROKERS="..."
+docker run -ti -v $(pwd):/home --rm -e KAFKA_PWD=$KAFKA_PWD -e KAFKA_BROKERS=$KAFKA_BROKERS jbcodeforce/python37   bash
+python SendProductToKafka.py
+```
+
+* Define a souce cluster properties file with truststore and bootstrap servers. This file is used for the different Kafka tools like kafka-topics.sh or console producer and consumer.
+
+```properties
+bootstrap.servers=....
+security.protocol=SSL
+ssl.truststore.password=password
+ssl.truststore.location=/home/truststore.jks
+```
+
+and a target cluster property file:
+
+```properties
+bootstrap.servers=broker-3-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
+security.protocol=SASL_SSL
+ssl.protocol=TLSv1.2
+sasl.mechanism=PLAIN
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="token" password="am_...";
+```
+
+* Start a product producer with a python client code
+
+* Start a consumer locally on your compute using the Strimzi/kafka image.
+
+```
+docker run -ti -v $(pwd):/home strimzi/kafka:latest-kafka-2.4.0 bash
+cd /opt/kafka/bin
+./kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443 --consumer.config /home/strimzi.properties  --topic products
+```
+
+* Verify the created topics on target cluster (Event Streams)
+
+```
+./kafka-topics.sh --bootstrap-server $KAFKA_BROKERS --command-config /home/eventstream.properties --list
+```
 
 ## From Event Streams On Cloud to Strimzi Cluster on Openshift
 
