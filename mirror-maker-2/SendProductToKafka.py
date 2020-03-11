@@ -1,11 +1,15 @@
 from confluent_kafka import Producer, KafkaError
 import json, os
 
-KAFKA_BROKERS = os.getenv('KAFKA_BROKERS','my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443')
+'''
+This is a basic python code to read products data and send them to kafka.
+This is a good scenario for sharing reference data
+'''
+KAFKA_BROKERS = os.getenv('KAFKA_BROKERS')
 KAFKA_APIKEY = os.getenv('KAFKA_APIKEY','')
-KAFKA_CERT = os.getenv('KAFKA_CERT','ca.crt')
-KAFKA_USER =  os.getenv('KAFKA_USER','boyerje@us.ibm.com')
-KAFKA_PWD =  os.getenv('KAFKA_PWD','Spr!ng2020IsMild')
+KAFKA_CERT = os.getenv('KAFKA_CERT','')
+KAFKA_USER =  os.getenv('KAFKA_USER','')
+KAFKA_PWD =  os.getenv('KAFKA_PWD','')
 SOURCE_TOPIC='products'
 
 options ={
