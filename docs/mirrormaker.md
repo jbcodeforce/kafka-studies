@@ -5,15 +5,24 @@ Mirror Maker 2.0 is the new replication feature of Kafka 2.4. In this note we ar
 * Replicate from local cluster to Event Streams on Cloud (See detail [in the scenario 1 section](#scenario-1-from-kafka-local-as-source-to-event-streams-on-cloud-as-target))
 * Replicate from [Strimzi](https://strimzi.io/) 'local' Kafka cluster running on OpenShift to Event Streams on Cloud. (See detail [in the scenario 2 section](#scenario-2-run-mirror-maker-2-cluster-close-to-target-cluster))
 * Replicate from [Event Streams on cloud being the source cluster to local Kafka cluster](#scenario-3-from-event-streams-to-local-cluster) running on local machine (started via docker-compose) using Strimzi Kafka docker image.
+* Replicate from [Event Streams on premise running on Openshift being the source cluster to Event Stream on the Cloud as target cluster](#scenario-5-from-event-streams-on-premise-to-event-streams-on-cloud).
 
-The `mirror-maker-2` folder includes, scripts, code and configurations to support the testing.
+| Environment | Source                 | Target                 | Connect |
+|-------------|------------------------|------------------------|---------|
+| 1           | Local                  | Event Streams on Cloud | Local   |
+| 2           | Strimzi on OCP         | Event Streams on Cloud | OCP / Roks |
+| 3           | Event Streams on Cloud | Local                  | Local   |
+| 4           | Event Streams on Cloud | Strimzi on OCP         | OCP/ Roks |
+| 5           | Event Streams on OCP   | Event Streams on Cloud | OCP / Roks |
+
+The `mirror-maker-2` folder includes, scripts, code and configurations to support those scenarios.
 
 ## Pre-requisites
 
-* You need to have one Event Streams service on IBM Cloud.
-* We may need to use Event Streams CLI. So follow [those instructions](https://cloud.ibm.com/docs/services/EventStreams?topic=eventstreams-cli#cli) to get it.
+* You need to have one Event Streams service created on IBM Cloud.
+* You may need to use Event Streams CLI. So follow [those instructions](https://cloud.ibm.com/docs/services/EventStreams?topic=eventstreams-cli#cli) to get it.
 
-The following command presents the Event Stream cluster metadata, like broker list and cluster ID:
+The following ibmcloud CLI command presents the Event Stream cluster's metadata, like the broker list and the cluster ID:
 
 ```shell
 ibmcloud es cluster
@@ -112,6 +121,7 @@ export KAFKA_TARGET_APIKEY="<password attribut in event streams credentials>"
   source ./setenv.sh
   docker run -ti -v $(pwd):/home --rm -e KAFKA_BROKERS=$KAFKA_SOURCE_BROKERS --network kafkanet jbcodeforce/python37   bash
   ```
+
   In the container bash shell do the following
 
   ```
@@ -190,6 +200,7 @@ So the scenario is similar in term of test as the scenario 1 but Mirror Maker ru
 
 We have created an Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target cluster (Event Streams on Cloud).
 
+Producers are running locally on the same openshift cluster as a pod, or can run remotely using exposed Openshift route.
 
 What needs to be done:
 
@@ -244,22 +255,14 @@ spec:
     groupsPattern: ".*"
 ```
 
-* Deploy Mirror maker 2.0 within this project
+* Deploy Mirror maker 2.0 within this project. 
 
 ```
 oc apply -f kafka-to-es-mm2.yaml 
 ```
 
-* Define a source cluster properties file with truststore and bootstrap servers. This file is used for the different Kafka tools like kafka-topics.sh or console consumer.
-
-```properties
-bootstrap.servers=....
-security.protocol=SSL
-ssl.truststore.password=password
-ssl.truststore.location=/home/truststore.jks
-```
-
-and a target cluster property file:
+This command 
+* Define a target cluster property file:
 
 ```properties
 bootstrap.servers=broker-3-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
@@ -269,37 +272,32 @@ sasl.mechanism=PLAIN
 sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="token" password="am_...";
 ```
 
-* Start a consumer locally on your compute using the Strimzi/kafka image.
+* To validate the source `products` topic has records, start a consumer as pod on Openshift within the source Kafka cluster using the Strimzi/kafka image.
 
 ```shell
-docker run -ti -v $(pwd):/home strimzi/kafka:latest-kafka-2.4.0 bash
-cd /opt/kafka/bin
-./kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443 --consumer.config /home/strimzi.properties  --topic products
+oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic products --from-beginning
 ```
 
-* Start a producer to send product records to the Kafka local cluster, which is Strimzi cluster on OpenShift. If you have done the scenario 1, the first product definitions are already in the target cluster, so we can send a second batch of products using a second data file:
+* Start a producer to send product records to the source Kafka cluster. If you have done the scenario 1, the first product definitions may be already in the target cluster, so we can send a second batch of products using a second data file:
 
 ```shell
 export KAFKA_BROKERS="my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443"
-docker run -ti -v $(pwd):/home --rm -e KAFKA_PWD=$KAFKA_PWD -e KAFKA_BROKERS=$KAFKA_BROKERS jbcodeforce/python37   bash
+export KAFKA_CERT="/home/ca.cert"
+docker run -ti -v $(pwd):/home --rm -e KAFKA_CERT=$KAFKA_CERT -e KAFKA_BROKERS=$KAFKA_BROKERS jbcodeforce/python37   bash
 python SendProductToKafka.py ./data/products2.json
 ```
 
-* Verify the created topics on target cluster (Event Streams)
+As an alternate to this external producer, we can start a producer as pod inside Openshift, and then send the product one by one:
 
 ```shell
-/opt/kafka/bin/kafka-topics.sh --bootstrap-server $KAFKA_TARGET_BROKERS --command-config /home/eventstream.properties --list
-```
-* In case you need it... looking at source cluster topic list:
+oc run kafka-producer -ti --image=strimzi/kafka:latest-kafka-2.4.0  --rm=true --restart=Never -- bin/kafka-console-producer.sh --broker-list my-cluster-kafka-bootstrap:9092 --topic products
+If you don't see a command prompt, try pressing enter.
 
-```
-/opt/kafka/bin/kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443 --command-config /home/strinzi.properties --list 
-```
-
-Get detail on one topic:
-
-```
-/opt/kafka/bin//kafka-topics.sh --bootstrap-server my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443  --command-config /home/strimzi.properties --describe --topic products
+>{'product_id': 'P01', 'description': 'Carrots', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 1}
+>{'product_id': 'P02', 'description': 'Banana', 'target_temperature': 6, 'target_humidity_level': 0.6, 'content_type': 2}
+>{'product_id': 'P03', 'description': 'Salad', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 1}
+>{'product_id': 'P04', 'description': 'Avocado', 'target_temperature': 6, 'target_humidity_level': 0.4, 'content_type': 1}
+>{'product_id': 'P05', 'description': 'Tomato', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 2}
 ```
 
 ## Scenario 3: From Event Streams to local cluster
@@ -329,7 +327,7 @@ We have created an Event Streams cluster on Washington DC data center. We have a
 
 ![](images/mm2-test2.png)
 
-## Scenario 5: From Kafka cluster on Openshift cluster to local cluster
+## Scenario 5: From event streams on premise to event streams on cloud
 
 ![](images/mm2-test1.png)
 

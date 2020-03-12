@@ -1,5 +1,5 @@
 from confluent_kafka import Producer, KafkaError
-import json, os
+import json, os, sys
 
 '''
 This is a basic python code to read products data and send them to kafka.
@@ -14,7 +14,9 @@ SOURCE_TOPIC='products'
 
 options ={
     'bootstrap.servers': KAFKA_BROKERS,
-    'group.id': 'ProductsProducer'
+    'group.id': 'ProductsProducer',
+    'delivery.timeout.ms': 15000,
+    'request.timeout.ms' : 15000
 }
 
 if (KAFKA_APIKEY != '' ):

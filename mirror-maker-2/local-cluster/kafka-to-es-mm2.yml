@@ -6,7 +6,7 @@ metadata:
 spec:
   version: 2.4.0
   replicas: 1
-  connectCluster: " mm2-cluster"
+  connectCluster: "event-streams-wdc-as-target"
   clusters:
   - alias: "kafka-on-premise-cluster-source"
     bootstrapServers: my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443
