@@ -25,8 +25,6 @@ if (KAFKA_APIKEY != '' ):
 
 if (KAFKA_CERT != '' ):
     options['security.protocol'] = 'SSL'
-    options['sasl.username'] = KAFKA_USER
-    options['sasl.password'] = KAFKA_PWD
     options['ssl.ca.location'] = KAFKA_CERT
 
 print('[KafkaProducer] - {}'.format(options))
