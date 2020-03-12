@@ -1,0 +1,4 @@
+[ { "product_id": "P06", "description": "Strawberry", "target_temperature": 4,"target_humidity_level": 0.4,"content_type": 1},
+   { "product_id": "P07", "description": "Kiwi", "target_temperature": 6,"target_humidity_level": 0.6,"content_type": 2},
+   { "product_id": "P08", "description": "Potatoe", "target_temperature": 4,"target_humidity_level": 0.4,"content_type": 1}
+]

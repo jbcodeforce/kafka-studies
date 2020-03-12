@@ -53,16 +53,30 @@ def publishEvent(topicName, products):
         print(err)
     producer.flush()
     
-def readProducts():
-    p = open('./data/products.json','r')
+def readProducts(filename):
+    p = open(filename,'r')
     return json.load(p)
 
 def signal_handler(sig,frame):
     producer.close()
     sys.exit(0)
 
+def parseArguments():
+    version="0"
+    arg2="./data/products.json"
+    if len(sys.argv) == 1:
+        print("Usage: SendProductToKafka  --file datafilename ")
+        exit(1)
+    else:
+        for idx in range(1, len(sys.argv)):
+            arg=sys.argv[idx]
+            if arg == "--file":
+                arg2=sys.argv[idx+1]
+    return arg2
+
 if __name__ == "__main__":
-    products = readProducts()
+    filename = parseArguments()
+    products = readProducts(filename)
     try:
         publishEvent(SOURCE_TOPIC,products)
     except KeyboardInterrupt:

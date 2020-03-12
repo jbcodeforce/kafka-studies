@@ -6,6 +6,8 @@ nav:
   - Consumer practices: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/consumers
   - Producer practices: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/producers
   - Kafka streaming notes: kstreams.md
+  - Kafka with Python: python.md
+  - Strimzi deployment: strimzi-deploy.md
   - Mirror Maker 2.0: mirrormaker.md
   - Kafka FAQ: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/FAQ
   - Kafka Connect: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/connect
