@@ -9,18 +9,31 @@ spec:
   connectCluster: "event-streams-wdc-as-target"
   clusters:
   - alias: "kafka-on-premise-cluster-source"
-    bootstrapServers: my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443
-    tls:
-      trustedCertificates:
-        - secretName: my-cluster-cluster-ca-cert
-          certificate: ca.crt
+    bootstrapServers: my-cluster-kafka-bootstrap-route-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443
+    authentication:
+      type: tls
+      certificateAndKey:
+        secretName: my-cluster-clients-ca-cert
+        certificate: ca.crt
+        key: ca.crt
+
   - alias: "event-streams-wdc-as-target"
     bootstrapServers: broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
+    ssl:
+      protocol: TLSv1.2
+      endpoint:
+        identification:
+          algorithm: https
+    sasl:
+      jaas:
+        config: "org.apache.kafka.common.security.plain.PlainLoginModule required username=token password=am_rbb9e794mMwhE-KGPYo0hhW3h91e28OhT8IlruFe5;"
+    security:
+      protocol: SASL_SSL
     authentication:
       username: token
       passwordSecret:
         secretName: es-apikey-target
-        password: password 
+        password: binding 
       type: plain
     config:
       config.storage.replication.factor: 1
@@ -34,12 +47,6 @@ spec:
           replication.factor: 1
           offset-syncs.topic.replication.factor: 1
           sync.topic.acls.enabled: "false"
-          sasl.mechanism: "PLAIN"
-          #SHOULD BE REMOVED 
-          sasl.jaas.config: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"token\" password=\"am_rbb9e794mMwhE-KGPYo0hhW3h91e28OhT8IlruFe5\""
-          security.protocol: "SASL_SSL"
-          ssl.protocol: "TLSv1.2"
-          ssl.enabled.protocols: "TLSv1.2"
     heartbeatConnector:
       config:
           heartbeats.topic.replication.factor: 1

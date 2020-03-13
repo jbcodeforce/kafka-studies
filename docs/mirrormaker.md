@@ -1,6 +1,6 @@
 # Mirror Maker 2.0 Studies
 
-Mirror Maker 2.0 is the new replication feature of Kafka 2.4. In this note we are presenting different test scenario for topic replication. 
+Mirror Maker 2.0 is the new replication feature of Kafka 2.4. In this note we are presenting different test scenarios for topic replication.
 
 * Replicate from local cluster to Event Streams on Cloud (See detail [in the scenario 1 section](#scenario-1-from-kafka-local-as-source-to-event-streams-on-cloud-as-target))
 * Replicate from [Strimzi](https://strimzi.io/) 'local' Kafka cluster running on OpenShift to Event Streams on Cloud. (See detail [in the scenario 2 section](#scenario-2-run-mirror-maker-2-cluster-close-to-target-cluster))
@@ -8,7 +8,7 @@ Mirror Maker 2.0 is the new replication feature of Kafka 2.4. In this note we ar
 * Replicate from [Event Streams on premise running on Openshift being the source cluster to Event Stream on the Cloud as target cluster](#scenario-5-from-event-streams-on-premise-to-event-streams-on-cloud).
 
 | Environment | Source                 | Target                 | Connect |
-|-------------|------------------------|------------------------|---------|
+|-------------|------------------------|------------------------|:-------:|
 | 1           | Local                  | Event Streams on Cloud | Local   |
 | 2           | Strimzi on OCP         | Event Streams on Cloud | OCP / Roks |
 | 3           | Event Streams on Cloud | Local                  | Local   |
@@ -49,7 +49,7 @@ In distributed mode, Mirror Maker creates the following topics to the target clu
 * source.heartbeats
 * source.checkpoints.internal
 
-A typical mirror maker configuration is done via property file and define source and target cluster with their connection properties and the replication flow definitions. Here is a simple example
+A typical mirror maker configuration is done via property file and defines source and target clusters with their connection properties and the replication flow definitions. Here is a simple example for a local cluster to a target cluster using TLS v1.2 and Sasl authentication protocol.
 
 ```properties
 clusters=source, target
@@ -66,25 +66,25 @@ source->target.topics=products
 tasks.max=10
 ```
 
-* White listed topics are set with the `source->target.topics` attribute of the replication flow and use [Java regular expression](https://www.vogella.com/tutorials/JavaRegularExpressions/article.html) syntax.
+* White listed topics are set with the `source->target.topics` attribute of the replication flow and uses [Java regular expression](https://www.vogella.com/tutorials/JavaRegularExpressions/article.html) syntax.
 * Blacklisted topics: by default the following pattern is applied:
 
 ```properties
 blacklist = [follower\.replication\.throttled\.replicas, leader\.replication\.throttled\.replicas, message\.timestamp\.difference\.max\.ms, message\.timestamp\.type, unclean\.leader\.election\.enable, min\.insync\.replicas]
 ```
-but can be also specified with the properties: `topics.blacklist`. Comma-separated lists are also supported.
+but can be also specified with the properties: `topics.blacklist`. Comma-separated lists are also supported and Java regular expression.
 
 Internally `MirrorSourceConnector` and `MirrorCheckpointConnector` will
-create multiple tasks (up to tasks.max), `MirrorHeartbeatConnector`
-creates only one single task. `MirrorSourceConnector` will have one task per topic-partition to replicate, while `MirrorCheckpointConnector` will have one task per consumer group. The Kafka connect framework uses the coordinator API, with assign API and so there is no consumer group while fetching data from source topic. There is no call to commit() neither: the rebalancing occurs only when there is a new topic created that matches the whitelist pattern.
+create multiple tasks (up to `tasks.max` property), `MirrorHeartbeatConnector`
+creates only one single task. `MirrorSourceConnector` will have one task per topic-partition to replicate, while `MirrorCheckpointConnector` will have one task per consumer group. The Kafka connect framework uses the coordinator API, with the `assign()` API, so there is no consumer group while fetching data from source topic. There is no call to `commit()` neither: the rebalancing occurs only when there is a new topic created that matches the whitelist pattern.
 
 ## Scenario 1: From Kafka local as source to Event Streams on Cloud as Target
 
-The scenario is to send the products definition in the local `products` topic and then start mirror maker to see the data replicated to the `source.products` topic in Event Streams cluster.
+The test scenario goal is to send the product definitions in the local `products` topic and then start mirror maker to see the data replicated to the `source.products` topic in Event Streams cluster.
 
 ![](images/local-to-es.png)
 
-* Set the environment variables in setenv.sh to source broker is your local cluster, and the target is event streams with its API KEY
+* Set the environment variables in `setenv.sh` script for the source broker to be your local cluster, and the target to be event streams. Be sure to also set Event Streams APIKEY:
 
 ```shell
 export KAFKA_SOURCE_BROKERS=kafka1:9092,kafka2:9093,kafka3:9094
@@ -93,27 +93,27 @@ export KAFKA_TARGET_BROKERS=broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.events
 export KAFKA_TARGET_APIKEY="<password attribut in event streams credentials>"
 ```
 
-* Create the target topics in the target cluster. The following topics needs to be created upfront in events streams as Access Control does not authorize program to create topic dynamically.
+* Create the target topics in the target cluster. The following topics needs to be created upfront in Events Streams as Access Control policies do not authorize program to create topic dynamically.
 
-  ```
+  ```shell
   ibmcloud es topic-create -n mm2-configs.source.internal -p 1  -c cleanup.policy=compact
   ibmcloud es topic-create -n mm2-offsets.source.internal -p 25 -c cleanup.policy=compact
   ibmcloud es topic-create -n mm2-status.source.internal -p 5 -c cleanup.policy=compact
   ibmcloud es topic-create -n source.products -p 1
-  ibmcloud es topic-create -n source.heartbeats -p 1
+  ibmcloud es topic-create -n source.heartbeats -p 1 -c cleanup.policy=compact
   ibmcloud es topic-create -n source.checkpoints.internal -p 1 -c cleanup.policy=compact
   ```
 
-* In one window terminal, start local cluster using docker-compose under the `mirror-maker-2/local-cluster` folder: `docker-compose up &`. The data are persisted on the local disk in this folder.
-* If this is the first time you started the cluster, you need to create the `products` topic. Start a Kafka container to access the Kafka tool with the command:
+* In one Terminal window, start the local cluster using `docker-compose` under the `mirror-maker-2/local-cluster` folder: `docker-compose up &`. The data are persisted on the local disk in this folder.
+* If this is the first time you started the source cluster, you need to create the `products` topic. Start a Kafka container to access the Kafka tools with the command:
 
   ```shell
   docker run -ti -v $(pwd):/home --network kafkanet strimzi/kafka:latest-kafka-2.4.0 bash
   ```
 
-  Then in the bash shell, go to `/home/local-cluster` folder and execute the script: `./createProductsTopic.sh`. Verify it is created with the command: `/opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka1:9092 --list`
+  Then in the bash shell, go to `/home/local-cluster` folder and execute the script: `./createProductsTopic.sh`. Verify topic is created with the command: `/opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka1:9092 --list`
 
-* Send some products data to this topic. For that we use a docker python image. The docker file to build this image is `python-kafka/Dockerfile-python` so the command build this image (if you change the image name be sure to use the new name in future command): `docker build -f Dockerfile-python -t jbcodeforce/python37 .`
+* Send some products data to this topic. For that we use a docker python image. The docker file to build this image is `python-kafka/Dockerfile-python` so the command to build this image (if you change the image name be sure to use the new name in future command) is: `docker build -f Dockerfile-python -t jbcodeforce/python37 .`
 
   Once the image is built, start the python environment with the following commands:
   
@@ -122,7 +122,7 @@ export KAFKA_TARGET_APIKEY="<password attribut in event streams credentials>"
   docker run -ti -v $(pwd):/home --rm -e KAFKA_BROKERS=$KAFKA_SOURCE_BROKERS --network kafkanet jbcodeforce/python37   bash
   ```
 
-  In the container bash shell do the following
+  In this isolated python container bash shell do the following to send the 5 first products:
 
   ```
   $ echo $KAFKA_BROKERS
@@ -142,7 +142,7 @@ export KAFKA_TARGET_APIKEY="<password attribut in event streams credentials>"
   [KafkaProducer] - Message delivered to products [0]
   ```
 
-* To validate the data are in the source topic we can use the console consumer. Here are the basic commands:
+* To validate the data are in the source topic we can use the kafka console consumer. Here are the basic commands:
   
   ```shell
   docker run -ti -v $(pwd):/home --network kafkanet strimzi/kafka:latest-kafka-2.4.0 bash
@@ -150,7 +150,7 @@ export KAFKA_TARGET_APIKEY="<password attribut in event streams credentials>"
   $ ./kafka-console-consumer.sh --bootstrap-server kafka1:9092 --topic products --from-beginning
   ```
 
-* Define the event streams properties file for the tool command. The `eventstream.properties` file looks like:
+* Define the event streams cluster properties file for the Kafka tool command. Set the password attribute of the `jaas.config` to match Event Streams APIKEY. The `eventstream.properties` file looks like:
 
 ```properties
 bootstrap.servers=broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
@@ -160,23 +160,23 @@ sasl.mechanism=PLAIN
 sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="token" password=....;
 ```  
 
-* Restart the `kafka-console-consumer` with the bootstrap URL to access to event streams and with the replicated topic: `source.products`. Use the previously created properties file to get authentication properties so the command looks like:
+* Restart the `kafka-console-consumer` with the bootstrap URL to access to Event Streams and with the replicated topic: `source.products`. Use the previously created properties file to get authentication properties so the command looks like:
 
   ```shell
   source /home/setenv.sh
   ./kafka-console-consumer.sh --bootstrap-server $KAFKA_TARGET_BROKERS --consumer.config /home/eventstream.properties --topic source.products --from-beginning
   ```
 
-* Now we are ready to start Mirror Maker 2.0 in a local docker image:
+* Now we are ready to start Mirror Maker 2.0, close to the local cluster, using, yet another docker image:
 
 ```shell
 docker run -ti -v $(pwd):/home --network kafkanet strimzi/kafka:latest-kafka-2.4.0 bash
 $ /home/local-cluster/launchMM2.sh
 ```
 
-*This script is updating a template properties file with the values of the environment variables and call  `/opt/kafka/bin/connect-mirror-maker.sh`*
+*This `launchMM2.sh` script is updating a template properties file with the values of the environment variables and calls with this updated file: `/opt/kafka/bin/connect-mirror-maker.sh mm2.properties`*
 
-The trace includes a ton of messages, which demonstrate different consumers and producers, workers and tasks. The logs can be found in the `/tmp/logs` folder. The table includes some of the elements of this configuration:
+The trace includes a ton of messages, which displays different Kafka connect consumers and producers, workers and tasks. The logs can be found in the `/tmp/logs` folder within the docker container. The table includes some of the elements of this configuration:
 
 | Name | Description |
 | --- | --- |
@@ -190,28 +190,55 @@ The trace includes a ton of messages, which demonstrate different consumers and 
 | Starting connector MirrorCheckpointConnector | |
 | Starting connector MirrorSourceConnector | |
 
-As expected, in the consumer console we can see the 5 product messages arriving after replication.
+As expected, in the consumer console we can see the 5 product messages arriving to the `source.topics` after the replication complete.
+
+```
+{'bootstrap.servers': 'kafka1:9092,kafka2:9093,kafka3:9094', 'group.id': 'ProductsProducer'}
+  {'product_id': 'P01', 'description': 'Carrots', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 1}
+  {'product_id': 'P02', 'description': 'Banana', 'target_temperature': 6, 'target_humidity_level': 0.6, 'content_type': 2}
+  {'product_id': 'P03', 'description': 'Salad', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 1}
+  {'product_id': 'P04', 'description': 'Avocado', 'target_temperature': 6, 'target_humidity_level': 0.4, 'content_type': 1}
+  {'product_id': 'P05', 'description': 'Tomato', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 2}
+```
+
 
 ## Scenario 2: Run Mirror Maker 2 Cluster close to target cluster
 
-So the scenario is similar in term of test as the scenario 1 but Mirror Maker runs within an OpenShift cluster in the same data center as Event Streams cluster.
+This scenario is similar as the scenario 1 but Mirror Maker now runs within an OpenShift cluster in the same data center as Event Streams cluster, so closer to the target cluster.
 
 ![](images/mm2-local-to-es.png)
 
 We have created an Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target cluster (Event Streams on Cloud).
 
-Producers are running locally on the same openshift cluster as a pod, or can run remotely using exposed Openshift route.
+Producers are running locally on the same OpenShift cluster as pods, or can run remotely using exposed Kafka brokers Openshift route.
 
 What needs to be done:
 
-* Get a Openshift cluster in the same data center as Event Streams service: See this [product introduction](https://cloud.ibm.com/kubernetes/catalog/about?platformType=openshift).
-* Create a project in OpenShift, for example: `mirror-maker-2-to-es`.
-* Deploy the Strimzi Kafka cluster and topic operators. See the sections on role binding, cluster operator, topic operator and user operator deployments from the [deployment note](strimzi-deploy.md). The 0.17.0 source is in [this repository](https://github.com/strimzi/strimzi-kafka-operator/releases), unzip and use the `install` folder + strimzi instructions.
+* Get a OpenShift cluster in the same data center as Event Streams service: See this [product introduction](https://cloud.ibm.com/kubernetes/catalog/about?platformType=openshift).
+* Create a project in OpenShift, for example: `mirror-maker-2-to-es`. Remember it is mapped to a namespace in Kubernetes.
+* At the minimum, to run Mirror Maker 2, we need to deploy the Strimzi Custome Resource Definitions, and the Mirror Maker 2.0 operator. See the detail in sections from the [deployment note](strimzi-deploy.md). The 0.17.0 source is in [this repository](https://github.com/strimzi/strimzi-kafka-operator/releases), unzip and use the `install` folder with Strimzi installation instructions.
 
    *The service account and role binding do not need to be installed if you did it previously.*
+
 * If not done yet, create a secret for the API KEY of the Event Streams cluster:
 `oc create secret generic es-apikey-target --from-literal=binding=<replace-with-event-streams-apikey>`
-* Define source and target cluster properties in mirror maker 2.0 `kafka-to-es-mm2.yml` file:
+
+* As the source cluster is using TLS to communicate between client and brokers, we need to create a k8s secret for a Java truststore created from the `ca.cert` for the source target. This certificate is also in another secret: `my-cluster-client-ca-cert`. 
+
+```shell 
+# build a local crt file from the secret: 
+oc extract secret/my-cluster-client-ca-cert --keys=ca.crt --to=- > ca.crt
+# Verify the certificate:
+openssl x509 -in ca.crt -text
+# transform it for java truststore.jks:
+keytool -import -trustcacerts -alias root -file ca.crt -keystore truststore.jks -storepass password -noprompt
+# create a secret from file
+oc create secret generic kafka-truststore --from-file=./truststore.jks
+# Verify the created secret
+oc describe secret kafka-truststore
+```
+
+* Define source and target cluster properties in mirror maker 2.0 `kafka-to-es-mm2.yml` descriptor file:
 
 ```yaml
 apiVersion: kafka.strimzi.io/v1alpha1
@@ -228,15 +255,15 @@ spec:
     bootstrapServers: my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443
     tls:
       trustedCertificates:
-        - secretName: my-cluster-cluster-ca-cert
-          certificate: ca.crt
+        - secretName: kafka-truststore
+          certificate: truststore.jks
   - alias: "event-streams-wdc-as-target"
     bootstrapServers: broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
     authentication:
       username: token
       passwordSecret:
         secretName: es-apikey-target
-        password: password
+        password: binding
       type: plain
     config:
       config.storage.replication.factor: 1
@@ -255,13 +282,19 @@ spec:
     groupsPattern: ".*"
 ```
 
+!!! note
+    The config part can match the Kafka configuration for consumer or producer, except properties starting by ssl, sasl, security, listeners, rest, bootstarp.servers which are declared at the cluster definition level.
+
 * Deploy Mirror maker 2.0 within this project. 
 
 ```
 oc apply -f kafka-to-es-mm2.yaml 
 ```
 
-This command 
+This commmand create a kubernetes deployment as illustrated below, with one pod as the replicas is set to 1. If we need to add parallel processing because of the topic to replicate has multiple partitions, or there are a lot of topics to replicate, then adding pods will help to scale horizontally. The pods are in the same consumer group, so Kafka Brokers will do the partition rebalancing among those new added consumers.
+
+![](images/mm2-deployment.png)
+
 * Define a target cluster property file:
 
 ```properties
@@ -287,6 +320,10 @@ docker run -ti -v $(pwd):/home --rm -e KAFKA_CERT=$KAFKA_CERT -e KAFKA_BROKERS=$
 python SendProductToKafka.py ./data/products2.json
 ```
 
+!!! note
+      The python code use the CA certificate and not the java truststore. The Kafka option is `ssl.ca.location`
+
+
 As an alternate to this external producer, we can start a producer as pod inside Openshift, and then send the product one by one:
 
 ```shell
@@ -302,11 +339,11 @@ If you don't see a command prompt, try pressing enter.
 
 ## Scenario 3: From Event Streams to local cluster
 
-For the first test the source is Event Streams on IBM Cloud and the target is a local server (may be on a laptop using Kafka strimzi images started with docker compose)
+For this scenario the source is Event Streams on IBM Cloud and the target is a local server (may be on a laptop using Kafka strimzi images started with docker compose)
 
-![](images/mm2-test2.png)
+![](images/mm2-scen3.png)
 
-This time the producer adds headers and message and Mirror maker need to get the APIkey, so the mirror-maker.properties looks like:
+This time the producer adds headers to the Records sent so we can validate headers replication. The file `es-cluster/es-mirror-maker.properties` declares this mirroring settings:
 
 ```properties
 clusters=source, target
@@ -329,7 +366,7 @@ We have created an Event Streams cluster on Washington DC data center. We have a
 
 ## Scenario 5: From event streams on premise to event streams on cloud
 
-![](images/mm2-test1.png)
+![](images/mm2-a-a.png)
 
 The source cluster is a Strimzi cluster running on Openshift as a service on IBM Cloud. It was installed following the instructions [documented here](https://ibm-cloud-architecture.github.io/refarch-eda/deployments/strimzi/deploy/).
 
@@ -421,3 +458,8 @@ The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a
 * Exception on not being able to create Log directory: do the following: `export LOG_DIR=/tmp/logs`
 * ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to flush, timed out while waiting for producer to flush outstanding 1 messages
 * ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to commit offsets (org.apache.kafka.connect.runtime.SourceTaskOffsetCommitter:114)
+
+
+```
+oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093 --consumer-property ssl.protocol=TLSv1.2 --consumer-property security.protocol=SASL_SSL --consumer-property sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=token password=am_rbb9e794mMwhE-KGPYo0hhW3h91e28OhT8IlruFe5;" --consumer-property sasl.mechanism=PLAIN --topic source.products --from-beginning
+```
