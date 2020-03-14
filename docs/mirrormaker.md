@@ -238,51 +238,13 @@ oc create secret generic kafka-truststore --from-file=./truststore.jks
 oc describe secret kafka-truststore
 ```
 
-* Define source and target cluster properties in mirror maker 2.0 `kafka-to-es-mm2.yml` descriptor file:
+* Define source and target cluster properties in mirror maker 2.0 `kafka-to-es-mm2.yml` descriptor file. We strongly recommend to study the schema definition of this [custom resource from this page](https://github.com/strimzi/strimzi-kafka-operator/blob/2d35bfcd99295bef8ee98de9d8b3c86cb33e5842/install/cluster-operator/048-Crd-kafkamirrormaker2.yaml#L648-L663):
 
-```yaml
-apiVersion: kafka.strimzi.io/v1alpha1
-kind: KafkaMirrorMaker2
-metadata:
-  name: mm2-cluster
-  namespace: jb-kafka-strimzi
-spec:
-  version: 2.4.0
-  replicas: 1
-  connectCluster: "mm2-cluster"
-  clusters:
-  - alias: "kafka-on-premise-cluster-source"
-    bootstrapServers: my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443
-    tls:
-      trustedCertificates:
-        - secretName: kafka-truststore
-          certificate: truststore.jks
-  - alias: "event-streams-wdc-as-target"
-    bootstrapServers: broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
-    authentication:
-      username: token
-      passwordSecret:
-        secretName: es-apikey-target
-        password: binding
-      type: plain
-    config:
-      config.storage.replication.factor: 1
-      offset.storage.replication.factor: 1
-      status.storage.replication.factor: 1
-  mirrors:
-  - sourceCluster: "kafka-on-premise-cluster-source"
-    targetCluster: "event-streams-wdc-as-target"
-    heartbeatConnector:
-      config:
-        heartbeats.topic.replication.factor: 1
-    checkpointConnector:
-      config:
-        checkpoints.topic.replication.factor: 1
-    topicsPattern: "products"
-    groupsPattern: ".*"
-```
+The [yaml file is here](https://github.com/jbcodeforce/kafka-studies/blob/master/mirror-maker-2/local-cluster/kafka-to-es-mm2.yml).
+
 
 !!! note
+    connectCluster defined the cluster alias used for Kafka Connect, it must match a cluster in the list at `spec.clusters`.
     The config part can match the Kafka configuration for consumer or producer, except properties starting by ssl, sasl, security, listeners, rest, bootstarp.servers which are declared at the cluster definition level.
 
 * Deploy Mirror maker 2.0 within this project. 
@@ -451,7 +413,8 @@ The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a
 
 ## Typical errors in Mirror Maker 2 traces
 
-* Plugin class loader for connector: 'org.apache.kafka.connect.mirror.MirrorCheckpointConnector' was not found.
+* Plugin class loader for connector: 'org.apache.kafka.connect.mirror.MirrorCheckpointConnector' was not found. 
+    * This error message is a light issue in kafka 2.4 and does not impact the replication. In Kafka 2.5 this message is for DEBUG logs.
 * Error while fetching metadata with correlation id 2314 : {source.heartbeats=UNKNOWN_TOPIC_OR_PARTITION}:
     * Those messages may come from multiple reasons. One is the name topic is not created. In Event Streams topics needs to be created via CLI or User Interface. It can also being related to the fact the consumer polls on a topic that has just been created and the leader for this topic-partition is not yet available, you are in the middle of a leadership election.
     * The advertised listener may not be set or found.
@@ -463,3 +426,5 @@ The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a
 ```
 oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093 --consumer-property ssl.protocol=TLSv1.2 --consumer-property security.protocol=SASL_SSL --consumer-property sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=token password=am_rbb9e794mMwhE-KGPYo0hhW3h91e28OhT8IlruFe5;" --consumer-property sasl.mechanism=PLAIN --topic source.products --from-beginning
 ```
+
+KafkaMirrorMaker2 resource mm2-cluster in namespace jb-kafka-strimzi: Contains object at path spec.clusters.authentication with an unknown property: accessToken
