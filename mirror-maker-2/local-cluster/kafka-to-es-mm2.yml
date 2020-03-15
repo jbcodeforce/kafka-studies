@@ -29,9 +29,9 @@ spec:
       status.storage.replication.factor: 1
       ssl.endpoint.identification.algorithm: https
     authentication:
-      accessToken:
-          secretName: es-apikey-target  
-          key: password 
+      passwordSecret:
+          secretName: es-api-secret  
+          password: password 
       username: token
       type: plain
   mirrors:

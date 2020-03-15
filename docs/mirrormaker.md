@@ -221,7 +221,7 @@ What needs to be done:
    *The service account and role binding do not need to be installed if you did it previously.*
 
 * If not done yet, create a secret for the API KEY of the Event Streams cluster:
-`oc create secret generic es-apikey-target --from-literal=binding=<replace-with-event-streams-apikey>`
+`oc create secret generic es-api-secret --from-literal=password=<replace-with-event-streams-apikey>`
 
 * As the source cluster is using TLS to communicate between client and brokers, we need to create a k8s secret for a Java truststore created from the `ca.cert` for the source target. This certificate is also in another secret: `my-cluster-client-ca-cert`. 
 

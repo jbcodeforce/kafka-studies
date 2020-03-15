@@ -72,6 +72,11 @@ def parseArguments():
             arg=sys.argv[idx]
             if arg == "--file":
                 arg2=sys.argv[idx+1]
+            if arg == "--help":
+                print("Send product json documents to a kafka cluster. Use environment variables KAFKA_BROKERS")
+                print(" and KAFKA_APIKEY is the cluster accept sasl connection with token user")
+                print(" and KAFKA_CERT for ca.crt to add for TLS communication")
+                exit(0)
     return arg2
 
 if __name__ == "__main__":
