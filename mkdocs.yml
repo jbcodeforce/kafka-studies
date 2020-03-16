@@ -9,6 +9,7 @@ nav:
   - Kafka with Python: python.md
   - Strimzi deployment: strimzi-deploy.md
   - Mirror Maker 2.0: mirrormaker.md
+  - Monitoring with Kafka: monitoring.md
   - Kafka FAQ: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/FAQ
   - Kafka Connect: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/connect
 theme: 
