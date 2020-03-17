@@ -24,10 +24,11 @@ spec:
   - alias: "event-streams-wdc-as-target"
     bootstrapServers: broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
     config:
-      config.storage.replication.factor: 1
-      offset.storage.replication.factor: 1
-      status.storage.replication.factor: 1
+      config.storage.replication.factor: 3
+      offset.storage.replication.factor: 3
+      status.storage.replication.factor: 3
       ssl.endpoint.identification.algorithm: https
+    tls: {}
     authentication:
       passwordSecret:
           secretName: es-api-secret  

@@ -204,30 +204,30 @@ As expected, in the consumer console we can see the 5 product messages arriving 
 
 ## Scenario 2: Run Mirror Maker 2 Cluster close to target cluster
 
-This scenario is similar as the scenario 1 but Mirror Maker now runs within an OpenShift cluster in the same data center as Event Streams cluster, so closer to the target cluster.
+This scenario is similar to the scenario 1 but Mirror Maker now runs within an OpenShift cluster in the same data center as Event Streams cluster, so closer to the target cluster:
 
 ![](images/mm2-local-to-es.png)
 
-We have created an Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target cluster (Event Streams on Cloud).
+We have created an Event Streams cluster on Washington DC data center. We have Strimzi operators deployed in Washington data center OpenShift Cluster.
 
-Producers are running locally on the same OpenShift cluster as pods, or can run remotely using exposed Kafka brokers Openshift route.
+Producers are running locally on the same OpenShift cluster, where vanilla Kafka is running, or can run remotely using exposed Kafka brokers Openshift route. (The black rectangles in the figure above represent those producers.)
 
 What needs to be done:
 
 * Get a OpenShift cluster in the same data center as Event Streams service: See this [product introduction](https://cloud.ibm.com/kubernetes/catalog/about?platformType=openshift).
 * Create a project in OpenShift, for example: `mirror-maker-2-to-es`. Remember it is mapped to a namespace in Kubernetes.
-* At the minimum, to run Mirror Maker 2, we need to deploy the Strimzi Custome Resource Definitions, and the Mirror Maker 2.0 operator. See the detail in sections from the [deployment note](strimzi-deploy.md). The 0.17.0 source is in [this repository](https://github.com/strimzi/strimzi-kafka-operator/releases), unzip and use the `install` folder with Strimzi installation instructions.
+* At the minimum, to run Mirror Maker 2, we need to deploy the Strimzi Custom Resource Definitions, and the Mirror Maker 2.0 operator. See the detail in sections from the [deployment note](strimzi-deploy.md). The 0.17.0 source is in [this repository](https://github.com/strimzi/strimzi-kafka-operator/releases), unzip and use the `install` folder with Strimzi installation instructions.
 
-   *The service account and role binding do not need to be installed if you did it previously.*
+   *The service account and role binding do not need to be re-installed if you did it previously.*
 
 * If not done yet, create a secret for the API KEY of the Event Streams cluster:
 `oc create secret generic es-api-secret --from-literal=password=<replace-with-event-streams-apikey>`
 
-* As the source cluster is using TLS to communicate between client and brokers, we need to create a k8s secret for a Java truststore created from the `ca.cert` for the source target. This certificate is also in another secret: `my-cluster-client-ca-cert`. 
+* As the vanilla kafka source cluster is using TLS to communicate between client and brokers, we need to create a k8s secret for a Java truststore created from the `ca.cert` of the source cluster. This certificate is also in another secret: `my-cluster-client-ca-cert`. 
 
 ```shell 
 # build a local crt file from the secret: 
-oc extract secret/my-cluster-client-ca-cert --keys=ca.crt --to=- > ca.crt
+oc extract secret/my-cluster-clients-ca-cert --keys=ca.crt --to=- > ca.crt
 # Verify the certificate:
 openssl x509 -in ca.crt -text
 # transform it for java truststore.jks:
@@ -238,14 +238,24 @@ oc create secret generic kafka-truststore --from-file=./truststore.jks
 oc describe secret kafka-truststore
 ```
 
-* Define source and target cluster properties in mirror maker 2.0 `kafka-to-es-mm2.yml` descriptor file. We strongly recommend to study the schema definition of this [custom resource from this page](https://github.com/strimzi/strimzi-kafka-operator/blob/2d35bfcd99295bef8ee98de9d8b3c86cb33e5842/install/cluster-operator/048-Crd-kafkamirrormaker2.yaml#L648-L663):
-
-The [yaml file is here](https://github.com/jbcodeforce/kafka-studies/blob/master/mirror-maker-2/local-cluster/kafka-to-es-mm2.yml).
+* Define source and target cluster properties in mirror maker 2.0 `kafka-to-es-mm2.yml` descriptor file. We strongly recommend to study the schema definition of this [custom resource from this page](https://github.com/strimzi/strimzi-kafka-operator/blob/2d35bfcd99295bef8ee98de9d8b3c86cb33e5842/install/cluster-operator/048-Crd-kafkamirrormaker2.yaml#L648-L663). The [yaml file we used is here](https://github.com/jbcodeforce/kafka-studies/blob/master/mirror-maker-2/local-cluster/kafka-to-es-mm2.yml).
 
 
 !!! note
     connectCluster defined the cluster alias used for Kafka Connect, it must match a cluster in the list at `spec.clusters`.
-    The config part can match the Kafka configuration for consumer or producer, except properties starting by ssl, sasl, security, listeners, rest, bootstarp.servers which are declared at the cluster definition level.
+    The config part can match the Kafka configuration for consumer or producer, except properties starting by ssl, sasl, security, listeners, rest, bootstarp.servers which are declared at the cluster definition level. Also we have some challenges to make the connection to event streams working, as of Strimzi version 0.17 RC2, we need to add an empty `tls: {}` stanza to get connected. Also below, the declaration is using the previously defined secret for event streams API key.
+
+```yaml
+  alias: "event-streams-wdc-as-target"
+    bootstrapServers: broker-3...
+    tls: {}
+    authentication:
+      passwordSecret:
+          secretName: es-api-secret  
+          password: password 
+      username: token
+      type: plain
+```
 
 * Deploy Mirror maker 2.0 within this project. 
 
@@ -257,7 +267,7 @@ This commmand create a kubernetes deployment as illustrated below, with one pod 
 
 ![](images/mm2-deployment.png)
 
-* Define a target cluster property file:
+* To validate the replication works, we will connect a consumer to the `source.products` topic on Event Streams. So we define a target cluster property file (`eventstreams.properties`) like:
 
 ```properties
 bootstrap.servers=broker-3-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
@@ -267,30 +277,23 @@ sasl.mechanism=PLAIN
 sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="token" password="am_...";
 ```
 
-* To validate the source `products` topic has records, start a consumer as pod on Openshift within the source Kafka cluster using the Strimzi/kafka image.
-
-```shell
-oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic products --from-beginning
-```
-
 * Start a producer to send product records to the source Kafka cluster. If you have done the scenario 1, the first product definitions may be already in the target cluster, so we can send a second batch of products using a second data file:
 
 ```shell
 export KAFKA_BROKERS="my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443"
-export KAFKA_CERT="/home/ca.cert"
+export KAFKA_CERT="/home/ca.crt"
 docker run -ti -v $(pwd):/home --rm -e KAFKA_CERT=$KAFKA_CERT -e KAFKA_BROKERS=$KAFKA_BROKERS jbcodeforce/python37   bash
 python SendProductToKafka.py ./data/products2.json
 ```
 
 !!! note
-      The python code use the CA certificate and not the java truststore. The Kafka option is `ssl.ca.location`
+      The python code uses the CA certificate and not the java truststore. The Kafka option is `ssl.ca.location`. If the code was done in Java then the trustore needs to be part of the docker image or mounted from a kubernetes secret into the expected file inside the container.
 
-
-As an alternate to this external producer, we can start a producer as pod inside Openshift, and then send the product one by one:
+As an alternate to use this external producer, we can start a producer as pod inside Openshift, and then send the product one by one:
 
 ```shell
 oc run kafka-producer -ti --image=strimzi/kafka:latest-kafka-2.4.0  --rm=true --restart=Never -- bin/kafka-console-producer.sh --broker-list my-cluster-kafka-bootstrap:9092 --topic products
-If you don't see a command prompt, try pressing enter.
+If you don t see a command prompt, try pressing enter.
 
 >{'product_id': 'P01', 'description': 'Carrots', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 1}
 >{'product_id': 'P02', 'description': 'Banana', 'target_temperature': 6, 'target_humidity_level': 0.6, 'content_type': 2}
@@ -299,9 +302,22 @@ If you don't see a command prompt, try pressing enter.
 >{'product_id': 'P05', 'description': 'Tomato', 'target_temperature': 4, 'target_humidity_level': 0.4, 'content_type': 2}
 ```
 
+* To validate the source `products` topic has records, start a consumer as pod on Openshift within the source Kafka cluster using the Strimzi/kafka image.
+
+```shell
+oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic products --from-beginning
+```
+
+* Finally to validate the product records are replicated to the Event Streams `source.products` we need to start a consumer connected to Event streams.
+
+
+```shell
+oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093 --consumer-property ssl.protocol=TLSv1.2 --consumer-property security.protocol=SASL_SSL --consumer-property sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=token password=am_rbb9e794mMwhE-KGPYo0hhW3h91e28OhT8IlruFe5;" --consumer-property sasl.mechanism=PLAIN --topic source.products --from-beginning
+```
+
 ## Scenario 3: From Event Streams to local cluster
 
-For this scenario the source is Event Streams on IBM Cloud and the target is a local server (may be on a laptop using Kafka strimzi images started with docker compose)
+For this scenario the source is Event Streams on IBM Cloud and the target is a local server (may be on a laptop using vanilla Kafka images started with docker compose)
 
 ![](images/mm2-scen3.png)
 
@@ -320,7 +336,9 @@ source->target.enabled=true
 source->target.topics=orders
 ```
 
-We have created an Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target cluster (Event Streams on Cloud).
+We are reusing the Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target kafka cluster.
+
+The mirror maker file is 
 
 ## Scenario 4: From Event Streams On Cloud to Strimzi Cluster on Openshift
 
@@ -423,8 +441,5 @@ The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a
 * ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to commit offsets (org.apache.kafka.connect.runtime.SourceTaskOffsetCommitter:114)
 
 
-```
-oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093 --consumer-property ssl.protocol=TLSv1.2 --consumer-property security.protocol=SASL_SSL --consumer-property sasl.jaas.config="org.apache.kafka.common.security.plain.PlainLoginModule required username=token password=am_rbb9e794mMwhE-KGPYo0hhW3h91e28OhT8IlruFe5;" --consumer-property sasl.mechanism=PLAIN --topic source.products --from-beginning
-```
 
 KafkaMirrorMaker2 resource mm2-cluster in namespace jb-kafka-strimzi: Contains object at path spec.clusters.authentication with an unknown property: accessToken
