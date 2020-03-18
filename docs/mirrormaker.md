@@ -338,7 +338,7 @@ source->target.topics=orders
 
 We are reusing the Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target kafka cluster.
 
-The mirror maker file is 
+The mirror maker file
 
 ## Scenario 4: From Event Streams On Cloud to Strimzi Cluster on Openshift
 
@@ -440,6 +440,3 @@ The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a
 * ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to flush, timed out while waiting for producer to flush outstanding 1 messages
 * ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to commit offsets (org.apache.kafka.connect.runtime.SourceTaskOffsetCommitter:114)
 
-
-
-KafkaMirrorMaker2 resource mm2-cluster in namespace jb-kafka-strimzi: Contains object at path spec.clusters.authentication with an unknown property: accessToken
