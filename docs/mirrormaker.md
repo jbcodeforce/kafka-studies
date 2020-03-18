@@ -93,7 +93,7 @@ export KAFKA_TARGET_BROKERS=broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.events
 export KAFKA_TARGET_APIKEY="<password attribut in event streams credentials>"
 ```
 
-* Create the target topics in the target cluster. The following topics needs to be created upfront in Events Streams as Access Control policies do not authorize program to create topic dynamically.
+* It may be needed to create the topics in the target cluster. This depends if mirror maker 2.0 is able to access the AdminClient API. Normally we observed with Event streams APIKEY it is possible to create topic with AdminClient, so there is no need to do the following commands. For other configuration where Access Control policies do not authorize program to create topic dynamically, the commands performed by and admin user will create the needed topic. (the mm2 prefix is the one used by mirror maker, but the name of the topic could be defined in the mirror maker properties)
 
   ```shell
   ibmcloud es topic-create -n mm2-configs.source.internal -p 1  -c cleanup.policy=compact
@@ -204,7 +204,7 @@ As expected, in the consumer console we can see the 5 product messages arriving 
 
 ## Scenario 2: Run Mirror Maker 2 Cluster close to target cluster
 
-This scenario is similar to the scenario 1 but Mirror Maker now runs within an OpenShift cluster in the same data center as Event Streams cluster, so closer to the target cluster:
+This scenario is similar to the scenario 1 but Mirror Maker 2.0 now, runs within an OpenShift cluster in the same data center as Event Streams cluster, so closer to the target cluster:
 
 ![](images/mm2-local-to-es.png)
 
@@ -317,11 +317,11 @@ oc run kafka-consumer -ti --image=strimzi/kafka:latest-kafka-2.4.0 --rm=true --r
 
 ## Scenario 3: From Event Streams to local cluster
 
-For this scenario the source is Event Streams on IBM Cloud and the target is a local server (may be on a laptop using vanilla Kafka images started with docker compose)
+For this scenario the source is Event Streams on IBM Cloud and the target is a local server (may be on a laptop using vanilla Kafka image (Strimzi kafka 2.4 docker image) started with docker compose). This target cluster runs two zookeeper nodes, and three kafka nodes. We need 3 kafka brokers as mirror maker created topics with a replication factor set to 3.
 
 ![](images/mm2-scen3.png)
 
-This time the producer adds headers to the Records sent so we can validate headers replication. The file `es-cluster/es-mirror-maker.properties` declares this mirroring settings:
+This time the producer adds headers to the Records sent so we can validate headers replication. The file `es-cluster/es-mirror-maker.properties` declares the mirroring settings as below:
 
 ```properties
 clusters=source, target
@@ -336,25 +336,9 @@ source->target.enabled=true
 source->target.topics=orders
 ```
 
-We are reusing the Event Streams cluster on Washington DC data center. We have a Strimzi Kafka cluster defined in Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target kafka cluster.
-
-The mirror maker file
-
-## Scenario 4: From Event Streams On Cloud to Strimzi Cluster on Openshift
-
-![](images/mm2-test2.png)
-
-## Scenario 5: From event streams on premise to event streams on cloud
-
-![](images/mm2-a-a.png)
-
-The source cluster is a Strimzi cluster running on Openshift as a service on IBM Cloud. It was installed following the instructions [documented here](https://ibm-cloud-architecture.github.io/refarch-eda/deployments/strimzi/deploy/).
-
-The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a local host, with docker compose. It starts two zookeeper nodes, and three kafka nodes. We need 3 kafka brokers as mirror maker created topics with a replication factor set to 3.
-
 * Start the target cluster runnning on your laptop using:
 
-    ```
+    ```shell
     docker-compose up
     ```
 
@@ -428,6 +412,22 @@ The target cluster is also based on Strimzi kafka 2.4 docker image, but run in a
 
 * The consumer may be started in second or third step. To start it, you can use a new container or use one of the running kafka broker container. Using the `Docker perspective` in Visual Code, we can get into a bash shell within one of the Kafka broker container. The local folder is mounted to `/home`. Then the script, `consumeFromLocal.sh source.orders` will get messages from the replicated topic: `source.orders`
 
+## Scenario 4: From Event Streams On Cloud to Strimzi Cluster on Openshift
+
+We are reusing the Event Streams on Cloud cluster on Washington DC data center as source target and the vanilla Kafka 2.4 cluster as target, also running within Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target kafka cluster.
+
+![](images/mm2-test2.png)
+
+
+## Scenario 5: From event streams on premise to event streams on cloud
+
+The source cluster is a IBM Event Streams cluster running on Openshift on-premise servers. It was installed following the instructions [documented here](https://ocp42.cloudpak8s.io/integration/deploy-eventstreams/).
+
+![](images/mm2-a-a.png)
+
+The target cluster is also IBM Event Streams on Cloud.
+
+TO BE CONTINUED
 
 ## Typical errors in Mirror Maker 2 traces
 

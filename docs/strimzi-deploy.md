@@ -1,6 +1,6 @@
 # Strimzi Kafka deployment on Openshift or Kubernetes
 
-[Strimzi](https://strimzi.io/) uses the Cluster Operator to deploy and manage Kafka (including Zookeeper) and Kafka Connect clusters. When the Strimzi Cluster Operator is up, it starts to watch for certain OpenShift or Kubernetes resources containing the desired Kafka or Kafka Connect cluster configuration. The base of strimzi is to define a set of kubernetes operators and custom resource definitions for the different elements of Kafka. 
+[Strimzi](https://strimzi.io/) uses the Cluster Operator to deploy and manage Kafka (including Zookeeper) and Kafka Connect clusters. When the Strimzi Cluster Operator is up, it starts to watch for certain OpenShift or Kubernetes resources containing the desired Kafka and/or Kafka Connect cluster configuration. The base of strimzi is to define a set of kubernetes operators and custom resource definitions for the different elements of Kafka. 
 
 ![](images/strimzi.png)
 
@@ -28,11 +28,13 @@ CRDs act as configuration instructions to describe the custom resources in a Kub
 The deployment is done in two phases:
 
 * Deploy the Custom Resource Definitions (CRDs), which act as specifications of the custom resource to deploy.
-* Deploy one to many instance of those CRD
+* Deploy one to many instance of those CRDs
 
 In CR yaml file the `kind` attribute specifies the CRD to conform to.
 
 Each CRD has a common configuration like bootstrap servers, CPU resources, logging, healthchecks...
+
+The next steps are defining how to deploy a Kafka Cluster.
 
 ### Create a namespace or openshift project
 
@@ -226,3 +228,12 @@ and then use the following parameters in the command line:
 
 ./kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443  --topic test  --consumer.config /home/strimzi.properties --from-beginning 
 ```
+
+### Deploying Kafka Connect cluster
+
+Adding a Kafka Connect cluster on top of an existing Kafka cluster using Strimzi operators is simple.
+
+### Deploying Mirror Maker 2.0
+
+In this section we address another approach to, deploy a Kafka Connect cluster with Mirror Maker 2.0 connectors but without any local Kafka Cluster. The appraoch will be to use Event Streams on Cloud as backend Kafka cluster but use Mirror Maker for replication. The steps could 
+
