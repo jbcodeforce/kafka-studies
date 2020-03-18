@@ -1,38 +1,6 @@
 
 
-In order to run the example Grafana dashboards to monitor MM2, you must:
 
- 1. Add metrics configuration to your Kafka cluster resource
-
- 2. Deploy Prometheus and Prometheus Alertmanager
-
- 3.  Deploy Grafana
-
- Example Metrics files
-  You can find the example metrics configuration files in the examples/metrics directory.
-
-  metrics
-  ├── grafana-install
-  │   ├── grafana.yaml (1)
-  ├── grafana-dashboards (2)
-  │   ├── strimzi-kafka-connect.json
-  │   ├── strimzi-kafka.json
-  │   └── strimzi-zookeeper.json
-  │   └── strimzi-kafka-exporter.json (3)
-  ├── kafka-connect-metrics.yaml (4)
-  ├── kafka-metrics.yaml (5)
-  ├── prometheus-additional-properties
-  │   └── prometheus-additional.yaml (6)
-  ├── prometheus-alertmanager-config
-  │   └── alert-manager-config.yaml (7)
-  └── prometheus-install
-      ├── alert-manager.yaml (8)
-      ├── prometheus-rules.yaml (9)
-      ├── prometheus.yaml (10)
-      └── strimzi-service-monitor.yaml (11)
-  1. Installation file for the Grafana image
-
-  2. Grafana dashboard configuration
 
   3. Grafana dashboard configuration specific to Kafka Exporter
 
@@ -98,76 +66,11 @@ Prometheus configuration
   Alerting rules
   The prometheus-rules.yaml file provides example alerting rule examples for use with Alertmanager.
 
-  Prometheus resources
-          When you apply the Prometheus configuration, the following resources are created in your Kubernetes cluster and managed by the Prometheus Operator:
-
-        A ClusterRole that grants permissions to Prometheus to read the health endpoints exposed by the Kafka and ZooKeeper pods, cAdvisor and the kubelet for container metrics.
-
-        A ServiceAccount for the Prometheus pods to run under.
-
-        A ClusterRoleBinding which binds the ClusterRole to the ServiceAccount.
-
-        A Deployment to manage the Prometheus Operator pod.
-
-        A ServiceMonitor to manage the configuration of the Prometheus pod.
-
-        A Prometheus to manage the configuration of the Prometheus pod.
-
-        A PrometheusRule to manage alerting rules for the Prometheus pod.
-
-        A Secret to manage additional Prometheus settings.
-
-        A Service to allow applications running in the cluster to connect to Prometheus (for example, Grafana using Prometheus as datasource).
-
-Deploying the Prometheus Operator
-        To deploy the Prometheus Operator to your Kafka cluster, apply the YAML resource files from the Prometheus CoreOS repository.
-
-        Procedure
-        Download the resource files from the repository and replace the example namespace with your own:
-
-          On MacOS, use:
-
-          curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-deployment.yaml | sed -e '' 's/namespace: .\*/namespace: my-namespace/' > prometheus-operator-deployment.yaml
-          
-          curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-cluster-role.yaml > prometheus-operator-cluster-role.yaml
-          
-          curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-cluster-role-binding.yaml | sed -e '' 's/namespace: .*/namespace: my-namespace/' > prometheus-operator-cluster-role-binding.yaml
-          
-          curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-service-account.yaml | sed -e '' 's/namespace: .*/namespace: my-namespace/' > prometheus-operator-service-account.yaml
-          
+  
           Note
           If it is not required, you can manually remove the spec.template.spec.securityContext property from the prometheus-operator-deployment.yaml file.
-          Deploy the Prometheus Operator:
-
-          kubectl apply -f prometheus-operator-deployment.yaml
-          kubectl apply -f prometheus-operator-cluster-role.yaml
-                        [USE the file kafka-studies1/monitoring/prometheus-operator-cluster-role-binding.yaml to have separate Promethus instead of one which comes with OCP )
-          kubectl apply -f prometheus-operator-cluster-role-binding.yaml 
-              [USE the file kafka-studies1/monitoring/prometheus-operator-cluster-role-binding.yaml to have separate Promethus instead of one which comes with OCP )
-              
-          kubectl apply -f prometheus-operator-service-account.yaml
           
 
-      Deploying Prometheus
-      To deploy Prometheus to your Kafka cluster to obtain monitoring data, apply the example resource file for the Prometheus docker image and the YAML files for Prometheus-related resources.
-
-      The deployment process creates a ClusterRoleBinding and discovers an Alertmanager instance in the namespace specified for the deployment.
-
-          Note
-          By default, the Prometheus Operator only supports jobs that include an endpoints role for service discovery. Targets are discovered and scraped for each endpoint port address. For endpoint discovery, the port address may be derived from service (role: service) or pod (role: pod) discovery.
-          Prerequisites
-          Check the example alerting rules provided
-
-            Procedure
-            Modify the Prometheus installation file (prometheus.yaml) according to the namespace Prometheus is going to be installed in:
-
-            On Linux, use:
-
-            sed -i 's/namespace: .*/namespace: my-namespace/' prometheus.yaml
-            
-            On MacOS, use:
-
-            sed -i '' 's/namespace: .*/namespace: my-namespace/' prometheus.yaml
             Edit the ServiceMonitor resource in strimzi-service-monitor.yaml to define Prometheus jobs that will scrape the metrics data.
 
             To use another role:

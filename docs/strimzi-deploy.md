@@ -197,6 +197,8 @@ oc extract secret/my-cluster-cluster-ca-cert --keys=ca.crt --to=- > ca.crt
 keytool -import -trustcacerts -alias root -file ca.crt -keystore truststore.jks -storepass password -noprompt
 ```
 
+*The alias is used to access keystore entries (key and trusted certificate entries).*
+
 * Start the docker container by mounting the local folder with the truststore.jks to the `/home`
 
 ```shell

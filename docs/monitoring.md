@@ -75,11 +75,26 @@ When you apply those configuration, the following resources are managed by the P
 |  Secret | To manage additional Prometheus settings. |
 | Service  | To allow applications running in the cluster to connect to Prometheus (for example, Grafana using Prometheus as datasource) |
 
-* Deploy the prometheus server by first changing the namespace and may adapt [the original file](https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/prometheus-install/prometheus.yaml).
+### Deploy prometheus
+
+!!! Note:
+        The following section is including the configuration of a Prometheus server monitoring a full Kafka Cluster. For Mirror Maker or Kafka Connect only the configuration will have less rules, and configuration. See [next section](#mirror-maker-monitoring).
+
+
+Deploy the prometheus server by first changing the namespace and may adapt [the original file](https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/prometheus-install/prometheus.yaml).
 
     ```shell
-    curl -s  https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/prometheus-install/prometheus.yaml | sed -e "s/namespace: default/namespace: jb-kafka-strimzi/" > prometheus.yml
+    curl -s  https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus.yaml | sed -e "s/namespace: myproject/namespace: jb-kafka-strimzi/" > prometheus.yml
+    ```
 
+    If you are using AlertManager (see next section) Define the monitoring rules of the kafka run time: KafkaRunningOutOfSpace, UnderReplicatedPartitions, AbnormalControllerState, OfflinePartitions, UnderMinIsrPartitionCount, OfflineLogDirectoryCount, ScrapeProblem (Prometheus related alert), ClusterOperatorContainerDown, KafkaBrokerContainersDown, KafkaTlsSidecarContainersDown
+
+    ```shell
+    curl -s 
+    https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus-rules.yaml sed -e "s/namespace: default/namespace: jb-kafka-strimzi/" > prometheus-rules.yaml
+    ```
+
+    ```shell
     kubectl apply -f prometheus-rules.yaml
     kubectl apply -f prometheus.yaml
     ```
