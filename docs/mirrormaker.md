@@ -416,7 +416,7 @@ source->target.topics=orders
 
 We are reusing the Event Streams on Cloud cluster on Washington DC data center as source target and the vanilla Kafka 2.4 cluster as target, also running within Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target kafka cluster.
 
-![](images/mm2-test2.png)
+![](images/mm2-test1.png)
 
 
 ## Scenario 5: From event streams on premise to event streams on cloud

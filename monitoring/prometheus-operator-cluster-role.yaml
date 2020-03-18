@@ -5,7 +5,11 @@ metadata:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: prometheus-operator
     app.kubernetes.io/version: v0.37.0
+<<<<<<< HEAD
   name: prometheus-operator
+=======
+  name: prometheus-operator-strimzi
+>>>>>>> 231f19316f069f5b8b61d58f4f26e1545d328c9e
 rules:
 - apiGroups:
   - apiextensions.k8s.io
