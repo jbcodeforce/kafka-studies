@@ -136,6 +136,7 @@ Deploying the Prometheus Operator
           curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-cluster-role-binding.yaml | sed -e '' 's/namespace: .*/namespace: my-namespace/' > prometheus-operator-cluster-role-binding.yaml
           
           curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-service-account.yaml | sed -e '' 's/namespace: .*/namespace: my-namespace/' > prometheus-operator-service-account.yaml
+          
           Note
           If it is not required, you can manually remove the spec.template.spec.securityContext property from the prometheus-operator-deployment.yaml file.
           Deploy the Prometheus Operator:
