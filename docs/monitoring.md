@@ -52,13 +52,16 @@ To be able to monitor your own Kafka cluster you need to enable Prometheus metri
     curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-service-account.yaml | sed -e "s/namespace: default/namespace: jb-kafka-strimzi/" > prometheus-operator-service-account.yaml
     ```
 
+!!! Note
+        The prometheus-operator-deployment.yaml define security context the operator pod will use. It is set as a non root user (unprivileged). If you need to change that, or reference an existing user modify the file.  
+
 * Deploy the operator, cluster role, binding and service account (see files under `monitoring` folder):
 
     ```shell
-    kubectl apply -f prometheus-operator-deployment.yaml
-    kubectl apply -f prometheus-operator-cluster-role.yaml
-    kubectl apply -f prometheus-operator-cluster-role-binding.yaml
-    kubectl apply -f prometheus-operator-service-account.yaml
+    oc apply -f prometheus-operator-deployment.yaml
+    oc apply -f prometheus-operator-cluster-role.yaml
+    oc apply -f prometheus-operator-cluster-role-binding.yaml
+    oc apply -f prometheus-operator-service-account.yaml
     ```
 
 When you apply those configuration, the following resources are managed by the Prometheus Operator:
@@ -77,34 +80,87 @@ When you apply those configuration, the following resources are managed by the P
 
 ### Deploy prometheus
 
-!!! Note:
+!!! Note
         The following section is including the configuration of a Prometheus server monitoring a full Kafka Cluster. For Mirror Maker or Kafka Connect only the configuration will have less rules, and configuration. See [next section](#mirror-maker-monitoring).
 
 
-Deploy the prometheus server by first changing the namespace and may adapt [the original file](https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/prometheus-install/prometheus.yaml).
+Deploy the prometheus server by first changing the namespace and also by adapting [the original file](https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/prometheus-install/prometheus.yaml).
 
-    ```shell
-    curl -s  https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus.yaml | sed -e "s/namespace: myproject/namespace: jb-kafka-strimzi/" > prometheus.yml
-    ```
+```shell
+curl -s  https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus.yaml | sed -e "s/namespace: myproject/namespace: jb-kafka-strimzi/" > prometheus.yml
+```
 
-    If you are using AlertManager (see next section) Define the monitoring rules of the kafka run time: KafkaRunningOutOfSpace, UnderReplicatedPartitions, AbnormalControllerState, OfflinePartitions, UnderMinIsrPartitionCount, OfflineLogDirectoryCount, ScrapeProblem (Prometheus related alert), ClusterOperatorContainerDown, KafkaBrokerContainersDown, KafkaTlsSidecarContainersDown
+If you are using AlertManager (see [section below](#alert-manager)) Define the monitoring rules of the kafka run time: KafkaRunningOutOfSpace, UnderReplicatedPartitions, AbnormalControllerState, OfflinePartitions, UnderMinIsrPartitionCount, OfflineLogDirectoryCount, ScrapeProblem (Prometheus related alert), ClusterOperatorContainerDown, KafkaBrokerContainersDown, KafkaTlsSidecarContainersDown
 
-    ```shell
-    curl -s 
-    https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus-rules.yaml sed -e "s/namespace: default/namespace: jb-kafka-strimzi/" > prometheus-rules.yaml
-    ```
+```shell
+curl -s 
+https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus-rules.yaml sed -e "s/namespace: default/namespace: jb-kafka-strimzi/" > prometheus-rules.yaml
+```
 
-    ```shell
-    kubectl apply -f prometheus-rules.yaml
-    kubectl apply -f prometheus.yaml
-    ```
+```shell
+oc apply -f prometheus-rules.yaml
+oc apply -f prometheus.yaml
+```
 
-The Prometheus server configuration uses service discovery to discover the pods in the cluster from which it gets metrics. 
+The Prometheus server configuration uses service discovery to discover the pods in the cluster from which it gets metrics.
 
 ### Install Grafana
+
+[Grafana](https://grafana.com/) provides visualizations of Prometheus metrics. Again we will use the Strimzi dashboard definition as starting point to monitor Kafka cluster but also mirror maker.
+
+* Deploy Grafan to OpenShift and expose it via a service:
+
+```shell
+oc apply -f grafana.yaml
+```
+
+In case you want to test grafana locally run: `docker run -d -p 3000:3000 grafana/grafana`
+
+## Kafka Explorer
 
 
 
 ## Mirror maker monitoring
 
 ## Configure Grafana dashboard
+
+To access the Grafana portal you can use port forwarding like below or expose a route on top of the grafana service.
+
+* Use port forwarding:
+
+```shell
+export PODNAME=$(oc get pods -l name=grafana | grep grafana | awk '{print $1}')
+kubectl port-forward $PODNAME 3000:3000
+```
+
+Point your browser to http://localhost:3000.
+
+* Expose the route via cli
+
+Add the Prometheus data source with the URL of the exposed routes. http://prometheus-operated:9090
+
+## Alert Manager
+
+As seen in previous section, when deploying prometheus we can set some alerting rules on elements of the Kafka cluster. Those rule examples are in the file `The prometheus-rules.yaml`. Those rules are used by the AlertManager component.
+
+[Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/) is a plugin for handling alerts and routing them to a notification service, like Slack. The Prometheus server is a client to the Alert Manager.
+
+* Download an example of alert manager configuration file
+
+```shell
+curl -s https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/alert-manager.yaml > alert-manager.yaml
+```
+
+* Define a configuration for the channel to use, by starting from the following template
+
+```shell
+curl -s https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-alertmanager-config/alert-manager-config.yaml > alert-manager-config.yaml
+```
+
+* Modify this file to reflect the remote access credential and URL to the channel server. 
+
+* Then deploy the secret that matches your config file .
+
+```shell
+oc create secret generic alertmanager-alertmanager --from-file=alertmanager.yaml=alert-manager-config.yaml
+```

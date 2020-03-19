@@ -1,6 +1,7 @@
 site/
 kstreams/target/
 mirror-maker-2/local-cluster/kafka1/
+mirror-maker-2/local-cluster/jmx_prometheus_javaagent-0.12.0.jar
 mirror-maker-2/local-cluster/kafka2/
 mirror-maker-2/local-cluster/kafka3/
 mirror-maker-2/local-cluster/zookeeper1/
