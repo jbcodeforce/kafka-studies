@@ -1,0 +1,42 @@
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+rules:
+  - pattern : "kafka.connect<type=connect-worker-metrics>([^:]+):"
+    name: "kafka_connect_connect_worker_metrics_$1"
+  - pattern : "kafka.connect<type=connect-metrics, client-id=([^:]+)><>([^:]+)"
+    name: "kafka_connect_connect_metrics_$1_$2"   
+  # Rules below match the Kafka Connect/MirrorMaker MBeans in the jconsole order
+  # Worker task states
+  - pattern: kafka.connect<type=connect-worker-metrics, connector=(\w+)><>(connector-destroyed-task-count|connector-failed-task-count|connector-paused-task-count|connector-running-task-count|connector-total-task-count|connector-unassigned-task-count)
+    name: connect_worker_metrics_$1_$2
+  # Task metrics
+  - pattern: kafka.connect<type=connector-task-metrics, connector=(\w+), task=(\d+)><>(batch-size-avg|batch-size-max|offset-commit-avg-time-ms|offset-commit-failure-percentage|offset-commit-max-time-ms|offset-commit-success-percentage|running-ratio)
+    name: connect_connector_task_metrics_$1_$3
+    labels:
+       task: "$2"
+  # Source task metrics
+  - pattern: kafka.connect<type=source-task-metrics, connector=(\w+), task=(\d+)><>(source-record-active-count|source-record-poll-total|source-record-write-total)
+    name: connect_source_task_metrics_$1_$3
+    labels:
+       task: "$2"
+  # Task errors
+  - pattern: kafka.connect<type=task-error-metrics, connector=(\w+), task=(\d+)><>(total-record-errors|total-record-failures|total-records-skipped|total-retries)
+    name: connect_task_error_metrics_$1_$3
+    labels:
+      task: "$2"
+  # CheckpointConnector metrics 
+  - pattern: kafka.connect.mirror<type=MirrorCheckpointConnector, source=(.+), target=(.+), group=(.+), topic=(.+), partition=(\d+)><>(checkpoint-latency-ms)
+    name: connect_mirror_mirrorcheckpointconnector_$6
+    labels:
+       source: "$1"
+       target: "$2"
+       group: "$3"
+       topic: "$4"
+       partition: "$5"
+  # SourceConnector metrics
+  - pattern: kafka.connect.mirror<type=MirrorSourceConnector, target=(.+), topic=(.+), partition=(\d+)><>(byte-rate|byte-count|record-age-ms|record-rate|record-count|replication-latency-ms)
+    name: connect_mirror_mirrorsourceconnector_$4
+    labels:
+       target: "$1"
+       topic: "$2"
+       partition: "$3"

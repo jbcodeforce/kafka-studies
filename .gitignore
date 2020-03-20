@@ -14,6 +14,7 @@ mirror-maker-2/mirror-maker.properties
 mirror-maker-2/kafka-to-es-mm2.properties
 mirror-maker-2/kafka-to-es-mm2.yml
 mirror-maker-2/ca.crt
+mirror-maker-2/str.crt
 mirror-maker-2/ca.pem
 mirror-maker-2/setenv.sh
 mirror-maker-2/tmp/

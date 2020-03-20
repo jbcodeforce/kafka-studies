@@ -68,7 +68,7 @@ spec:
       app: strimzi
   alerting:
     alertmanagers:
-    - namespace: myproject
+    - namespace: jb-kafka-strimzi
       name: alertmanager
       port: alertmanager
   additionalScrapeConfigs:

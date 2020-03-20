@@ -223,7 +223,7 @@ What needs to be done:
 * If not done yet, create a secret for the API KEY of the Event Streams cluster:
 `oc create secret generic es-api-secret --from-literal=password=<replace-with-event-streams-apikey>`
 
-* As the vanilla kafka source cluster is using TLS to communicate between client and brokers, we need to create a k8s secret for a Java truststore created from the `ca.cert` of the source cluster. This certificate is also in another secret: `my-cluster-client-ca-cert`. 
+* As the vanilla kafka source cluster is using TLS to communicate between client and brokers, we need to create a k8s secret for a Java truststore created from the `ca.cert` of the source cluster. This certificate is also in another secret: `my-cluster-clients-ca-cert`. 
 
 ```shell 
 # build a local crt file from the secret: 
@@ -237,6 +237,9 @@ oc create secret generic kafka-truststore --from-file=./truststore.jks
 # Verify the created secret
 oc describe secret kafka-truststore
 ```
+
+!!! Attention
+    At this step, we have two options, one using the Mirror Maker Operator and get the configuration of it via a yaml file, or use properties file and a special docker image. As of 3/20/2020 we have found an issue on Strimzi 0.17-rc2 MM operator, so we are proposing to use the properties approach as [documented in this separated note](sc2-mm2.md).
 
 * Define source and target cluster properties in mirror maker 2.0 `kafka-to-es-mm2.yml` descriptor file. We strongly recommend to study the schema definition of this [custom resource from this page](https://github.com/strimzi/strimzi-kafka-operator/blob/2d35bfcd99295bef8ee98de9d8b3c86cb33e5842/install/cluster-operator/048-Crd-kafkamirrormaker2.yaml#L648-L663). The [yaml file we used is here](https://github.com/jbcodeforce/kafka-studies/blob/master/mirror-maker-2/local-cluster/kafka-to-es-mm2.yml).
 
