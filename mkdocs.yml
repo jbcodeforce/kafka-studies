@@ -7,8 +7,8 @@ nav:
   - Producer practices: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/producers
   - Kafka streaming notes: kstreams.md
   - Kafka with Python: python.md
-  - Mirror Maker 2.0: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/mirrormaker
-  - Monitoring with Prometheus and Grafana: https://ibm-cloud-architecture.github.io/refarch-eda/monitoring.md
+  - Mirror Maker 2.0: https://jbcodeforce.github.io/kp-data-replication
+  - Monitoring with Prometheus and Grafana: https://jbcodeforce.github.io/kp-data-replication/monitoring
   - Kafka FAQ: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/FAQ
   - Kafka Connect: https://ibm-cloud-architecture.github.io/refarch-eda/kafka/connect
 theme: 

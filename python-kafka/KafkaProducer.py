@@ -1,25 +1,36 @@
-# Send basic test message to TestTopic
-from confluent_kafka import Producer, KafkaError
-import json
-import EventBackboneConfiguration as EventBackboneConfiguration
+import json, os
+from confluent_kafka import KafkaError, Producer
+import kafka.EventBackboneConfiguration as ebc
 
-options ={
-    'bootstrap.servers': EventBackboneConfiguration.getBrokerEndPoints(),
-    'group.id': 'BasicProducer'
-}
-if (EventBackboneConfiguration.hasAPIKey()):
-    options['security.protocol'] = 'SASL_SSL'
-    options['sasl.mechanisms'] = 'PLAIN'
-    options['sasl.username'] = 'token'
-    options['sasl.password'] = EventBackboneConfiguration.getEndPointAPIKey()
+class KafkaProducer:
 
-if (EventBackboneConfiguration.isEncrypted()):
-    options['ssl.ca.location'] = EventBackboneConfiguration.getKafkaCertificate()
+    def __init__(self,
+                kafka_brokers = "", 
+                kafka_apikey = "", 
+                kafka_cacert = "", 
+                topic_name = ""):
+        self.kafka_brokers = kafka_brokers
+        self.kafka_apikey = kafka_apikey
+        self.kafka_cacert = kafka_cacert
+        self.topic_name = topic_name
 
-print('[KafkaProducer] - {}'.format(options))
-producer=Producer(options)
+    def prepare(self,groupID = "pythonproducers"):
+        options ={
+                'bootstrap.servers':  self.kafka_brokers,
+                'group.id': groupID
+        }
+        if (self.kafka_apikey != ''):
+            options['security.protocol'] = 'SASL_SSL'
+            options['sasl.mechanisms'] = 'PLAIN'
+            options['sasl.username'] = 'token'
+            options['sasl.password'] = self.kafka_apikey
+        if (self.kafka_cacert != ''):
+            options['ssl.ca.location'] = self.kafka_cacert
+        print("[KafkaProducer] - This is the configuration for the producer:")
+        print('[KafkaProducer] - {}'.format(options))
+        self.producer = Producer(options)
 
-def delivery_report(err, msg):
+    def delivery_report(self,err, msg):
         """ Called once for each message produced to indicate delivery result.
             Triggered by poll() or flush(). """
         if err is not None:
@@ -27,14 +38,26 @@ def delivery_report(err, msg):
         else:
             print('[KafkaProducer] - Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
 
-def publishEvent(topicName, valueToSend, keyToSend):
-    dataStr = json.dumps(valueToSend)
-    producer.produce(topicName,
-        key=keyToSend,
-        value=dataStr.encode('utf-8'), 
-        callback=delivery_report)
-    producer.flush()
+    def publishEvent(self, eventToSend, keyName):
+        dataStr = json.dumps(eventToSend)
+        self.producer.produce(self.topic_name,
+                            key=eventToSend[keyName],
+                            value=dataStr.encode('utf-8'), 
+                            callback=self.delivery_report)
+        self.producer.flush()
 
-if __name__ == "__main__":
-    publishEvent(EventBackboneConfiguration.getTopicName(),
-        "Hello bill", "B01")
+def processRecords(TOPICNAME,GROUPID,KEYNAME,docsToSend):
+    print("Producer to the topic " + TOPICNAME)
+    try:
+        producer = KafkaProducer(kafka_brokers = ebc.getBrokerEndPoints(), 
+                kafka_apikey = ebc.getEndPointAPIKey(), 
+                kafka_cacert = ebc.getKafkaCertificate(),
+                topic_name = TOPICNAME)
+
+        producer.prepare(groupID= GROUPID)
+        for doc in docsToSend:
+            print("sending -> " + str(doc))
+            producer.publishEvent(doc,KEYNAME)
+    except KeyboardInterrupt:
+        input('Press enter to continue')
+        print("Thank you")

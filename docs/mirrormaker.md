@@ -422,15 +422,6 @@ We are reusing the Event Streams on Cloud cluster on Washington DC data center a
 ![](images/mm2-test1.png)
 
 
-## Scenario 5: From event streams on premise to event streams on cloud
-
-The source cluster is a IBM Event Streams cluster running on Openshift on-premise servers. It was installed following the instructions [documented here](https://ocp42.cloudpak8s.io/integration/deploy-eventstreams/).
-
-![](images/mm2-a-a.png)
-
-The target cluster is also IBM Event Streams on Cloud.
-
-TO BE CONTINUED
 
 ## Typical errors in Mirror Maker 2 traces
 
