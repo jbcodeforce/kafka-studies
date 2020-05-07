@@ -1,6 +1,29 @@
 # Kafka Streams examples
 
-In this chapter we are presenting how to use the Kafka Streams API combined with Kafka event sourcing to implement the container inventory management service. 
+In this article we are presenting how to use the Kafka Streams API combined with Kafka event sourcing to implement different interesting use cases.
+
+The use cases are implemented inside the kstreams-play java project as unit tests.  Some of the domain classes are defined in the `src/java` folder. Streams topology are done in the unit test but could also be part of a service class to be used as an example running with kafka.
+
+## Lab 1: mask credit card number
+
+Using a simple kstream to change data on the fly, like for example encrypt a credit card number. Test is [EncryptCreditCardTest](). This is the first test to use the TopologyTestDriver class to run business logic outside of kafka. The class uses org.apache.kafka.common.serialization.Serdes and String serdesm and a JSON serdes for the domain class Purchase.
+
+The other interesting approach is to use domain object with builder class and DSL to define the model:
+
+```java
+Purchase.builder(p).maskCreditCard().build()
+```
+
+
+## Joining 3 streams with reference data to build a document
+
+This is a simple example of joining 3 sources of kafka streams to build a merged document, with some reference data loaded from a topic:
+
+* The shipment status is a reference table and loaded inside a kafka topic: shipment-status
+* The order includes items and customer id reference
+* Customer is about the customer profile
+* Products is about products inventory. 
+* The outcome is an order report document that merge most of the attributes of the 3 streams.
 
 
 ## Refarch container the container inventory management implementation

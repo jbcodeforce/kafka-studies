@@ -24,7 +24,7 @@ services:
         hostname: kafka1
         command: [
         "sh", "-c",
-        "bin/kafka-server-start.sh config/server.properties --override broker.id=$${KAFKA_BROKER_ID} --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT}"
+        "bin/kafka-server-start.sh config/server.properties --ovrride group.min.session.timeout.ms=250 --override broker.id=$${KAFKA_BROKER_ID} --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT}"
         ]
         ports:
             - "9092:9092"

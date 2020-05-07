@@ -2,6 +2,16 @@
 
 This repository regroup a set of personal studies and quick summary on Kafka.
 
+## Kafka local
+
+The docker compose starts one zookeeper and one kafka broker locally on the `kafkanet` network.
+
+To start `kafkacat`
+
+```shell
+docker run -it --network=host edenhill/kafkacat:1.5.0 -b kafka1:9092 -L
+```
+
 ## Source of information
 
 * [Our event driven reference architecture content](https://ibm-cloud-architecture.github.io/refarch-eda/)
@@ -31,8 +41,49 @@ This repository regroup a set of personal studies and quick summary on Kafka.
 
 ## Kafka with Quarkus
 
+` ./mvnw compile quarkus:dev` to start local quarkus app and continuously develop.
+
 Here is a template code for quarkus based Kafka consumer: [quarkus-event-driven-consumer-microservice-template](https://github.com/jbcodeforce/quarkus-event-driven-consumer-microservice-template).
 
-This interesting solution with Quarkus and kafka streaming: [Quarkus using Kafka Streams](https://quarkus.io/guides/kafka-streams)
+Read this interesting guide with Quarkus and kafka streaming: [Quarkus using Kafka Streams](https://quarkus.io/guides/kafka-streams), which is implemented in the quarkus-reactive-msg producer, aggregator folders.
+
+To generate the starting code for the producer we use the quarkus maven plugin with kafka extension:
+`mvn io.quarkus:quarkus-maven-plugin:1.4.1.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=producer -Dextensions="kafka"`
+
+for the aggregator:
+
+`mvn io.quarkus:quarkus-maven-plugin:1.4.1.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=aggregator -Dextensions="kafka-streams,resteasy-jsonb"`
+
+Interesting how to generate reference value to a topic with microprofile reactive messaging. `stations` is a hash:
+
+```java
+    @Outgoing("weather-stations")                               
+    public Flowable<KafkaRecord<Integer, String>> weatherStations() {
+        List<KafkaRecord<Integer, String>> stationsAsJson = stations.stream()
+            .map(s -> KafkaRecord.of(
+                    s.id,
+                    "{ \"id\" : " + s.id +
+                    ", \"name\" : \"" + s.name + "\" }"))
+            .collect(Collectors.toList());
+
+        return Flowable.fromIterable(stationsAsJson);
+    };
+```
+
+Channels are mapped to Kafka topics using the Quarkus configuration file `application.properties`.
+
+To build and run:
+
+```shell
+# under producer folder
+docker build -f src/main/docker/Dockerfile.jvm -t quarkstream/producer-jvm .
+# under aggregator folder
+docker build -f src/main/docker/Dockerfile.jvm -t quarkstream/aggregator-jvm .
+# Run under quarkus-reactive-msg
+docker-compose up
+# Run kafkacat
+docker run --tty --rm -i --network kafkanet debezium/tooling:1.0
+$ kafkacat -b kafka1:9092 -C -o beginning -q -t temperatures-aggregated
+```
 
 ## Kafka with Apache Camel 3.0
