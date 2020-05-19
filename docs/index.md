@@ -1,6 +1,6 @@
 # Apache Kafka Studies
 
-This repository regroup a set of personal studies and quick summary on Kafka.
+This repository regroups a set of personal studies and quick summary on Kafka. This is some development note to keep in mind for Kafka development. Most of the content is already defined in [those best practices](https://ibm-cloud-architecture.github.io/refarch-eda/kafka/readme/). Here the code in KafkaPlay is used as a template to start a project.
 
 ## Kafka local
 
@@ -30,12 +30,14 @@ docker run -it --network=host edenhill/kafkacat:1.5.0 -b kafka1:9092 -L
 * [Does Apache Kafka do ACID transactions? - Andrew Schofield](https://medium.com/@andrew_schofield/does-apache-kafka-do-acid-transactions-647b207f3d0e)
 * [Spark and Kafka with direct stream, and persistence considerations and best practices](http://aseigneurin.github.io/2016/05/07/spark-Kafka-achieving-zero-data-loss.html)
 * [Example in scala for processing Tweets with Kafka Streams](https://www.madewithtea.com/processing-tweets-with-Kafka-streams.html)
-* [Our skill journey](training/eda-skill-journey.md) but it is under work to migrate to IBM learning journey.
 
 ## Kafka programming
 
-* [Producer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/kafka/producers)
-* [Consumer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/kafka/consumers)
+* [Producer & Consumer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/)
+
+## Event streams
+
+To access event streams on private cloud with truststore we need the jks file to be put under `src/main/liberty/config/resources/security` then set the env variable to this path: `export TRUSTSTORE_PATH="resources/security/certs.jks"`
 
 ## Kafka Connect with Debezium
 
