@@ -422,7 +422,6 @@ We are reusing the Event Streams on Cloud cluster on Washington DC data center a
 ![](images/mm2-test1.png)
 
 
-
 ## Typical errors in Mirror Maker 2 traces
 
 * Plugin class loader for connector: 'org.apache.kafka.connect.mirror.MirrorCheckpointConnector' was not found. 
