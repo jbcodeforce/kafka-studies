@@ -1,4 +1,6 @@
 site/
 kstreams/target/
 IBMEventStreams_GettingStarted/target/
+IBMEventStreams_GettingStarted/src/main/liberty/config/server.env
+IBMEventStreams_GettingStarted/src/main/liberty/config/server-esoc.env
 
