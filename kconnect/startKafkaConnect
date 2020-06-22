@@ -1,4 +1,0 @@
-docker run -v $(pwd):/home \
-  -e CONNECT_BOOTSTRAP_SERVERS=localhost:9092 \
-  -e CONNECT_GROUP_ID="kconnect-container" \
-  -ti confluentinc/cp-kafka-connect bash
