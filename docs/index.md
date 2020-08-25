@@ -1,16 +1,26 @@
 # Apache Kafka Studies
 
-This repository regroups a set of personal studies and quick summary on Kafka. This is some development note to keep in mind for Kafka development. Most of the content is already defined in [those best practices](https://ibm-cloud-architecture.github.io/refarch-eda/kafka/readme/). Here the code in KafkaPlay is used as a template to start a project.
+This repository regroups a set of personal studies and quick summary on Kafka. This is some development note to keep in mind for Kafka development. Most of the content is already defined in [those best practices](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/). 
 
 ## Kafka local
 
 The docker compose starts one zookeeper and one kafka broker locally on the `kafkanet` network.
 
-To start `kafkacat`
+To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
 ```shell
-docker run -it --network=host edenhill/kafkacat:1.5.0 -b kafka1:9092 -L
+docker run -it --network=host edenhill/kafkacat -b kafka1:9092 -L
+
 ```
+
+## Repository content
+
+Outside of the documentation and notes, some folder includes running app:
+
+* [python-kafka](https://github.com/jbcodeforce/kafka-studies/tree/master/python-kafka) for simple reusable code for event consumer and producer with python.
+* [Kafka Vertx starter code](https://github.com/jbcodeforce/kafka-studies/tree/master/kafka-java-vertx-starter-1.0.0) from the event streams team, within one app to test a deployed event stream deployment
+* [vertx consumer and producer](https://github.com/jbcodeforce/kafka-studies/tree/master/vertx-kafka) as separate quarkus apps.
+
 
 ## Source of information
 
@@ -34,8 +44,9 @@ docker run -it --network=host edenhill/kafkacat:1.5.0 -b kafka1:9092 -L
 ## Kafka programming
 
 * [Producer & Consumer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/)
+* [Multithreading consumer study note from confluent]()
 
-## Event streams
+### Event streams
 
 To access event streams on private cloud with truststore we need the jks file to be put under `src/main/liberty/config/resources/security` then set the env variable to this path: `export TRUSTSTORE_PATH="resources/security/certs.jks"`
 

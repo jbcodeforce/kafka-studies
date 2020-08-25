@@ -235,3 +235,5 @@ Specifying the replicas factor at the topic level, with a cluster of kafka broke
 ## Further readings
 
 * [Kafka Streams’ Take on Watermarks and Triggers](https://www.confluent.io/blog/kafka-streams-take-on-watermarks-and-triggers/) what continuous refinement with operational parameters means: 
+* [Tutorial: Introduction to Streaming Application Development](https://docs.confluent.io/current/tutorials/examples/microservices-orders/docs/index.html#tutorial-microservices-orders)
+* [Multi threaded messaging](https://www.confluent.io/blog/kafka-consumer-multi-threaded-messaging/)
