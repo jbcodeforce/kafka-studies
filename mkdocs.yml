@@ -21,7 +21,8 @@ nav:
     - Lab repo: https://github.com/jbcodeforce/eda-kconnect-lab
   - End to end code:
       - KC container: https://ibm-cloud-architecture.github.io/refarch-kc/
-      - Inventory: https://github.com/jbcodeforce/eda-kconnect-lab
+      - Item-Inventory integration: https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator
+      - Perf tool and schema registry lab: https://github.com/ibm-cloud-architecture/refarch-eda-tools
   - Reactive with kafka:
     - reactive messaging with microprofile: https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/
   - Kafka with Python: python.md
