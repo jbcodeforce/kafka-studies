@@ -1,4 +1,0 @@
-if [[ $PWD = */scripts ]]; then
- cd ..
-fi
-mvn  liberty:run-server

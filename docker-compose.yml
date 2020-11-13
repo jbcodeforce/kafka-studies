@@ -2,7 +2,7 @@
 version: '3'
 services:
     zookeeper:
-        image: strimzi/kafka:latest-kafka-2.5.0
+        image: strimzi/kafka:latest-kafka-2.6.0
         hostname: zookeeper
         command: [
             "sh", "-c",
@@ -22,7 +22,7 @@ services:
         networks:
             - kafkanet
     kafka:
-        image: strimzi/kafka:latest-kafka-2.5.0
+        image: strimzi/kafka:latest-kafka-2.6.0
         hostname: kafka
         command: [
         "sh", "-c",
@@ -36,7 +36,7 @@ services:
             KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
             LOG_DIR: /tmp/logs
         volumes:
-            - .data//kafka/data:/var/lib/kafka/data
+            - ./data//kafka/data:/var/lib/kafka/data
             - /var/run/docker.sock:/var/run/docker.sock
             - .:/home          
         depends_on:

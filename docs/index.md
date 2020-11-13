@@ -1,10 +1,11 @@
 # Apache Kafka Studies
 
-This repository regroups a set of personal studies and quick summary on Kafka. This is some development note to keep in mind for Kafka development. Most of the content is already defined in [those best practices](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/). 
+This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated content is already defined in [those kafka overview](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/),  [producer and consumer](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/). 
+
 
 ## Kafka local
 
-The docker compose starts one zookeeper and one kafka broker locally on the `kafkanet` network.
+The docker compose in this repo, starts one zookeeper and one kafka broker locally on the `kafkanet` network using last Strimzi release.
 
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
@@ -53,8 +54,6 @@ To access event streams on private cloud with truststore we need the jks file to
 ## Kafka Connect with Debezium
 
 ## Kafka with Quarkus
-
-` ./mvnw compile quarkus:dev` to start local quarkus app and continuously develop.
 
 Here is a template code for quarkus based Kafka consumer: [quarkus-event-driven-consumer-microservice-template](https://github.com/jbcodeforce/quarkus-event-driven-consumer-microservice-template).
 

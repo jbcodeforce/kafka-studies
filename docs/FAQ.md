@@ -2,9 +2,9 @@
 
 ## How to support exactly once delivery?
 
-See the section in the producer implementation considerations [note](producers.md).
+See the section in the producer implementation considerations [note]().
 
-Also it is important to note that the Kafka Stream API supports exactly once semantics with the config: `processing.guarantee=exactly_once`. Each task within a read-process-write flow may fail so this setting is important to be sure the right answer is delivered, even in case of task failure, and the process is executed exactly once. 
+Also it is important to note that the Kafka Stream API supports exactly once semantics with the config: `processing.guarantee=exactly_once`. Each task within a read-process-write flow may fail so this setting is important to be sure the right answer is delivered, even in case of task failure, and the process is executed exactly once.
 
 ## Why does kafka use zookeeper?
 
@@ -51,10 +51,14 @@ So out-of-synch will happen if the followers are not able to send their acknowle
 ## Differences between Akka and Kafka?
 
 [Akka](https://akka.io/) is a open source toolkit for Scala or Java to simplify multithreading programming and makes application more reactive by adopting an asynchronous mechanism to access to io: database or HTTP request. To support asynchronous communication between 'actors', it uses messaging, internal to the JVM. 
-Kafka is part of the architecture, while Akka is an implementation choice for one of the component of the business application deployed inside the architecture. 
+Kafka is part of the architecture, while Akka is an implementation choice for one of the component of the business application deployed inside the architecture.
 
 [vert.x](https://vertx.io/) is another open source implementation of such internal messaging mechanism but supporting more language:  Java, Groovy, Ruby, JavaScript, Ceylon, Scala, and Kotlin.
 
+
+## Run Kafka Test Container with TopologyTestDriver
+
+Topology Test Driver is used without kafka, so there is no real need to use test container. 
 
 ## Event streams resource requirements 
 
