@@ -4,6 +4,7 @@ nav:
   - Introduction: index.md
   - Apache Kafka summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/
   - Producer Consumer practices: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/
+  - Strimzi: strimzi.md
   - Event Streams:
     - Product documentation: https://ibm.github.io/event-streams/about/overview/
     - Github ibm messaging: https://github.com/ibm-messaging
