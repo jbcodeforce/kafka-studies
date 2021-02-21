@@ -49,7 +49,41 @@ Outside of the documentation and notes, some folder includes running app:
 
 ### Event streams
 
-To access event streams on private cloud with truststore we need the jks file to be put under `src/main/liberty/config/resources/security` then set the env variable to this path: `export TRUSTSTORE_PATH="resources/security/certs.jks"`
+Product documentation to access eventstreams. 
+
+* Event streams / kafka on OpenShift with TLS connection on external route. We need the following quarkus properties:
+
+ ```shell
+ # get environment variables from configmap
+ quarkus.openshift.env.configmaps=vaccine-order-ms-cm
+ # use docker compose kafka
+ %dev.kafka.bootstrap.servers=kafka:9092
+ ```
+
+ with matching config map
+
+ ```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vaccine-order-ms-cm
+data:
+  KAFKA_BOOTSTRAP_SERVERS: eda-dev-kafka-bootstrap-eventstreams.gse-eda-2021-1-0143c5dd31acd8e030a1d6e0ab1380e3-0000.us-east.containers.appdomain.cloud:443
+  KAFKA_SSL_PROTOCOL: TLSv1.2
+  KAFKA_USER: scram
+  KAFKA_SSL_TRUSTSTORE_LOCATION: /deployments/certs/server/ca.p12
+  KAFKA_SSL_TRUSTSTORE_TYPE: PKCS12
+  SHIPMENT_PLAN_TOPIC: vaccine_shipment_plans
+  KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+  KAFKA_SECURITY_PROTOCOL: SASL_SSL
+ ```
+
+ and secrets
+
+ ```
+ ```
+
+See example in project []()
 
 ## Kafka Connect with Debezium
 

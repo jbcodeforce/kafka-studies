@@ -6,4 +6,5 @@ IBMEventStreams_GettingStarted/src/main/liberty/config/server-esoc.env
 kafka-java-vertx-starter-1.0.0/kafka.properties
 kafka-java-vertx-starter-1.0.0/truststore.p12
 **/node_modules
+data/
 
