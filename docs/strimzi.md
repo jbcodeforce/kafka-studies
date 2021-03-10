@@ -1,15 +1,15 @@
 # Strimzi.io
 
-[Strimzi](https://strimzi.io/) uses the Cluster Operator to deploy and manage Kafka (including Zookeeper) and Kafka Connect clusters. When the Strimzi Cluster Operator is up, it starts to watch for certain OpenShift or Kubernetes resources containing the desired Kafka and/or Kafka Connect cluster configuration. 
+[Strimzi](https://strimzi.io/) uses the Cluster Operator to deploy and manage Kafka (including Zookeeper) and Kafka Connect clusters. When the Strimzi Cluster Operator is up and runnning, it starts to watch for certain OpenShift or Kubernetes resources containing the desired Kafka and/or Kafka Connect cluster configuration. 
 
 ![Strimzi](images/strimzi.png)
 
-[strimzi.io/](https://strimzi.io/) offers the following capabilities
+[strimzi.io/](https://strimzi.io/) offers the following capabilities:
 
-* Deploy Kafka OOS on OCP or k8s.
-* TLS and SCRAM-SHA supported, automated certificate management
+* Deploy Kafka OOS on any OpenShift or k8s platform
+* Support TLS and SCRAM-SHA authentication, and automated certificate management
 * Operators for cluster, user and topic
-* Manage kafka using gitops
+* Manage kafka using gitops: See [vaccine-gitops environment/strimzi folder](https://github.com/ibm-cloud-architecture/vaccine-gitops/tree/main/environments/strimzi)
 
 ## Concept summary
 
@@ -30,7 +30,7 @@ The Strimzi operator deployment is done in two phases:
 * Deploy one to many instances of those CRDs
 
 * Download release artifacts https://github.com/strimzi/strimzi-kafka-operator/releases. 
-Each CRD has a common configuration like bootstrap servers, CPU resources, logging, healthchecks...
+Each CRD has a common configuration like bootstrap servers, CPU resources, logging, health checks...
 * Create a project: `oc new-project eda-strimzi-21`
 * Strimzi provides two cluster roles: `strimzi-view` and `strimzi-admin`. So to get non k8s admin user to define strimzi resource do the following: `oc apply -f install/strimzi-admin/`
 * Deploy the cluster operator (to watch a single namespace but it could be multiple ns). For that we need to use the namespace the Cluster Operator is going to be installed into:
@@ -129,6 +129,50 @@ EOF
 
 ## Defining Users
 
+Define a KafkaUser using yaml and then apply within the same namespace:
+
+```yaml
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: tls-user
+  labels:
+    strimzi.io/cluster: vaccine-kafka
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - host: '*'
+        resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operation: Write
+      - host: '*'
+        resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operation: Read
+      - host: '*'
+        resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operation: Create
+      - host: '*'
+        resource:
+          type: group
+          name: '*'
+          patternType: literal
+        operation: Read
+```
+
+```
+oc get kafkausers
+```
 ## Connect client apps
 
 When defining the security control we want to set to access to the cluster we need to address the following questions:
@@ -141,7 +185,7 @@ When defining the security control we want to set to access to the cluster we ne
 
 * What authentication to use: TLS or SCRAM-SHA-512?
 * Integrate with OAuth2.0 for authentication and authorization using Open Policy agent
-* Install your own certiticates
+* Install your own certificates
 
 The authentications used for user and Kafka need to match. Certificates are available in PKCS #12 format (.p12) and PEM (.crt) formats.
 

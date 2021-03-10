@@ -64,6 +64,12 @@ Topology Test Driver is used without kafka, so there is no real need to use test
 
 See the [detailed tables](https://ibm.github.io/event-streams/installing/prerequisites/#helm-resource-requirements) in the product documentation.
 
+## Some error and solution
+
+### ClassCastException: ibm.eda.demo.app.infrastructure.events.OrderEvent incompatible with java.lang.String
+
+We need to have a special serializer for the bean. Quarkus has some [serialization in Json](https://github.com/quarkusio/quarkus/blob/master/extensions/kafka-client/runtime/src/main/java/io/quarkus/kafka/client/serialization/JsonbSerde.java).
+
 ## Other FAQs
 
 [IBM Event streams on Cloud FAQ](https://cloud.ibm.com/docs/services/EventStreams?topic=eventstreams-faqs) 

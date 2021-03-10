@@ -5,7 +5,7 @@ This repository regroups a set of personal studies and quick summaries on Kafka.
 
 ## Kafka local
 
-The docker compose in this repo, starts one zookeeper and one kafka broker locally on the `kafkanet` network using last Strimzi release.
+The docker compose in this repo, starts one zookeeper and one kafka broker locally using last Strimzi release, and one Apicurio for schema registry.
 
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
