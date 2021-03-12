@@ -1,6 +1,6 @@
 # Apache Kafka Studies
 
-This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated content is  defined in [the kafka overview article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/). 
+This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated content is  defined in [the Kafka overview article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/). 
 
 
 ## Kafka local
@@ -49,7 +49,7 @@ Outside of the documentation and notes, some folder includes running app:
 
 ### Event streams
 
-Product documentation to access eventstreams. 
+Product documentation to access event streams.
 
 * Event streams / kafka on OpenShift with TLS connection on external route. We need the following quarkus properties:
 
