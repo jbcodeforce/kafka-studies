@@ -1,22 +1,30 @@
 # Apache Kafka Studies
 
-This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated content is  defined in [the Kafka overview article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/). 
+This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated content is  defined in [the Kafka overview article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/).
 
 
 ## Kafka local
 
 The docker compose in this repo, starts one zookeeper and one kafka broker locally using last Strimzi release, and one Apicurio for schema registry.
 
+In the docker compose I found the following issue with the listeners: if set with localhost, then the kafka broker is accessible from app outside of the docker network, so a quarkus app running with `quarkus:dev` will connect. But a container in the same network needs to access kafka node, so the listener needs to be  
+
+```
+ KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+ or
+ KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+```
+
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
 ```shell
 docker run -it --network=host edenhill/kafkacat -b kafka1:9092 -L
-
 ```
 
-## Repository content
 
-Outside of the documentation and notes, some folder includes running app:
+## This repository content
+
+Outside of my personal notes, some folders include running app:
 
 * [python-kafka](https://github.com/jbcodeforce/kafka-studies/tree/master/python-kafka) for simple reusable code for event consumer and producer with python.
 * [Kafka Vertx starter code](https://github.com/jbcodeforce/kafka-studies/tree/master/kafka-java-vertx-starter-1.0.0) from the event streams team, within one app to test a deployed event stream deployment
@@ -94,11 +102,11 @@ Here is a template code for quarkus based Kafka consumer: [quarkus-event-driven-
 Read this interesting guide with Quarkus and kafka streaming: [Quarkus using Kafka Streams](https://quarkus.io/guides/kafka-streams), which is implemented in the quarkus-reactive-msg producer, aggregator folders.
 
 To generate the starting code for the producer we use the quarkus maven plugin with kafka extension:
-`mvn io.quarkus:quarkus-maven-plugin:1.4.1.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=producer -Dextensions="kafka"`
+`mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=producer -Dextensions="kafka"`
 
 for the aggregator:
 
-`mvn io.quarkus:quarkus-maven-plugin:1.4.1.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=aggregator -Dextensions="kafka-streams,resteasy-jsonb"`
+`mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=aggregator -Dextensions="kafka-streams,resteasy-jsonb"`
 
 Interesting how to generate reference value to a topic with microprofile reactive messaging. `stations` is a hash:
 

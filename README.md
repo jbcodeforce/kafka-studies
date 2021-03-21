@@ -1,6 +1,6 @@
 # My own Apache Kafka Studies
 
-Some kafka, Kafka streams , Kafka Connect, strimzi, monitoring studies...
+Some Apache kKafka, Kafka streams , Kafka Connect, Strimzi, monitoring studies...
 
 Better Read the [BOOK format](https://jbcodeforce.github.io/kafka-studies/).
 
