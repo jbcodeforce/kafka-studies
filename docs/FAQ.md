@@ -1,28 +1,147 @@
 # Frequently asked questions
 
+## Basic questions
+
+### What is Kafka?
+
+* pub/sub middleware to share data between applications
+* Open source, started in 2011 by Linkedin
+* based on append log to persist immutable records ordered by arrival.
+* support data partitioning, distributed brokers, horizontal scaling, low-latency and high throughput.
+* producer has no knowledge of consumer
+* records stay even after being consumed
+* durability with replication to avoid loosing data for high availability
+
+### Major components?
+
+* Topic, consumer, producer, brokers
+* Rich API to control the producer semantic, and consumer
+* Consumer groups
+* Kafka streaming API to support data streaming with stateful operations
+* Kafka connect
+* Replication with Mirror Maker 2
+
+### Major use cases?
+
+* Modern data pipeline with buffering to data lake
+* Data hub, and integration between event-driven applications / microservices
+* Real time analytics
+* Event-driven, reactive microservice communication layer.
+
+### Why does Kafka use zookeeper?
+
+Kafka as a distributed system using cluster, it needs to keep cluster states, sharing configuration like topic, assess which node is still alive within the cluster, support registering new node added to the cluster, being able to support dynamic restart. Zookeeper is an orchestrator for distributed system, it maintains Kafka cluster integrity, select broker leader... 
+
+Zookeeper is also used to manage offset commit, and to the leader selection process.
+
+### What is a replica?
+
+A lit of nodes responsible to participate into the data replication process for a given partition. 
+
+It is a critical feature to ensure durability, be able to continue to consume records, or to ensure a certain level of data loss safety is guaranteed when producing records.
+
+### What are a leader and follower in Kafka?
+
+Kafka creates partitions based on offset and consumer groups. Every partition in Kafka has a server that plays the role of **leader**. When replication is set in a topic, follower brokers will pull data from the leader to ensure the replication, up to the specified replication factor.
+
+If the leader fails, one of the followers needs to take over as the leader’s role.
+
+Leader is the end point for read and write operations on the partition. (Exception is new feature to read from local follower)
+
+To get the list of In-synch Replication for a given topic the following tool can be used:
+
+```shell
+kafka-topics.sh --bootstrap-server :9092 --describe --topic <topicname>
+```
+
+### What is Offset?
+
+A unique identifier of records inside a partition. It is automatically created by the broker, and producer can get it from the broker response.
+
+Consumer uses it to commit its read. It means, in case of consumer restarts, it will read from the last committed offset.
+
+### What is a consumer group?
+
+It groups consumers of one to many topics. Each partition is consumed by exactly one consumer within each subscribing consumer group.
+
+Consumer group is specified via the `group.id` consumer's property, and when consumers subscribe to topic(s).
+
+There is a protocol to manage consumers within a group so that partition can be reallocated when a consumer lefts the group. The *group leader* is responsible to do the partition assignment.
+
+When using the [group.instance.id](https://kafka.apache.org/documentation/#consumerconfigs_group.instance.id) properties, consumer is treated as a static member, which means there will be no partition rebalance when consumer lefts a group for a short time period. When not set the group coordinator (a broker) will allocate ids to group members, and reallocation will occur. For Kafka Streams application it is recommended to use static membership.
+
+Brokers keep offsets until a [retention period](https://kafka.apache.org/documentation/#brokerconfigs_offsets.retention.minutes) within which consumer group can lose all its consumers. After that period, offsets are discarded. The consumer group can be deleted manually, or automatically when the last committed offset for that group expires.
+
+When the group coordinator receives an OffsetCommitRequest, it appends the request to a special compacted Kafka topic named __consumer_offsets. Ack from the broker is done once all replicas on this hidden topics are successful.
+
+The tool `kafka-consumer-group.sh` helps getting details of consumer group:
+
+```shell
+# Inside a Kafka broker container
+bin/kafka-consumer-groups.sh --bootstrap-server kafka:9092 --describe --group order-group --members --verbose
+```
+
+### Support to multi-tenancy?
+
+Multi-tenant means multiple different groups of application can produce and consumer messages isolated from other. So by constructs, topics and brokers are multi-tenant.
+Now the control will be at the access control level policy, the use of service account, and naming convention on the topic name.
+Consumer and producer authenticate themselves using dedicated service account users, with SCRAM user or Mutual TLS user. Each topic can have security policy to control read, write, creation operations.
+
+## How client access Kafka cluster metadata?
+
+Provide a list of Kafka brokers, minimum two, so the client API will get the metadata once connected to one of the broker.
+
+## How to get at most once delivery?
+
+Set producer acknowledge level (acks) property to 0 or 1.
+
 ## How to support exactly once delivery?
 
-See the section in the producer implementation considerations [note]().
+The goal is to address that if a producer sends a message twice the system will send only one message to the consumer, and once the consumer commits the read offset, it will not receive the message again even if it restarts.
+
+See the section in the producer implementation considerations [note](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/#how-to-support-exactly-once-delivery).
+
+The consumer needs to always read from its last committed offset.
 
 Also it is important to note that the Kafka Stream API supports exactly once semantics with the config: `processing.guarantee=exactly_once`. Each task within a read-process-write flow may fail so this setting is important to be sure the right answer is delivered, even in case of task failure, and the process is executed exactly once.
 
-## Why does kafka use zookeeper?
+Exactly-once delivery for other destination systems generally requires cooperation with such systems which may be possible by using the offset processing.
 
-Kafka as a distributed system using cluster, it needs to keep cluster states, sharing configuration like topic, assess which node is still alive within the cluster, support registrering new node added to the cluster, being able to support dynamic restart. Zookeeper is an orchestrator for distributed system, it maintains kafka cluster integrity, select broker leader... 
+## What is range partition assignment strategy?
+
+There are multiple partition assignment strategy for a consumer, part of a consumer group , to get its partition to fetch data from. Members of the consumer group subscribe to the topics they are interested in and forward their subscriptions to a Kafka broker serving as the group coordinator. The coordinator selects one member to perform the group assignment and propagates the subscriptions of all members to it. Then assign(Cluster, GroupSubscription) is called to perform the assignment and the results are forwarded back to each respective members.
+
+Range assignor works on a per-topic basis: it lays out the available partitions in numeric order and the consumers in lexicographic order, and assign partition to each consumer so partition with the same id will be in the same consumer.
+
+## How to get an homogeneous distribution of message to partitions?
+
+Design the message key and hash coding to be even distributed. Or implement a customer partitioner by implementing the [Partitioner](https://kafka.apache.org/24/javadoc/?org/apache/kafka/clients/producer/Partitioner.html) interface. On consumer side, for example KafkaStream,  
+
+## How to ensure efficient join between two topics?
+
+Need to use co-partitioning, which means having the same key in both topic, the same number of partitions and the same producer partitioner, which most likely should be the default one that uses the following formula: *partition = hash(key) % numPartitions*
+
+## What is transaction in Kafka?
+
+Producer can use transaction begin, commit and rollback API while publishing events to a multi partition topic. This is done by also setting a unique transactionId as part of its configuration.  Either all messages are successfully written or none of them are
+
+## What is the high watermark?
+
+The high watermark offset is the offset of the last message that was successfully copied to all of the log’s replicas. A consumer can only read up to the high watermark offset to prevent reading un-replicated messages.
 
 ## Retention time for topic what does it mean?
 
-The message sent to a cluster is kept for a max period of time or until a max size is reached. Those topic properties are: `retention.ms` and `retention.bytes`. Messages stay in the log even if they are consumed. The oldest messages are marked for deletion or compaction depending of the cleanup policy (delete or compact) set to `cleanup.policy` parameter.
+The message sent to a cluster is kept for a max period of time or until a max size is reached. Those topic properties are: `retention.ms` and `retention.bytes`. Messages stay in the log even if they are consumed. The oldest messages are marked for deletion or compaction depending of the cleanup policy (delete or compact) set to `cleanup.policy` topic's parameter.
 
-See the kafka documentation on [topic configuration parameters](https://kafka.apache.org/documentation/#topicconfigs). 
+See the Kafka documentation on [topic configuration parameters](https://kafka.apache.org/documentation/#topicconfigs).
 
 Here is a command to create a topic with specific retention properties:
 
-```
+```shell
 bin/kafka-configs --zookeeper XX.XX.XX.XX:2181 --entity-type topics --entity-name orders --alter --add-config  retention.ms=55000 --add-config  retention.byte=100000
 ```
 
-But there is also the `offsets.retention.minutes` property, set at the cluster level to control when the offset information will be deleted. It is defaulted to 1 day, but the max possible value is 7 days. This is to avoid keeping too much information in the broker memory and avoid to miss data when consumers run not continuously. So consumers need to commit their offset. If the consumer settings define: `auto.offset.reset=earliest`, the consumer will reprocess all the events each time it restarts, (or skips to the latest if set to `latest`). When using `latest`, if the consumers are offline for more than the offsets retention time window, they will lose events.
+But there is also the `offsets.retention.minutes` property, set at the cluster level to control when the offset information will be deleted. It is defaulted to 1 day, but the max possible value is 7 days. This is to avoid keeping too much information in the broker memory and avoid to miss data when consumers do not run continuously. So consumers need to commit their offset. If the consumer settings define: `auto.offset.reset=earliest`, the consumer will reprocess all the events each time it restarts, (or skips to the latest if set to `latest`). When using `latest`, if the consumers are offline for more than the offsets retention time window, they will lose events.
 
 ## What are the topic characteristics I need to define during requirements?
 
@@ -35,18 +154,100 @@ This is a requirement gathering related question, to understand what need to be 
 * Schema management to control change to the payload definition
 * volume per day
 * Accept snapshot
-* Need to do ge replication to other kafka cluster
+* Need to do geo replication to other kafka cluster
 * Network filesystem used on the target kubernetes cluster and current storage class
 
-## What are the impacts of having not enough resource for kafka?
+## What are the impacts of having not enough resource for Kafka?
 
 The table in this [Event Streams product documentation](https://ibm.github.io/event-streams/installing/prerequisites/#helm-resource-requirements) illustrates the resource requirements for a getting started cluster. When resources start to be at stress, then Kafka communication to ZooKeeper and/or other Kafka brokers can suffer resulting in out-of-sync partitions and container restarts perpetuating the issue. Resource constraints is one of the first things we consider when diagnosing ES issues.
 
+## What should we do for queue full exception or timeout exception on producer?
+
+The brokers are running behind, so we need to add more brokers and redistribute partitions
+
+
+## How to send large messages?
+
+We can set some properties at the broker, topic, consumer and producer level:
+
+* Broker: consider the [message.max.bytes](https://kafka.apache.org/documentation/#brokerconfigs_message.max.bytes) and [replica.fetch.max.bytes](https://kafka.apache.org/documentation/#brokerconfigs_replica.fetch.max.bytes)
+* Consumer: [max.partition.fetch.bytes](https://kafka.apache.org/documentation/#consumerconfigs_max.partition.fetch.bytes). Records are fetched in batches by the consumer, so this properties gives the max amount of data per partition the server will return. Default 1 Megabyte
+
+## How to maximize throughput?
+
+For producer if you want to maximize throughput over low latency, set [batch.size](https://kafka.apache.org/documentation/#producerconfigs_batch.size) and [linger.ms](https://kafka.apache.org/documentation/#producerconfigs_linger.ms) to higher value. Linger delay producer, it will wait for up to the given delay to allow other records to be sent so that the sends can be batched together.
+
+## Why Kafka Stream applications may impact cluster performance?
+
+* They may use internal hidden topics to persist their states for Ktable
+* Process input and output topics
+
+## How message schema version is propagated?
+
+The record includes a byte with the version number from the schema registry
+
+## Consumers do not see message in topic, what happens?
+
+The brokers may have an issue on this partition. If a broker, part of the ISR list fails, then new leader election may delay the broker commit from a producer.
+
+The consumer has a communication issue, or fails, so the consumer group rebalance is underway.
+
+## How compression schema used is known by the consumer?
+
+The record header includes such metadata. So it is possible to have different schema per record.
+
 ## What does out-of-synch partition mean and occur?
 
-With partition leader and replication to the followers, the number of in-synch replicas is at least the number of expected replicas. For example for a replicas = 3 the in-synch is set to 2, and it represents the minimum number of replicas that must acknowledge a write for the write to be considered successful. The record is considered “committed” when all ISRs for partition wrote to their log. Only committed records are readable from consumer.
+With partition leader and replication to the followers, the number of in-synch replicas is at least the number of expected replicas. For example for a replicas = 3 the in-synch is set to 2, and it represents the minimum number of replicas that must acknowledge a write for the write to be considered successful. The record is considered “committed” when all ISRs for a partition wrote to their log. Only committed records are readable from consumer.
 
-So out-of-synch will happen if the followers are not able to send their acknowledge to the replica leader.
+So out-of-synch will happen if the followers are not able to send their acknowledge to the replica leader as quickly as expected.
+
+## Security in Kafka
+
+* Encrypt data in transit between producer and Kafka brokers
+* Client authentication
+* Client authorization
+
+## How to protect data at rest?
+
+* Use encrypted file system for each brokers
+* Encrypt data at the producer level, using some API, and then decode at the consumer level. The data in the appeld log will be encrypted.
+
+## How to remove personal identifying information?
+
+From the source connector, it is possible to add processing class to process the records before publishing them to Kafka topic, so that any Kafka Streams apps will not see PII.
+
+## How to handle variable workload with Kafka Connector source connector?
+
+Increase and decrease the number of Kafka connect workers based upon current application load.
+
+## Competitors to Kafka
+
+* [NATS]()
+* [Redpanda](https://vectorized.io/) a Modern streaming platform for mission critical workloads, and is compatible with Kafka API. It is a cluster of brokers without any zookeepers. It also leverage the SSD technology to improve I/O operations.
+* [AWS Kinesis](https://jbcodeforce.github.io/architecture/aws/#kinesis)
+	* Cloud service, managed by AWS staff, paid as you go, proportional to the shard (like partition) used.
+	* 24h to 7 days persistence
+	* Number of shards are adaptable with throughput.
+	* Uses the concept of Kinesis data streams, which uses shards: data records are composed of a sequence number, a partition key and a data blob.
+	* restrictions on message size (1 MB) and consumption rate of messages (5 reads /s, < 2MB per shard, 1000 write /s)
+	* Server side encryption using master key managed by AWS KMS
+* GCP Pub/sub
+* Solace
+* Active MQ:
+	* Java based messaging server to be the JMS reference implementation, so it supports transactional messaging. 
+	* various messaging protocols including AMQP, STOMP, and MQTT
+	* It maintains the delivery state of every message resulting in lower throughput.
+	* Can apply JMS message selector to consumer specific message
+	* Point to point or pub/sub, but servers push messages to consumer/subscribers
+	* Performance of both queue and topic degrades as the number of consumers rises
+* Rabbit MQ:
+	* Support queues, with messages removed once consumed
+	* Add the concept of Exchange to route message to queues
+	* Limited throughput, but can send large message
+	* Support JMS, AMQP protocols, and participation to transaction
+	* Smart broker / dumb consumer model that focuses on consistently delivering messages to consumers.
+
 
 ## Differences between Akka and Kafka?
 
