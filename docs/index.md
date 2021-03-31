@@ -21,6 +21,50 @@ To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat do
 docker run -it --network=host edenhill/kafkacat -b kafka1:9092 -L
 ```
 
+## Using Apicurio
+
+Once started define a schema in json and upload it to the api: http://apicurio:8080/api. Here is an example of command:
+
+Schema:
+```
+{   
+    "namespace": "ibm.gse.eda.vaccine.orderoptimizer",
+    "doc": "Avro data schema for Reefer events",
+    "type":"record",
+    "name":"Reefer",
+    "fields":[
+            {
+                "name": "reefer_id",
+                "type": "string",
+                "doc": "Reefer container ID"
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "doc": "Reefer Container ID status. Could be an Enum"
+            },
+            {
+                "name": "location",
+                "type": "string",
+                "doc": "Reefer container location"
+            },
+            {
+                "name": "date_available",
+                "type": "string",
+                "doc": "Date when the inventory will be available"
+            }
+     ]
+}
+```
+
+Upload it to schema registry
+
+```shell 
+curl -X POST -H "Content-type: application/json; artifactType=AVRO" \
+   -H "X-Registry-ArtifactId: vaccine.reefers-value" \
+   --data @${scriptDir}/../data/avro/schemas/reefer.avsc http://localhost:8080/api/artifacts
+```
+
 
 ## This repository content
 

@@ -12,21 +12,21 @@
 * records stay even after being consumed
 * durability with replication to avoid loosing data for high availability
 
-### Major components?
+### What are the major components?
 
 * Topic, consumer, producer, brokers
 * Rich API to control the producer semantic, and consumer
 * Consumer groups
-* Kafka streaming API to support data streaming with stateful operations
-* Kafka connect
-* Replication with Mirror Maker 2
+* Kafka streams API to support data streaming with stateful operations and stream processing topology
+* Kafka connect for source and sink connection to external systems
+* Topic replication with Mirror Maker 2
 
 ### Major use cases?
 
 * Modern data pipeline with buffering to data lake
-* Data hub, and integration between event-driven applications / microservices
-* Real time analytics
-* Event-driven, reactive microservice communication layer.
+* Data hub, to continuously expose business entities to event-driven applications and microservices
+* Real time analytics with aggregate computation, and complex event processing
+* The communication layer for Event-driven, reactive microservice.
 
 ### Why does Kafka use zookeeper?
 
@@ -42,11 +42,11 @@ It is a critical feature to ensure durability, be able to continue to consume re
 
 ### What are a leader and follower in Kafka?
 
-Kafka creates partitions based on offset and consumer groups. Every partition in Kafka has a server that plays the role of **leader**. When replication is set in a topic, follower brokers will pull data from the leader to ensure the replication, up to the specified replication factor.
+Topic has 1 to many partition, which are append logs. Every partition in Kafka has a server that plays the role of **leader**. When replication is set in a topic, follower brokers will pull data from the leader to ensure replication, up to the specified replication factor.
 
-If the leader fails, one of the followers needs to take over as the leader’s role.
+If the leader fails, one of the followers needs to take over as the leader’s role. The leader election process involves zookeeper and assess which follower was the most in-synch with the leader.
 
-Leader is the end point for read and write operations on the partition. (Exception is new feature to read from local follower)
+Leader is the end point for read and write operations on the partition. (Exception is the new feature to read from local follower).
 
 To get the list of In-synch Replication for a given topic the following tool can be used:
 
@@ -111,19 +111,31 @@ Exactly-once delivery for other destination systems generally requires cooperati
 
 There are multiple partition assignment strategy for a consumer, part of a consumer group , to get its partition to fetch data from. Members of the consumer group subscribe to the topics they are interested in and forward their subscriptions to a Kafka broker serving as the group coordinator. The coordinator selects one member to perform the group assignment and propagates the subscriptions of all members to it. Then assign(Cluster, GroupSubscription) is called to perform the assignment and the results are forwarded back to each respective members.
 
-Range assignor works on a per-topic basis: it lays out the available partitions in numeric order and the consumers in lexicographic order, and assign partition to each consumer so partition with the same id will be in the same consumer.
+Range assignor works on a per-topic basis: it lays out the available partitions in numeric order and the consumers in lexicographic order, and assign partition to each consumer so partition with the same id will be in the same consumer: topic-1-part-0 and topic-2-part-0 will be processed by consumer-0
+
+## What is sticky assignor?
+
+The CooperativeStickyAssignor helps supporting incremental cooperative rebalancing to the clients' group protocol, which allows consumers to keep all of their assigned partitions during a rebalance and at the end revoke only those which must be migrated to another consumer for overall cluster balance.
+
+The goal is to reduce unnecessary downtime due to unnecessary partition migration, by leveraging the sticky assignor which link consumer to partition id. See [KIP 429 for details.](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429%3A+Kafka+Consumer+Incremental+Rebalance+Protocol) 
 
 ## How to get an homogeneous distribution of message to partitions?
 
-Design the message key and hash coding to be even distributed. Or implement a customer partitioner by implementing the [Partitioner](https://kafka.apache.org/24/javadoc/?org/apache/kafka/clients/producer/Partitioner.html) interface. On consumer side, for example KafkaStream,  
+Design the message key and hash coding for even distributed. Or implement a customer partitioner by implementing the [Partitioner](https://kafka.apache.org/24/javadoc/?org/apache/kafka/clients/producer/Partitioner.html) interface. 
 
 ## How to ensure efficient join between two topics?
 
-Need to use co-partitioning, which means having the same key in both topic, the same number of partitions and the same producer partitioner, which most likely should be the default one that uses the following formula: *partition = hash(key) % numPartitions*
+Need to use co-partitioning, which means having the same key in both topic, the same number of partitions and the same producer partitioner, which most likely should be the default one that uses the following formula: *partition = hash(key) % numPartitions*.
 
 ## What is transaction in Kafka?
 
-Producer can use transaction begin, commit and rollback API while publishing events to a multi partition topic. This is done by also setting a unique transactionId as part of its configuration.  Either all messages are successfully written or none of them are
+Producer can use transaction begin, commit and rollback API while publishing events to a multi partition topic. This is done by setting a unique transactionId as part of its configuration (with idempotence and min  inflight record set to 1).  Either all messages are successfully written or none of them are.
+
+There are some producer exception to consider to abort the transaction: any KafkaException for sure, but also OutOfSequenceTx which may happen when the PID is greater than the last one seen by the producer.
+
+See explanations [here](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/#how-to-support-exactly-once-delivery).
+
+And the [KIP 98](https://cwiki.apache.org/confluence/display/KAFKA/KIP-98+-+Exactly+Once+Delivery+and+Transactional+Messaging)
 
 ## What is the high watermark?
 
@@ -148,14 +160,13 @@ But there is also the `offsets.retention.minutes` property, set at the cluster l
 This is a requirement gathering related question, to understand what need to be done for configuration topic configuration but also consumer and producer configuration, as well as retention strategy.
 
 * Number of brokers in the cluster
-* fire or forget or persist data for which amount of time
-* Need for HA, set replicas to number of broker or at least the value of 3
-* Type of data to transport
-* Schema management to control change to the payload definition
-* volume per day
-* Accept snapshot
-* Need to do geo replication to other kafka cluster
-* Network filesystem used on the target kubernetes cluster and current storage class
+* retention time and size
+* Need for HA, set replicas to number of broker or at least the value of 3, with in-synch replica to 2
+* Type of data to transport to assess message size
+* Plan to use schema management to control change to the payload definition
+* volume per day with peak and average
+* Need to do geo replication to other Kafka cluster
+* Network filesystem used on the target Kubernetes cluster and current storage class
 
 ## What are the impacts of having not enough resource for Kafka?
 
@@ -163,8 +174,7 @@ The table in this [Event Streams product documentation](https://ibm.github.io/ev
 
 ## What should we do for queue full exception or timeout exception on producer?
 
-The brokers are running behind, so we need to add more brokers and redistribute partitions
-
+The brokers are running behind, so we need to add more brokers and redistribute partitions.
 
 ## How to send large messages?
 
@@ -179,12 +189,12 @@ For producer if you want to maximize throughput over low latency, set [batch.siz
 
 ## Why Kafka Stream applications may impact cluster performance?
 
-* They may use internal hidden topics to persist their states for Ktable
+* They may use internal hidden topics to persist their states for Ktable and GlobalKTable.
 * Process input and output topics
 
 ## How message schema version is propagated?
 
-The record includes a byte with the version number from the schema registry
+The record includes a byte with the version number from the schema registry.
 
 ## Consumers do not see message in topic, what happens?
 
