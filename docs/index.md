@@ -5,14 +5,19 @@ This repository regroups a set of personal studies and quick summaries on Kafka.
 
 ## Kafka local
 
-The docker compose in this repo, starts one zookeeper and one kafka broker locally using last Strimzi release, and one Apicurio for schema registry.
+The docker compose in this repo, starts one zookeeper and one Kafka broker locally using last Strimzi release, and one Apicurio for schema registry.
 
-In the docker compose I found the following issue with the listeners: if set with localhost, then the kafka broker is accessible from app outside of the docker network, so a quarkus app running with `quarkus:dev` will connect. But a container in the same network needs to access kafka node, so the listener needs to be  
+In the docker compose I found the following issue with the listeners: if set with localhost, then the kafka broker is accessible from app outside of the docker network, so a quarkus app running with `quarkus:dev` will connect. But a container in the same network needs to access kafka node, so the listener needs to declare two listeners
 
-```
- KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
- or
- KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+```yaml
+ ports:
+      - "29092:9092"
+ environment:
+    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+    KAFKA_LISTENERS: EXTERNAL://0.0.0.0:29092,PLAINTEXT://0.0.0.0:9092
+    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
 ```
 
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
