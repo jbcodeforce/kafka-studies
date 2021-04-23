@@ -1,29 +1,162 @@
 # Apache Kafka Studies
 
-This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated content is  defined in [the Kafka overview article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/).
+This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated contents are  defined in [the Kafka overview EDA article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/).
 
 
 ## Kafka local
 
-The docker compose in this repo, starts one zookeeper and one Kafka broker locally using last Strimzi release, and one Apicurio for schema registry.
+The docker compose in this repo, starts one zookeeper and one Kafka broker locally using last Strimzi release, one Apicurio for schema registry and Kafdrop for UI.
 
-In the docker compose I found the following issue with the listeners: if set with localhost, then the kafka broker is accessible from app outside of the docker network, so a quarkus app running with `quarkus:dev` will connect. But a container in the same network needs to access kafka node, so the listener needs to declare two listeners
+In the docker compose the Kafka defines two listeners, for internal communication using the DNS name `kafka` and port 29092 and one listener for external communication on port 9092.
 
-```yaml
- ports:
-      - "29092:9092"
- environment:
-    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
-    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
-    KAFKA_LISTENERS: EXTERNAL://0.0.0.0:29092,PLAINTEXT://0.0.0.0:9092
-    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-```
+![](./images/docker-kafka.png)
+
+A quarkus app, for example, running with `quarkus:dev` will connect to localhost:9092. But a container in the same network needs to access kafka node. 
 
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
 ```shell
-docker run -it --network=host edenhill/kafkacat -b kafka1:9092 -L
+docker run -it --network=host edenhill/kafkacat -b kafka:9092 -L
+```
+
+## Security summary
+
+For deep dive on security administration [see confluent article](https://docs.confluent.io/platform/current/security/general-overview.html) and [product documentation](http://kafka.apache.org/documentation/#security).
+
+The settings that are important:
+
+* [security.protocol](http://kafka.apache.org/documentation/#adminclientconfigs_security.protocol)
+See how the listeners are configured in Kafka. The valid values are:
+
+```
+PLAINTEXT (using PLAINTEXT transport layer & no authentication - default value).
+SSL (using SSL transport layer & certificate-based authentication)
+SASL_PLAINTEXT (using PLAINTEXT transport layer & SASL-based authentication)
+SASL_SSL (using SSL transport layer & SASL-based authentication)
+```
+In Strimzi the following yaml extract defines the listeners type and port: `tls` boolean is for the traffic encryptio, while `authentication.type` will define the matching security protocol.
+
+```yaml
+listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+        authentication:
+          type: tls
+      - name: external
+        type: route
+        port: 9094
+        tls: true 
+        authentication:
+          type: scram-sha-512
+```
+
+* `ssl.truststore.location` and `ssl.truststore.password`: when doing TLS encryption we need to provide our Kafka clients with the location of a trusted Certificate Authority-based certificate. This file is often provided by the Kafka administrator and is generally unique to the specific Kafka cluster deployment. The certificate in in JKS format for JVM languages and PEM/ P12 for nodejs or Python.
+
+To extract a PEM-based certificate from a JKS-based truststore, you can use the following command: `keytool -exportcert -keypass {truststore-password} -keystore {provided-kafka-truststore.jks} -rfc -file {desired-kafka-cert-output.pem}`
+
+* [sasl.mechanism](http://kafka.apache.org/documentation/#adminclientconfigs_sasl.mechanism) for authentication protocol used. Possible values are:
+
+```
+PLAIN (cleartext passwords, although they will be encrypted across the wire per security.protocol settings above)
+SCRAM-SHA-512 (modern Salted Challenge Response Authentication Mechanism)
+GSSAPI (Kerberos-supported authentication and the default if not specified otherwise)
+```
+
+* for java based app, the `sasl.jaas.config` strings are:
+
+```
+sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
+sasl.jaas.config = org.apache.kafka.common.security.scram.ScramLoginModule required username="{USERNAME}" password="{PASSWORD}";
+```
+
+For **external connection** to Strimzi cluster use the following, where USERNAME is a scram-user
+
+```sh
+bootstrap.servers={kafka-cluster-name}-kafka-bootstrap-{namespace}.{kubernetes-cluster-fully-qualified-domain-name}:443
+security.protocol=SASL_SSL
+sasl.mechanism=SCRAM-SHA-512
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="{USERNAME}" password="{PASSWORD}";
+ssl.truststore.location={/provided/to/you/by/the/kafka/administrator}
+ssl.truststore.password={__provided_to_you_by_the_kafka_administrator__}
+```
+
+To get the user password get the user secret:
+
+```shell
+oc get secret scram-user -o jsonpath='{.data.admin_password}' | base64 --decode && echo ""
+```
+
+To get the Bootstrap URL use: 
+
+```
+expost K_CLUSTER_NAME=mycluster
+export BOOTSTRAP="$(oc get route ${K_CLUSTER_NAME}-kafka-bootstrap -o jsonpath='{.spec.host}'):443"
+```
+
+The `sasl.jaas.config` can come from an environment variable inside of a secret, but in fact it is already defined in the scram user in Strimzi:
+
+```sh
+oc get secret my-user -o json | jq -r '.data["sasl.jaas.config"]' | base64 -d -
+```
+
+* For internal communication, with PLAIN the setting is
+
+```sh
+bootstrap.servers={kafka-cluster-name}-kafka-bootstrap.{namespace}.svc.cluster.local:9093
+security.protocol = SASL_PLAINTEXT (these clients do not require SSL-based encryption as they are local to the cluster)
+sasl.mechanism = PLAIN
+sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
+```
+
+* For internal authentication with mutual TLS the settings:
+
+```
+```
+
+Remember that if the application does not run in the same namespace as the kafka cluster then copy the secrets with something like
+
+```sh
+if [[ -z $(oc get secret ${TLS_USER} 2> /dev/null) ]]
+then
+   # As the project is personal to the user, we can keep a generic name for the secret
+   oc get secret ${TLS_USER} -n ${KAFKA_NS} -o json | jq -r '.metadata.name="tls-user"' | jq -r '.metadata.namespace="'${YOUR_PROJECT_NAME}'"' | oc apply -f -
+fi
+
+if [[ -z $(oc get secret ${SCRAM_USER} 2> /dev/null) ]]
+then
+    # As the project is personal to the user, we can keep a generic name for the secret
+    oc get secret ${SCRAM_USER} -n ${KAFKA_NS} -o json |  jq -r '.metadata.name="scram-user"' | jq -r '.metadata.namespace="'${YOUR_PROJECT_NAME}'"' | oc apply -f -
+fi
+```
+
+
+
+## Using Kafdrop
+
+For Kafdrop configuration see the kafka properties and `startKafDrop.sh` in scripts folder.
+
+To get the user password:
+
+```shell
+# Get certificate to put in truststore
+oc get secret kafka-cluster-ca-cert -o jsonpath='{.data.ca\.p12}' | base64 --decode >./certs/kafka.p12
+# Get certificate password
+oc get secret kafka-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 --decode 
+# Get user passwor from the jaas config
+oc get secret scram-user -o jsonpath='{.data.sasl\.jaas\.config}' | base64 --decode && echo
+```
+
+Those results are set in the properties:
+
+```properties
+ssl.truststore.password=
+username="scram-user" password="";
 ```
 
 ## Using Apicurio
