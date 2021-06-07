@@ -1,0 +1,1011 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.6">
+    
+    
+      
+        <title>Monitoring Mirror Maker and kafka connect cluster - Apache Kafka Studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.875de78c.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#monitoring-mirror-maker-and-kafka-connect-cluster" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Apache Kafka Studies" class="md-header__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Kafka Studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Monitoring Mirror Maker and kafka connect cluster
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/jbcodeforce/kafka-studies.git/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Apache Kafka Studies" class="md-nav__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Apache Kafka Studies
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jbcodeforce/kafka-studies.git/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/" class="md-nav__link">
+        Apache Kafka summary
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/" class="md-nav__link">
+        Producer Consumer practices
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strimzi/" class="md-nav__link">
+        Strimzi
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        Event Streams
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Event Streams" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Event Streams
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm.github.io/event-streams/about/overview/" class="md-nav__link">
+        Product documentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-messaging" class="md-nav__link">
+        Github ibm messaging
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-messaging/kafka-java-vertx-starter" class="md-nav__link">
+        Vertx kafka starter app
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-messaging/event-streams-samples" class="md-nav__link">
+        Event streams
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        Kafka streaming
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kafka streaming" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Kafka streaming
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/" class="md-nav__link">
+        EDA kstreams note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kstreams/" class="md-nav__link">
+        My notes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/kafka-streams-samples" class="md-nav__link">
+        My kstream samples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        Item aggregator
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      <label class="md-nav__link" for="__nav_7">
+        Kafka Connect
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kafka Connect" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Kafka Connect
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-connect" class="md-nav__link">
+        Summary
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/" class="md-nav__link">
+        MQ Labs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-rabbitmq/" class="md-nav__link">
+        RabbitMQ Lab
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab" class="md-nav__link">
+        Lab repo
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      <label class="md-nav__link" for="__nav_8">
+        End to end code
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="End to end code" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          End to end code
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-kc/" class="md-nav__link">
+        KC container
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        Item-Inventory integration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-cloud-architecture/refarch-eda-tools" class="md-nav__link">
+        Perf tool and schema registry lab
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      <label class="md-nav__link" for="__nav_9">
+        Reactive with kafka
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Reactive with kafka" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Reactive with kafka
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/" class="md-nav__link">
+        reactive messaging with microprofile
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        Kafka with Python
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      <label class="md-nav__link" for="__nav_11">
+        Mirror Maker 2.0
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Mirror Maker 2.0" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Mirror Maker 2.0
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/" class="md-nav__link">
+        EDA note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/kafka-mm2/" class="md-nav__link">
+        Labs
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/kp-data-replication/monitoring" class="md-nav__link">
+        Monitoring with Prometheus and Grafana
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        Kafka FAQ
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../todo/" class="md-nav__link">
+        To do
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation-and-configuration" class="md-nav__link">
+    Installation and configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation and configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-prometheus" class="md-nav__link">
+    Install Prometheus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-prometheus" class="md-nav__link">
+    Deploy prometheus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-grafana" class="md-nav__link">
+    Install Grafana
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-explorer" class="md-nav__link">
+    Kafka Explorer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mirror-maker-monitoring" class="md-nav__link">
+    Mirror maker monitoring
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-grafana-dashboard" class="md-nav__link">
+    Configure Grafana dashboard
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alert-manager" class="md-nav__link">
+    Alert Manager
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/jbcodeforce/kafka-studies.git/edit/master/docs/monitoring.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="monitoring-mirror-maker-and-kafka-connect-cluster">Monitoring Mirror Maker and kafka connect cluster</h1>
+<p>The goal of this note is to go over some of the details on how to monitor Mirror Maker 2.0 metrics to Prometheus and how to use Grafana dashboard.</p>
+<p><a href="https://prometheus.io/docs/introduction/overview/">Prometheus</a> is an open source systems monitoring and alerting toolkit that, with Kubernetes, is part of the Cloud Native Computing Foundation. It can monitor multiple workloads but is normally used with container workloads. </p>
+<p>Here is simple diagram to explain prometheus generic architecture from their main website:</p>
+<p><img alt="" src="https://prometheus.io/assets/architecture.png" /></p>
+<p>In the context of data replication between kafka cluster, what we want to monitor the mirror maker 2.0 metrics:</p>
+<p><img alt="" src="images/mm2-monitoring.png" /></p>
+<p>In order to run the example Grafana dashboards to monitor MM2, you must:</p>
+<ol>
+<li>Add metrics configuration to your Kafka cluster resources (Mirror Maker 2.0)</li>
+<li>Deploy Prometheus and optionally Prometheus Alertmanager</li>
+<li>Deploy Grafana</li>
+</ol>
+<p>For the interest of monitoring we can add Kafka Exporter to assess the consumer lag.</p>
+<h2 id="installation-and-configuration">Installation and configuration</h2>
+<p>Prometheus deployment inside Kubernetes uses operator as defined in <a href="https://github.com/coreos/prometheus-operator">the coreos github</a>. The CRDs define a set of resources. The ServiceMonitor, PodMonitor, PrometheusRule are used.</p>
+<p>Inside the <a href="https://github.com/strimzi/strimzi-kafka-operator">Strimzi github repository</a>, we can get a <a href="https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/prometheus-install/prometheus.yaml">prometheus.yml</a> file to deploy prometheus server. This configuration defines, ClusterRole, ServiceAccount, ClusterRoleBinding, and the Prometheus resource instance. 
+<em>For your own deployment you have to change the target namespace, and the rules</em></p>
+<p>You need to deploy Prometheus and all the other elements inside the same namespace or OpenShift project as the Kafka Cluster or the KafkaConnect Cluster.</p>
+<p>To be able to monitor your own Kafka cluster you need to enable Prometheus metrics. An example of Kafka cluster Strimzi based deployment can be found <a href="https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/kafka-metrics.yaml">here</a></p>
+<h3 id="install-prometheus">Install Prometheus</h3>
+<ul>
+<li>
+<p>After creating a namespace or reusing the Kafka cluster namespace, you need to deploy the Prometheus operator by first downloading the different configuration yaml files:</p>
+<div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-deployment.yaml <span class="p">|</span> sed -e <span class="s2">&quot;s/namespace: default/namespace: jb-kafka-strimzi/&quot;</span> &gt; prometheus-operator-deployment.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-cluster-role.yaml &gt; prometheus-operator-cluster-role.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-cluster-role-binding.yaml <span class="p">|</span> sed -e <span class="s2">&quot;s/namespace: default/namespace: jb-kafka-strimzi/&quot;</span> &gt; prometheus-operator-cluster-role-binding.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/coreos/prometheus-operator/master/example/rbac/prometheus-operator/prometheus-operator-service-account.yaml <span class="p">|</span> sed -e <span class="s2">&quot;s/namespace: default/namespace: jb-kafka-strimzi/&quot;</span> &gt; prometheus-operator-service-account.yaml
+</code></pre></div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note<p>The prometheus-operator-deployment.yaml define security context the operator pod will use. It is set as a non root user (unprivileged). If you need to change that, or reference an existing user modify the file.  </p>
+</p>
+</div>
+<ul>
+<li>
+<p>Deploy the operator, cluster role, binding and service account (see files under <code>monitoring</code> folder):</p>
+<div class="highlight"><pre><span></span><code>oc apply -f prometheus-operator-deployment.yaml
+oc apply -f prometheus-operator-cluster-role.yaml
+oc apply -f prometheus-operator-cluster-role-binding.yaml
+oc apply -f prometheus-operator-service-account.yaml
+</code></pre></div>
+</li>
+</ul>
+<p>When you apply those configuration, the following resources are managed by the Prometheus Operator:</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClusterRole</td>
+<td>To grant permissions to Prometheus to read the health endpoints exposed by the Kafka and ZooKeeper pods, cAdvisor and the kubelet for container metrics.</td>
+</tr>
+<tr>
+<td>ServiceAccount</td>
+<td>For the Prometheus pods to run under.</td>
+</tr>
+<tr>
+<td>ClusterRoleBinding</td>
+<td>To bind the ClusterRole to the ServiceAccount.</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>To manage the Prometheus Operator pod.</td>
+</tr>
+<tr>
+<td>ServiceMonitor</td>
+<td>To manage the configuration of the Prometheus pod.</td>
+</tr>
+<tr>
+<td>Prometheus</td>
+<td>To manage the configuration of the Prometheus pod.</td>
+</tr>
+<tr>
+<td>PrometheusRule</td>
+<td>To manage alerting rules for the Prometheus pod.</td>
+</tr>
+<tr>
+<td>Secret</td>
+<td>To manage additional Prometheus settings.</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>To allow applications running in the cluster to connect to Prometheus (for example, Grafana using Prometheus as datasource)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="deploy-prometheus">Deploy prometheus</h3>
+<div class="admonition note">
+<p class="admonition-title">Note<p>The following section is including the configuration of a Prometheus server monitoring a full Kafka Cluster. For Mirror Maker or Kafka Connect only the configuration will have less rules, and configuration. See <a href="#mirror-maker-monitoring">next section</a>.</p>
+</p>
+</div>
+<p>Deploy the prometheus server by first changing the namespace and also by adapting <a href="https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/metrics/prometheus-install/prometheus.yaml">the original file</a>.</p>
+<div class="highlight"><pre><span></span><code>curl -s  https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus.yaml <span class="p">|</span> sed -e <span class="s2">&quot;s/namespace: myproject/namespace: jb-kafka-strimzi/&quot;</span> &gt; prometheus.yml
+</code></pre></div>
+<p>If you are using AlertManager (see <a href="#alert-manager">section below</a>) Define the monitoring rules of the kafka run time: KafkaRunningOutOfSpace, UnderReplicatedPartitions, AbnormalControllerState, OfflinePartitions, UnderMinIsrPartitionCount, OfflineLogDirectoryCount, ScrapeProblem (Prometheus related alert), ClusterOperatorContainerDown, KafkaBrokerContainersDown, KafkaTlsSidecarContainersDown</p>
+<div class="highlight"><pre><span></span><code>curl -s 
+https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/prometheus-rules.yaml sed -e <span class="s2">&quot;s/namespace: default/namespace: jb-kafka-strimzi/&quot;</span> &gt; prometheus-rules.yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>oc apply -f prometheus-rules.yaml
+oc apply -f prometheus.yaml
+</code></pre></div>
+<p>The Prometheus server configuration uses service discovery to discover the pods in the cluster from which it gets metrics.</p>
+<h3 id="install-grafana">Install Grafana</h3>
+<p><a href="https://grafana.com/">Grafana</a> provides visualizations of Prometheus metrics. Again we will use the Strimzi dashboard definition as starting point to monitor Kafka cluster but also mirror maker.</p>
+<ul>
+<li>Deploy Grafan to OpenShift and expose it via a service:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc apply -f grafana.yaml
+</code></pre></div>
+<p>In case you want to test grafana locally run: <code>docker run -d -p 3000:3000 grafana/grafana</code></p>
+<h2 id="kafka-explorer">Kafka Explorer</h2>
+<h2 id="mirror-maker-monitoring">Mirror maker monitoring</h2>
+<h2 id="configure-grafana-dashboard">Configure Grafana dashboard</h2>
+<p>To access the Grafana portal you can use port forwarding like below or expose a route on top of the grafana service.</p>
+<ul>
+<li>Use port forwarding:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">PODNAME</span><span class="o">=</span><span class="k">$(</span>oc get pods -l <span class="nv">name</span><span class="o">=</span>grafana <span class="p">|</span> grep grafana <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span>
+kubectl port-forward <span class="nv">$PODNAME</span> <span class="m">3000</span>:3000
+</code></pre></div>
+<p>Point your browser to http://localhost:3000.</p>
+<ul>
+<li>Expose the route via cli</li>
+</ul>
+<p>Add the Prometheus data source with the URL of the exposed routes. http://prometheus-operated:9090</p>
+<h2 id="alert-manager">Alert Manager</h2>
+<p>As seen in previous section, when deploying prometheus we can set some alerting rules on elements of the Kafka cluster. Those rule examples are in the file <code>The prometheus-rules.yaml</code>. Those rules are used by the AlertManager component.</p>
+<p><a href="https://prometheus.io/docs/alerting/alertmanager/">Prometheus Alertmanager</a> is a plugin for handling alerts and routing them to a notification service, like Slack. The Prometheus server is a client to the Alert Manager.</p>
+<ul>
+<li>Download an example of alert manager configuration file</li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-install/alert-manager.yaml &gt; alert-manager.yaml
+</code></pre></div>
+<ul>
+<li>Define a configuration for the channel to use, by starting from the following template</li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl -s https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/master/examples/metrics/prometheus-alertmanager-config/alert-manager-config.yaml &gt; alert-manager-config.yaml
+</code></pre></div>
+<ul>
+<li>
+<p>Modify this file to reflect the remote access credential and URL to the channel server. </p>
+</li>
+<li>
+<p>Then deploy the secret that matches your config file .</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc create secret generic alertmanager-alertmanager --from-file<span class="o">=</span>alertmanager.yaml<span class="o">=</span>alert-manager-config.yaml
+</code></pre></div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.34eae1b6.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1143 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.6">
+    
+    
+      
+        <title>Strimzi - Apache Kafka Studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.875de78c.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#strimziio" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Apache Kafka Studies" class="md-header__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Kafka Studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Strimzi
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/jbcodeforce/kafka-studies.git/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Apache Kafka Studies" class="md-nav__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Apache Kafka Studies
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/jbcodeforce/kafka-studies.git/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/" class="md-nav__link">
+        Apache Kafka summary
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/" class="md-nav__link">
+        Producer Consumer practices
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Strimzi
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Strimzi
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#concept-summary" class="md-nav__link">
+    Concept summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-on-openshift" class="md-nav__link">
+    Installation on OpenShift
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validate-cluster-is-running" class="md-nav__link">
+    Validate cluster is running
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-topic" class="md-nav__link">
+    Defining topic
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-users" class="md-nav__link">
+    Defining Users
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connect-client-apps" class="md-nav__link">
+    Connect client apps
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        Event Streams
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Event Streams" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Event Streams
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm.github.io/event-streams/about/overview/" class="md-nav__link">
+        Product documentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-messaging" class="md-nav__link">
+        Github ibm messaging
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-messaging/kafka-java-vertx-starter" class="md-nav__link">
+        Vertx kafka starter app
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-messaging/event-streams-samples" class="md-nav__link">
+        Event streams
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      <label class="md-nav__link" for="__nav_6">
+        Kafka streaming
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kafka streaming" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Kafka streaming
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/" class="md-nav__link">
+        EDA kstreams note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kstreams/" class="md-nav__link">
+        My notes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/kafka-streams-samples" class="md-nav__link">
+        My kstream samples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        Item aggregator
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      <label class="md-nav__link" for="__nav_7">
+        Kafka Connect
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Kafka Connect" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Kafka Connect
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-connect" class="md-nav__link">
+        Summary
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/" class="md-nav__link">
+        MQ Labs
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-rabbitmq/" class="md-nav__link">
+        RabbitMQ Lab
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab" class="md-nav__link">
+        Lab repo
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      <label class="md-nav__link" for="__nav_8">
+        End to end code
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="End to end code" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          End to end code
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-kc/" class="md-nav__link">
+        KC container
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        Item-Inventory integration
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-cloud-architecture/refarch-eda-tools" class="md-nav__link">
+        Perf tool and schema registry lab
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      <label class="md-nav__link" for="__nav_9">
+        Reactive with kafka
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Reactive with kafka" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Reactive with kafka
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/" class="md-nav__link">
+        reactive messaging with microprofile
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        Kafka with Python
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      <label class="md-nav__link" for="__nav_11">
+        Mirror Maker 2.0
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Mirror Maker 2.0" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Mirror Maker 2.0
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/" class="md-nav__link">
+        EDA note
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/kafka-mm2/" class="md-nav__link">
+        Labs
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/kp-data-replication/monitoring" class="md-nav__link">
+        Monitoring with Prometheus and Grafana
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        Kafka FAQ
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../todo/" class="md-nav__link">
+        To do
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#concept-summary" class="md-nav__link">
+    Concept summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-on-openshift" class="md-nav__link">
+    Installation on OpenShift
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validate-cluster-is-running" class="md-nav__link">
+    Validate cluster is running
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-topic" class="md-nav__link">
+    Defining topic
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-users" class="md-nav__link">
+    Defining Users
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connect-client-apps" class="md-nav__link">
+    Connect client apps
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/jbcodeforce/kafka-studies.git/edit/master/docs/strimzi.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="strimziio">Strimzi.io</h1>
+<p><a href="https://strimzi.io/">Strimzi</a> uses the Cluster Operator to deploy and manage Kafka (including Zookeeper) and Kafka Connect clusters. When the Strimzi Cluster Operator is up and runnning, it starts to watch for certain OpenShift or Kubernetes resources containing the desired Kafka and/or Kafka Connect cluster configuration. </p>
+<p><img alt="Strimzi" src="images/strimzi.png" /></p>
+<p><a href="https://strimzi.io/">strimzi.io/</a> offers the following capabilities:</p>
+<ul>
+<li>Deploy Kafka OOS on any OpenShift or k8s platform</li>
+<li>Support TLS and SCRAM-SHA authentication, and automated certificate management</li>
+<li>Operators for cluster, user and topic</li>
+<li>Manage kafka using gitops: See <a href="https://github.com/ibm-cloud-architecture/vaccine-gitops/tree/main/environments/strimzi">vaccine-gitops environment/strimzi folder</a></li>
+</ul>
+<h2 id="concept-summary">Concept summary</h2>
+<p>The Cluster Operator is a pod used to deploys and manages Apache Kafka clusters, Kafka Connect, Kafka MirrorMaker (1 and 2), Kafka Bridge, Kafka Exporter, and the Entity Operator. When deployed the following commands goes to the Cluster operator:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get the current cluster list</span>
+oc get kafka
+<span class="c1"># get the list of topic</span>
+oc get kafkatopics
+</code></pre></div>
+<h2 id="installation-on-openshift">Installation on OpenShift</h2>
+<p>The Strimzi operator deployment is done in two phases:</p>
+<ul>
+<li>Deploy the Custom Resource Definitions (CRDs), which act as specifications of the custom resources to deploy.</li>
+<li>
+<p>Deploy one to many instances of those CRDs</p>
+</li>
+<li>
+<p>Download release artifacts https://github.com/strimzi/strimzi-kafka-operator/releases. 
+Each CRD has a common configuration like bootstrap servers, CPU resources, logging, health checks...</p>
+</li>
+<li>Create a project: <code>oc new-project eda-strimzi-21</code></li>
+<li>Strimzi provides two cluster roles: <code>strimzi-view</code> and <code>strimzi-admin</code>. So to get non k8s admin user to define strimzi resource do the following: <code>oc apply -f install/strimzi-admin/</code></li>
+<li>Deploy the cluster operator (to watch a single namespace but it could be multiple ns). For that we need to use the namespace the Cluster Operator is going to be installed into:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sed -i <span class="s1">&#39;&#39;</span> <span class="s1">&#39;s/namespace: .*/namespace: eda-strimzi-21/&#39;</span> install/cluster-operator/*RoleBinding*.yaml
+<span class="c1"># then deploy the operator</span>
+oc apply -f install/cluster-operator -n eda-strimzi-21
+<span class="c1"># verify deployment and pod</span>
+oc get depoyments
+<span class="c1"># NAME    READY UP-TO-DATE   AVAILABLE   AGE</span>
+<span class="c1"># strimzi-cluster-operator   1/1       1            1           116s</span>
+oc get pods
+<span class="c1"># NAME                                        READY     STATUS    RESTARTS   AGE</span>
+<span class="c1"># strimzi-cluster-operator-6cb7c6c99c-9cbch   1/1       Running   0          2m3s</span>
+</code></pre></div>
+<p>As an alternate the Strimzi git has a command that can be run with the namespace as argument</p>
+<div class="highlight"><pre><span></span><code>oc apply -f <span class="s1">&#39;https://strimzi.io/install/latest?namespace=eda-strimzi-21&#39;</span> -n eda-strimzi-21
+</code></pre></div>
+<p>The commands above, should create the following service account, resource definitions, roles, and role bindings:</p>
+<table>
+<thead>
+<tr>
+<th>Names</th>
+<th align="center">Resource</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>strimzi-cluster-operator</td>
+<td align="center">A <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">service account</a> provides an identity for processes that run in a Pod.</td>
+<td>oc get sa -l app=strimzi</td>
+</tr>
+<tr>
+<td>strimzi-cluster-operator-global, strimzi-cluster-operator-namespaced, strimzi-entity-operator, strimzi-kafka-broker, strimzi-topic-operator</td>
+<td align="center">Cluster Roles</td>
+<td>oc get clusterrole</td>
+</tr>
+<tr>
+<td>strimzi-cluster-operator-entity-operator-delegation, strimzi-cluster-operator, strimzi-cluster-operator-topic-operator-delegation</td>
+<td align="center">Role binding</td>
+<td>oc get rolebinding</td>
+</tr>
+<tr>
+<td>strimzi-cluster-operator, strimzi-cluster-operator-kafka-broker-delegation</td>
+<td align="center">Cluster Role Binding</td>
+<td>oc get clusterrolebinding -l app=strimzi</td>
+</tr>
+<tr>
+<td>kafkabridges, kafkaconnectors, kafkaconnects, kafkamirrormaker2s kafka, kafkatopics, kafkausers</td>
+<td align="center">Custom Resource Definitions</td>
+<td>oc get customresourcedefinition</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All those resources are labelled with <code>strimzi</code> name.</p>
+</div>
+<div class="admonition error">
+<p class="admonition-title">Error<p>In case of the installatiob fails with error like: " kafka.kafka.strimzi.io is forbidden: User "system:serviceaccount:eda-strimzi-21 :strimzi-cluster-operator" cannot watch resource "kafkas" in API group "kafka.strimzi.io" in the namespace "eda-strimzi-21 ", you need to add cluster role to the strimzi operator user by doing the following commands:</p>
+</p>
+</div>
+<div class="highlight"><pre><span></span><code>oc adm policy add-cluster-role-to-user strimzi-cluster-operator-namespaced --serviceaccount strimzi-cluster-operator -n eda-strimzi-21
+oc adm policy add-cluster-role-to-user strimzi-entity-operator --serviceaccount strimzi-cluster-operator -n eda-strimzi-21
+</code></pre></div>
+<ul>
+<li>Deploy Kafka Cluster using persistence or ephemeral. For dev purpose we can use ephemeral. Modify the name of the cluster in the <code>example/kafka</code> yaml file for the expected config then do one of the <code>oc apply -f examples/kafka/kafka-ephemeral.yaml</code>. The zookeeper and kafka pods should run. 
+Again as an alternate we can directly reference the github yaml file:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc apply -f https://strimzi.io/examples/latest/kafka/kafka-persistent.yaml -n eda-strimzi-21 
+</code></pre></div>
+<ul>
+<li>Deploy Topic Operator, only if you want it to manage multiple cluster. If not then we need to add the configuration of the operator inside the Kafka Cluster yaml definition using <a href="https://strimzi.io/docs/operators/latest/using.html#type-EntityTopicOperatorSpec-reference">the EntityTopicOperatorSpec schema</a>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">entityOperator</span><span class="p">:</span>
+  <span class="c1"># ...</span>
+  <span class="nt">topicOperator</span><span class="p">:</span>
+    <span class="nt">watchedNamespace</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">eda-strimzi-21</span>
+    <span class="nt">reconciliationIntervalSeconds</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">60</span>
+</code></pre></div>
+<ul>
+<li>Deploy user operator, same logic as above, apply. A standalone deployment means the Topic Operator and User Operator can operate with a Kafka cluster that is not managed by Strimzi.</li>
+</ul>
+<h2 id="validate-cluster-is-running">Validate cluster is running</h2>
+<ul>
+<li>Send message</li>
+</ul>
+<div class="highlight"><pre><span></span><code>kubectl run kafka-producer -ti --image<span class="o">=</span>quay.io/strimzi/kafka:0.21.1-kafka-2.7.0 --rm<span class="o">=</span><span class="nb">true</span> --restart<span class="o">=</span>Never -- bin/kafka-console-producer.sh --broker-list eda-strimzi-kafka-bootstrap:9092 --topic <span class="nb">test</span>
+</code></pre></div>
+<ul>
+<li>Consumer message</li>
+</ul>
+<div class="highlight"><pre><span></span><code> kubectl run kafka-consumer -ti --image<span class="o">=</span>quay.io/strimzi/kafka:0.21.1-kafka-2.7.0 --rm<span class="o">=</span><span class="nb">true</span> --restart<span class="o">=</span>Never -- bin/kafka-console-consumer.sh --bootstrap-server eda-strimzi-kafka-bootstrap:9092 --topic <span class="nb">test</span> --from-beginning
+</code></pre></div>
+<h2 id="defining-topic">Defining topic</h2>
+<div class="highlight"><pre><span></span><code>oc apply -f - <span class="s">&lt;&lt;EOF</span>
+<span class="s">apiVersion: kafka.strimzi.io/v1beta1</span>
+<span class="s">kind: KafkaTopic</span>
+<span class="s">metadata:</span>
+<span class="s">  name: transportation</span>
+<span class="s">  labels:</span>
+<span class="s">    strimzi.io/cluster: eda-strimzi</span>
+<span class="s">spec:</span>
+<span class="s">  partitions: 1</span>
+<span class="s">  replicas: 1</span>
+<span class="s">  config:</span>
+<span class="s">    retention.ms: 7200000</span>
+<span class="s">    segment.bytes: 1073741824</span>
+
+<span class="s">EOF</span>
+</code></pre></div>
+<h2 id="defining-users">Defining Users</h2>
+<p>Define a KafkaUser using yaml and then apply within the same namespace:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">kafka.strimzi.io/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">KafkaUser</span>
+<span class="nt">metadata</span><span class="p">:</span>
+  <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tls-user</span>
+  <span class="nt">labels</span><span class="p">:</span>
+    <span class="nt">strimzi.io/cluster</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">vaccine-kafka</span>
+<span class="nt">spec</span><span class="p">:</span>
+  <span class="nt">authentication</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tls</span>
+  <span class="nt">authorization</span><span class="p">:</span>
+    <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">simple</span>
+    <span class="nt">acls</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+        <span class="nt">resource</span><span class="p">:</span>
+          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">topic</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+          <span class="nt">patternType</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">literal</span>
+        <span class="nt">operation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Write</span>
+      <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+        <span class="nt">resource</span><span class="p">:</span>
+          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">topic</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+          <span class="nt">patternType</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">literal</span>
+        <span class="nt">operation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Read</span>
+      <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+        <span class="nt">resource</span><span class="p">:</span>
+          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">topic</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+          <span class="nt">patternType</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">literal</span>
+        <span class="nt">operation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Create</span>
+      <span class="p p-Indicator">-</span> <span class="nt">host</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+        <span class="nt">resource</span><span class="p">:</span>
+          <span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">group</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="s">&#39;*&#39;</span>
+          <span class="nt">patternType</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">literal</span>
+        <span class="nt">operation</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Read</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>oc get kafkausers
+</code></pre></div>
+<h2 id="connect-client-apps">Connect client apps</h2>
+<p>When defining the security control we want to set to access to the cluster we need to address the following questions:</p>
+<ul>
+<li>
+<p>Do we need applications running outside of kubernetes to access Kafka, and do we need to load balance the TCP traffic?</p>
+<ul>
+<li>For that we can use the HAProxy from Openshift via <code>Routes</code>. (Add the <code>external.type = route</code> stanza in the yaml file)</li>
+<li>Load balancer</li>
+<li>ingress with NGINX controller for kubernetes </li>
+</ul>
+</li>
+<li>
+<p>What authentication to use: TLS or SCRAM-SHA-512?</p>
+</li>
+<li>Integrate with OAuth2.0 for authentication and authorization using Open Policy agent</li>
+<li>Install your own certificates</li>
+</ul>
+<p>The authentications used for user and Kafka need to match. Certificates are available in PKCS #12 format (.p12) and PEM (.crt) formats.</p>
+<p>The internal URL name for the bootstrap can be found with: ``</p>
+<p>For external access we need:</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href=".." class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Introduction
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../kstreams/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              My notes
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.34eae1b6.min.js"></script>
+      
+    
+  </body>
+</html>
