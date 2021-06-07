@@ -1,0 +1,45 @@
+site_name: Apache Kafka Studies
+repo_url: https://github.com/jbcodeforce/kafka-studies.git
+nav:
+  - Introduction: index.md
+  - Apache Kafka summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/
+  - Producer Consumer practices: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/
+  - Strimzi: strimzi.md
+  - Event Streams:
+    - Product documentation: https://ibm.github.io/event-streams/about/overview/
+    - Github ibm messaging: https://github.com/ibm-messaging
+    - Vertx kafka starter app: https://github.com/ibm-messaging/kafka-java-vertx-starter
+    - Event streams: https://github.com/ibm-messaging/event-streams-samples
+  - Kafka streaming:
+    - EDA kstreams note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/
+    - My notes: kstreams.md
+    - My kstream samples: https://github.com/jbcodeforce/kafka-streams-samples
+    - Item aggregator: https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator
+  - Kafka Connect: 
+    - Summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-connect
+    - MQ Labs: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/
+    - RabbitMQ Lab: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-rabbitmq/
+    - Lab repo: https://github.com/jbcodeforce/eda-kconnect-lab
+  - End to end code:
+      - KC container: https://ibm-cloud-architecture.github.io/refarch-kc/
+      - Item-Inventory integration: https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator
+      - Perf tool and schema registry lab: https://github.com/ibm-cloud-architecture/refarch-eda-tools
+  - Reactive with kafka:
+    - reactive messaging with microprofile: https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/
+  - Kafka with Python: python.md
+  - Mirror Maker 2.0: 
+    - EDA note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/
+    - Labs: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/kafka-mm2/
+  - Monitoring with Prometheus and Grafana: https://jbcodeforce.github.io/kp-data-replication/monitoring
+  - Kafka FAQ: FAQ.md
+  - To do: todo.md
+
+theme: 
+  name: material
+extra_css: ["extra.css"]
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - pymdownx.smartsymbols
+  - pymdownx.superfences

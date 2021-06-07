@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: hello-knative
+  namespace: browncompute
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            image: docker.io/ibmcom/kn-helloworld
+            env:
+            - name: TARGET
+              value: "Go jerome go!"
