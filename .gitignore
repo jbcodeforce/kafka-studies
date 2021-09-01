@@ -10,3 +10,4 @@ data/
 **/certs/*.*
 frequent-flyer-notification-engine/target/
 
+.DS_Store

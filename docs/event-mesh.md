@@ -1,6 +1,6 @@
 # Event Mesh
 
-Ennterprises need to reliably deliver a high volume of events across global networks, traversing hybrid clouds 
+Enterprises need to reliably deliver a high volume of events across global networks, traversing hybrid clouds 
 and on-premise applications while avoiding bottlenecks. 
 
 The event mesh is dynamic infrastructure that propagates events across disparate cloud platforms and performs protocol
