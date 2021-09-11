@@ -2,13 +2,13 @@
 
 [Strimzi](https://strimzi.io/) uses the Cluster Operator to deploy and manage Kafka (including Zookeeper) and Kafka Connect clusters. When the Strimzi Cluster Operator is up and runnning, it starts to watch for certain OpenShift or Kubernetes resources containing the desired Kafka and/or Kafka Connect cluster configuration. 
 
-![Strimzi](images/strimzi.png)
+![Strimzi](./images/strimzi.png)
 
 [strimzi.io/](https://strimzi.io/) offers the following capabilities:
 
 * Deploy Kafka OOS on any OpenShift or k8s platform
 * Support TLS and SCRAM-SHA authentication, and automated certificate management
-* Operators for cluster, user and topic
+* Operators for cluster, users and topics
 * Manage kafka using gitops: See [vaccine-gitops environment/strimzi folder](https://github.com/ibm-cloud-architecture/vaccine-gitops/tree/main/environments/strimzi)
 
 ## Concept summary
@@ -40,7 +40,7 @@ Each CRD has a common configuration like bootstrap servers, CPU resources, loggi
  # then deploy the operator
  oc apply -f install/cluster-operator -n eda-strimzi-21
  # verify deployment and pod
- oc get depoyments
+ oc get deployments
  # NAME    READY UP-TO-DATE   AVAILABLE   AGE
  # strimzi-cluster-operator   1/1       1            1           116s
  oc get pods
@@ -68,7 +68,7 @@ The commands above, should create the following service account, resource defini
       All those resources are labelled with `strimzi` name.
 
 !!! Error
-        In case of the installatiob fails with error like: " kafka.kafka.strimzi.io is forbidden: User "system:serviceaccount:eda-strimzi-21 :strimzi-cluster-operator" cannot watch resource "kafkas" in API group "kafka.strimzi.io" in the namespace "eda-strimzi-21 ", you need to add cluster role to the strimzi operator user by doing the following commands:
+        In case of the installation fails with error like: " kafka.kafka.strimzi.io is forbidden: User "system:serviceaccount:eda-strimzi-21 :strimzi-cluster-operator" cannot watch resource "kafkas" in API group "kafka.strimzi.io" in the namespace "eda-strimzi-21 ", you need to add cluster role to the strimzi operator user by doing the following commands:
   ```shell
   oc adm policy add-cluster-role-to-user strimzi-cluster-operator-namespaced --serviceaccount strimzi-cluster-operator -n eda-strimzi-21
   oc adm policy add-cluster-role-to-user strimzi-entity-operator --serviceaccount strimzi-cluster-operator -n eda-strimzi-21
@@ -173,6 +173,7 @@ spec:
 ```
 oc get kafkausers
 ```
+
 ## Connect client apps
 
 When defining the security control we want to set to access to the cluster we need to address the following questions:
