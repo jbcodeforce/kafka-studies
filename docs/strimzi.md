@@ -24,34 +24,28 @@ oc get kafkatopics
 
 ## Installation on OpenShift
 
-The Strimzi operator deployment is done in two phases:
+The Strimzi operators deployment is done in two phases:
 
-* Deploy the Custom Resource Definitions (CRDs), which act as specifications of the custom resources to deploy.
-* Deploy one to many instances of those CRDs
+* Deploy the main operator via Subscription
+* Deploy one to many instances of the Strimzi CRDs: cluster, users, topics...
 
-* Download release artifacts https://github.com/strimzi/strimzi-kafka-operator/releases. 
-Each CRD has a common configuration like bootstrap servers, CPU resources, logging, health checks...
-* Create a project: `oc new-project eda-strimzi-21`
-* Strimzi provides two cluster roles: `strimzi-view` and `strimzi-admin`. So to get non k8s admin user to define strimzi resource do the following: `oc apply -f install/strimzi-admin/`
-* Deploy the cluster operator (to watch a single namespace but it could be multiple ns). For that we need to use the namespace the Cluster Operator is going to be installed into:
-
- ```shell
- sed -i '' 's/namespace: .*/namespace: eda-strimzi-21/' install/cluster-operator/*RoleBinding*.yaml
- # then deploy the operator
- oc apply -f install/cluster-operator -n eda-strimzi-21
- # verify deployment and pod
- oc get deployments
- # NAME    READY UP-TO-DATE   AVAILABLE   AGE
- # strimzi-cluster-operator   1/1       1            1           116s
- oc get pods
- # NAME                                        READY     STATUS    RESTARTS   AGE
- # strimzi-cluster-operator-6cb7c6c99c-9cbch   1/1       Running   0          2m3s
- ```
-
-As an alternate the Strimzi git has a command that can be run with the namespace as argument
+For that we have define subscription and configuration in [this eda-gitops-catalog repo](https://github.com/ibm-cloud-architecture/eda-gitops-catalog). 
+So below are the operations to perform:
 
 ```shell
-oc apply -f 'https://strimzi.io/install/latest?namespace=eda-strimzi-21' -n eda-strimzi-21
+ # clone 
+ git clone https://github.com/ibm-cloud-architecture/eda-gitops-catalog.git
+ # Define subscription
+ oc apply -k kafka-strimzi/operator/overlays/stable/
+ # The subscription creates an operator pod under the openshift-operators project
+ oc get pods -n openshift-operators
+ # Create a project e.g. strimzi
+ oc new-project strimzi
+ # deploy a simple kafka cluster with 3 brokers
+ oc apply -k  kafka-strimzi/instance/
+ # Verify installation
+ oc get pods
+ # should get kafka, zookeeper and the entity operator running.
 ```
 
 The commands above, should create the following service account, resource definitions, roles, and role bindings:
@@ -64,9 +58,6 @@ The commands above, should create the following service account, resource defini
 | strimzi-cluster-operator, strimzi-cluster-operator-kafka-broker-delegation | Cluster Role Binding | oc get clusterrolebinding -l app=strimzi |
 | kafkabridges, kafkaconnectors, kafkaconnects, kafkamirrormaker2s kafka, kafkatopics, kafkausers | Custom Resource Definitions | oc get customresourcedefinition |
 
-!!! Note
-      All those resources are labelled with `strimzi` name.
-
 !!! Error
         In case of the installation fails with error like: " kafka.kafka.strimzi.io is forbidden: User "system:serviceaccount:eda-strimzi-21 :strimzi-cluster-operator" cannot watch resource "kafkas" in API group "kafka.strimzi.io" in the namespace "eda-strimzi-21 ", you need to add cluster role to the strimzi operator user by doing the following commands:
   ```shell
@@ -74,12 +65,6 @@ The commands above, should create the following service account, resource defini
   oc adm policy add-cluster-role-to-user strimzi-entity-operator --serviceaccount strimzi-cluster-operator -n eda-strimzi-21
   ```
 
-* Deploy Kafka Cluster using persistence or ephemeral. For dev purpose we can use ephemeral. Modify the name of the cluster in the `example/kafka` yaml file for the expected config then do one of the `oc apply -f examples/kafka/kafka-ephemeral.yaml`. The zookeeper and kafka pods should run. 
-Again as an alternate we can directly reference the github yaml file:
-
-  ```shell
-  oc apply -f https://strimzi.io/examples/latest/kafka/kafka-persistent.yaml -n eda-strimzi-21 
-  ```
 
 * Deploy Topic Operator, only if you want it to manage multiple cluster. If not then we need to add the configuration of the operator inside the Kafka Cluster yaml definition using [the EntityTopicOperatorSpec schema](https://strimzi.io/docs/operators/latest/using.html#type-EntityTopicOperatorSpec-reference):
 

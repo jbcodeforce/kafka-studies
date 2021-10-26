@@ -4,7 +4,7 @@ Moved to [eda faq](https://ibm-cloud-architecture.github.io/refarch-eda/technolo
 
 ## How internal and external listerner work
 
-See [this article](https://rmoff.net/2018/08/02/kafka-listeners-explained/) to understand thee listener configuration. Here is a config to be used in docker container:
+See [this article](https://rmoff.net/2018/08/02/kafka-listeners-explained/) to understand the listener configuration. Here is a config to be used in docker container:
 
 ```
  KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
