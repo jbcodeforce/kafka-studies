@@ -161,7 +161,7 @@ oc get kafkausers
 
 ## Connect client apps
 
-When defining the security control we want to set to access to the cluster we need to address the following questions:
+When defining the security control, we need to address the following questions:
 
 * Do we need applications running outside of kubernetes to access Kafka, and do we need to load balance the TCP traffic?
 
@@ -173,10 +173,11 @@ When defining the security control we want to set to access to the cluster we ne
 * Integrate with OAuth2.0 for authentication and authorization using Open Policy agent
 * Install your own certificates
 
-The authentications used for user and Kafka need to match. Certificates are available in PKCS #12 format (.p12) and PEM (.crt) formats.
+The authentications used for user and Kafka need to match. 
+Certificates are available in PKCS #12 format (.p12) and PEM (.crt) formats.
 
 The internal URL name for the bootstrap can be found with: ``
 
-For external access we need:
+For external access we need
 
 

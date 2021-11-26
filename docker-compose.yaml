@@ -2,11 +2,11 @@ version: '2'
 services:
   apicurio:
     container_name: apicurio
-    image: apicurio/apicurio-registry-mem
+    image: apicurio/apicurio-registry-mem:latest-release
     ports:
       - 8090:8080
   zookeeper:
-    image: quay.io/strimzi/kafka:latest-kafka-2.8.0
+    image: quay.io/strimzi/kafka:latest-kafka-2.8.1
     container_name: zookeeper
     command: [
       "sh", "-c",
@@ -18,7 +18,7 @@ services:
       LOG_DIR: /tmp/logs
 
   kafka:
-    image: quay.io/strimzi/kafka:latest-kafka-2.8.0
+    image: quay.io/strimzi/kafka:latest-kafka-2.8.1
     container_name: kafka
     command: [
       "sh", "-c",

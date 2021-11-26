@@ -3,7 +3,8 @@ repo_url: https://github.com/jbcodeforce/kafka-studies.git
 nav:
   - Introduction: index.md
   - Apache Kafka summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/
-  - Producer Consumer practices: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/
+  - Producer practices: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers/
+  - Consumer practices: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-consumers/
   - Event Mesh: event-mesh.md
   - Strimzi: strimzi.md
   - Event Streams:
@@ -11,6 +12,7 @@ nav:
     - Github ibm messaging: https://github.com/ibm-messaging
     - Vertx kafka starter app: https://github.com/ibm-messaging/kafka-java-vertx-starter
     - Event streams: https://github.com/ibm-messaging/event-streams-samples
+  - Quickstarts:  https://github.com/ibm-cloud-architecture/eda-quickstarts
   - Kafka streaming:
     - EDA kstreams note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/
     - My notes: kstreams.md
@@ -23,7 +25,7 @@ nav:
     - Lab repo: https://github.com/jbcodeforce/eda-kconnect-lab
   - End to end code:
       - KC container: https://ibm-cloud-architecture.github.io/refarch-kc/
-      - Item-Inventory integration: https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator
+      - Item aggregator integration: https://github.com/jbcodeforce/refarch-eda-item-inventory
       - Perf tool and schema registry lab: https://github.com/ibm-cloud-architecture/refarch-eda-tools
   - Reactive with kafka:
     - reactive messaging with microprofile: https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/

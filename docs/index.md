@@ -1,13 +1,11 @@
 # Apache Kafka Studies
 
-This repository regroups a set of personal studies and quick summaries on Kafka. 
+This repository regroups a set of personal studies and quick summaries around Kafka and anything related. 
 Most of the curated contents are  defined in [the Kafka overview EDA article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), 
-and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/)
+and [the producer](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers/) and [consumers](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-consumers/)
 but I want to reference all the good content I read from different studies. This is to build a body of knowledge.
 
-
-
-## IBM content
+## IBM kafka or Event Streams content
 
 * Developer ibm community: search kafka or event streams in [developer.ibm.com/](https://developer.ibm.com/)
 * [Tutorial: User authentication and authorization in Apache Kafka](https://developer.ibm.com/tutorials/kafka-authn-authz/)
@@ -17,13 +15,15 @@ but I want to reference all the good content I read from different studies. This
 
 ## Running Kafka local
 
-The docker compose in this repo, starts one zookeeper and one Kafka broker locally using last Strimzi release,  Apicurio for schema registry and Kafdrop for UI.
+The docker compose in this repo, starts one zookeeper and one Kafka broker locally using lastest Strimzi release,  
+Apicurio for schema registry and Kafdrop for UI.
 
 In the docker compose the Kafka defines two listeners, for internal communication using the DNS name `kafka` and port 29092 and one listener for external communication on port 9092.
 
 ![](./images/docker-kafka.png)
 
-A Quarkus app, for example, running with `quarkus:dev` will connect to localhost:9092. But a container in the same network needs to access kafka node. 
+A Quarkus app, for example, running with `quarkus dev` will connect to localhost:9092. 
+But a container in the same network needs to access the `kafka` node via DNS name. 
 
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
@@ -41,9 +41,9 @@ Review [this video to refresh SSL and TLS certificates](https://www.youtube.com/
 ![](./images/tls-overview.png)
 
 For deep dive on security administration [see confluent article](https://docs.confluent.io/platform/current/security/general-overview.html) and [product documentation](http://kafka.apache.org/documentation/#security)
-and Rick's blogs [Part 1](https://rosowski.medium.com/kafka-security-fundamentals-the-rosetta-stone-to-your-event-streaming-infrastructure-518f49640db4) and [Part 2](https://rosowski.medium.com/kafka-security-fundamentals-adding-tls-to-your-event-driven-utility-belt-432307f4ff62)
+and Rick Osowski's blogs [Part 1](https://rosowski.medium.com/kafka-security-fundamentals-the-rosetta-stone-to-your-event-streaming-infrastructure-518f49640db4) and [Part 2](https://rosowski.medium.com/kafka-security-fundamentals-adding-tls-to-your-event-driven-utility-belt-432307f4ff62)
 
-The Kafka client settings that are important:
+Here are the important Kafka client settings:
 
 * [security.protocol](http://kafka.apache.org/documentation/#adminclientconfigs_security.protocol)
 For that verify how the listeners are configured in Kafka. The valid values are:
@@ -55,26 +55,28 @@ SASL_PLAINTEXT (using PLAINTEXT transport layer & SASL-based authentication)
 SASL_SSL (using SSL transport layer & SASL-based authentication)
 ```
 
-In Strimzi the following yaml extract defines the listeners type and port: `tls` boolean is for the traffic encryption, while `authentication.type` will define the matching security protocol.
+In Strimzi the following yaml defines the listeners type and port: 
+`tls` boolean is for the traffic encryption, while `authentication.type` will define 
+the matching security protocol.
 
 ```yaml
 listeners:
-      - name: plain
-        port: 9092
-        type: internal
-        tls: false
-      - name: tls
-        port: 9093
-        type: internal
-        tls: true
-        authentication:
-          type: tls
-      - name: external
-        type: route
-        port: 9094
-        tls: true 
-        authentication:
-          type: scram-sha-512
+    - name: plain
+      port: 9092
+      type: internal
+      tls: false
+    - name: tls
+      port: 9093
+      type: internal
+      tls: true
+      authentication:
+        type: tls
+    - name: external
+      type: route
+      port: 9094
+      tls: true 
+      authentication:
+        type: scram-sha-512
 ```
 
 9093 is a mutual TLS authentication with TLS encrypted communication, while 9094 is using scram authentication and TLS encrypted communication
@@ -82,7 +84,7 @@ listeners:
 * `ssl.truststore.location` and `ssl.truststore.password`: when doing TLS encryption we need to provide our Kafka clients
  with the location of a trusted Certificate Authority-based certificate. This file is often provided by the 
  Kafka administrator and is generally unique to the specific Kafka cluster deployment. The certificate is in 
- JKS or PKCS12 format for JVM languages and PEM/ P12 for nodejs or Python.
+ JKS or PKCS12 format for JVM languages and PEM/ P12 for Nodejs or Python.
 
 Importing a certificate into one’s truststore also means trusting all certificates that are signed by that certificate.
 
@@ -108,7 +110,7 @@ SCRAM-SHA-512 (modern Salted Challenge Response Authentication Mechanism)
 GSSAPI (Kerberos-supported authentication and the default if not specified otherwise)
 ```
 
-* for java based app, the `sasl.jaas.config` strings is one of the following depending of the sasl.mechanism:
+* for java based app, the `sasl.jaas.config` strings is one of the following depending of the `sasl.mechanism` setting:
 
 ```
 sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
@@ -139,10 +141,11 @@ export K_CLUSTER_NAME=mycluster
 export BOOTSTRAP="$(oc get route ${K_CLUSTER_NAME}-kafka-bootstrap -o jsonpath='{.spec.host}'):443"
 ```
 
-The `sasl.jaas.config` can come from an environment variable inside of a secret, but in fact it is already defined in the scram user in Strimzi:
+The `sasl.jaas.config` can come from an environment variable defines inside of a secret, 
+but in fact it is already defined in the scram user in Strimzi:
 
 ```sh
-oc get secret my-user -o json | jq -r '.data["sasl.jaas.config"]' | base64 -d -
+oc get secret scram-user -o json | jq -r '.data["sasl.jaas.config"]' | base64 -d -
 ```
 
 * For internal communication, with PLAIN the setting is
@@ -154,7 +157,8 @@ sasl.mechanism = PLAIN
 sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
 ```
 
-* For internal authentication with mutual TLS the settings: The certificates are mounted into the pod:
+* For internal authentication with mutual TLS the settings: 
+The certificates are mounted into the pod:
 
 ```
 bootstrap.servers={kafka-cluster-name}-kafka-bootstrap.{namespace}.svc.cluster.local:9093
@@ -165,7 +169,8 @@ ssl.keystore.location=/deployments/certs/user/user.p12
 ssl.keystore.password={__extracted_from_generated_kafka_user_secret_with_key=user.password__}
 ```
 
-Remember that if the application does not run in the same namespace as the kafka cluster then copy the secrets with something like
+Remember that if the application does not run in the same namespace as the kafka cluster 
+then copy the needed secrets (cluster ca, user cert) with something like
 
 ```sh
 if [[ -z $(oc get secret ${TLS_USER} 2> /dev/null) ]]
@@ -256,8 +261,9 @@ curl -X POST -H "Content-type: application/json; artifactType=AVRO" \
 
 Outside of my personal notes, some folders include running Apps:
 
-* [python-kafka](https://github.com/jbcodeforce/kafka-studies/tree/master/python-kafka) for simple reusable code for event consumer and producer with python.
-* [Kafka Vertx starter code](https://github.com/jbcodeforce/kafka-studies/tree/master/kafka-java-vertx-starter-1.0.0) from the event streams team, within one app to test a deployed event stream deployment
+* [python-kafka](https://github.com/jbcodeforce/kafka-studies/tree/master/python-kafka) for simple reusable code for event consumer and producer in Python.
+* [Kafka Vertx starter code](https://github.com/jbcodeforce/kafka-studies/tree/master/kafka-java-vertx-starter-1.0.0) from the event streams team, 
+within one app to test a deployed event stream deployment
 * [vertx consumer and producer](https://github.com/jbcodeforce/kafka-studies/tree/master/vertx-kafka) as separate quarkus apps.
 
 
@@ -282,8 +288,10 @@ Outside of my personal notes, some folders include running Apps:
 
 ## Kafka programming
 
-* [Producer & Consumer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/)
+* [Producer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers/)
+* [Consumer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-consumers/)
 * [Multithreading consumer study note from confluent]()
+
 
 ### Event streams
 
