@@ -23,13 +23,16 @@ In the docker compose the Kafka defines two listeners, for internal communicatio
 ![](./images/docker-kafka.png)
 
 A Quarkus app, for example, running with `quarkus dev` will connect to localhost:9092. 
-But a container in the same network needs to access the `kafka` node via DNS name. 
+But a container in the same network needs to access the `kafka` node via DNS name and port 29092. 
 
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
 ```shell
 docker run -it --network=host edenhill/kafkacat -b kafka:9092 -L
 ```
+
+See [the eda-quickstarts repository](https://github.com/ibm-cloud-architecture/eda-quickstarts) to have the last up to date docker compose under 
+`environment/local/strimzi`.
 
 ## Security summary
 
@@ -259,11 +262,9 @@ curl -X POST -H "Content-type: application/json; artifactType=AVRO" \
 
 ## This repository content
 
-Outside of my personal notes, some folders include running Apps:
+Outside of my personal notes, this repository include running Apps:
 
 * [python-kafka](https://github.com/jbcodeforce/kafka-studies/tree/master/python-kafka) for simple reusable code for event consumer and producer in Python.
-* [Kafka Vertx starter code](https://github.com/jbcodeforce/kafka-studies/tree/master/kafka-java-vertx-starter-1.0.0) from the event streams team, 
-within one app to test a deployed event stream deployment
 * [vertx consumer and producer](https://github.com/jbcodeforce/kafka-studies/tree/master/vertx-kafka) as separate quarkus apps.
 
 

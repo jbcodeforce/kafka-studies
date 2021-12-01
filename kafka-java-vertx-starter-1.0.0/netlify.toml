@@ -1,4 +1,0 @@
-[build]
-  base = "ui/"
-  publish = ".out/"
-  command = "npm run build-storybook"
