@@ -12,10 +12,11 @@ but I want to reference all the good content I read from different studies. This
 * [developer.ibm: Kafka fundamentals](https://developer.ibm.com/articles/event-streams-kafka-fundamentals)
 * [developer.ibm: How persistence works in an Apache Kafka deployment](https://developer.ibm.com/articles/how-persistence-works-in-apache-kafka/)
 * [Kafka articles in developer.ibm](https://developer.ibm.com/components/kafka/articles/)
+* [Event Streams product documentation](https://ibm.github.io/event-streams/)
 
 ## Running Kafka local
 
-The docker compose in this repo, starts one zookeeper and one Kafka broker locally using lastest Strimzi release,  
+The docker compose in this repo, starts one zookeeper and one Kafka broker locally using latest Strimzi release,  
 Apicurio for schema registry and Kafdrop for UI.
 
 In the docker compose the Kafka defines two listeners, for internal communication using the DNS name `kafka` and port 29092 and one listener for external communication on port 9092.
@@ -28,10 +29,10 @@ But a container in the same network needs to access the `kafka` node via DNS nam
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
 ```shell
-docker run -it --network=host edenhill/kafkacat -b kafka:9092 -L
+docker run -it --network=host edenhill/kafkacat -b kafka:29092 -L
 ```
 
-See [the eda-quickstarts repository](https://github.com/ibm-cloud-architecture/eda-quickstarts) to have the last up to date docker compose under 
+In [the eda-quickstarts repository](https://github.com/ibm-cloud-architecture/eda-quickstarts) we have the last up to date docker compose under 
 `environment/local/strimzi`.
 
 ## Security summary
@@ -43,8 +44,11 @@ Review [this video to refresh SSL and TLS certificates](https://www.youtube.com/
 
 ![](./images/tls-overview.png)
 
-For deep dive on security administration [see confluent article](https://docs.confluent.io/platform/current/security/general-overview.html) and [product documentation](http://kafka.apache.org/documentation/#security)
-and Rick Osowski's blogs [Part 1](https://rosowski.medium.com/kafka-security-fundamentals-the-rosetta-stone-to-your-event-streaming-infrastructure-518f49640db4) and [Part 2](https://rosowski.medium.com/kafka-security-fundamentals-adding-tls-to-your-event-driven-utility-belt-432307f4ff62)
+For deep dive on security administration [see confluent article](https://docs.confluent.io/platform/current/security/general-overview.html), [kafka product documentation](http://kafka.apache.org/documentation/#security),
+ Rick Osowski's blogs [Part 1](https://rosowski.medium.com/kafka-security-fundamentals-the-rosetta-stone-to-your-event-streaming-infrastructure-518f49640db4) 
+and [Part 2](https://rosowski.medium.com/kafka-security-fundamentals-adding-tls-to-your-event-driven-utility-belt-432307f4ff62)
+
+### Important properties
 
 Here are the important Kafka client settings:
 
@@ -58,7 +62,21 @@ SASL_PLAINTEXT (using PLAINTEXT transport layer & SASL-based authentication)
 SASL_SSL (using SSL transport layer & SASL-based authentication)
 ```
 
+* [sasl.mechanism](http://kafka.apache.org/documentation/#adminclientconfigs_sasl.mechanism) for authentication protocol used. Possible values are:
+
+```
+PLAIN (cleartext passwords, although they will be encrypted across the wire per security.protocol settings above)
+SCRAM-SHA-512 (modern Salted Challenge Response Authentication Mechanism)
+GSSAPI (Kerberos-supported authentication and the default if not specified otherwise)
+```
+
+* `ssl.truststore.location` and `ssl.truststore.password`: are used when doing TLS encryption. The Kafka clients
+ needs the location of a trusted Certificate Authority-based certificate and password to read it. This file is often provided by the 
+ Kafka administrator and is generally unique to the specific Kafka cluster deployment. The certificate is in 
+ JKS or PKCS12 format for JVM languages and PEM/ P12 for Nodejs or Python.
+
 In Strimzi the following yaml defines the listeners type and port: 
+
 `tls` boolean is for the traffic encryption, while `authentication.type` will define 
 the matching security protocol.
 
@@ -84,10 +102,111 @@ listeners:
 
 9093 is a mutual TLS authentication with TLS encrypted communication, while 9094 is using scram authentication and TLS encrypted communication
 
-* `ssl.truststore.location` and `ssl.truststore.password`: when doing TLS encryption we need to provide our Kafka clients
- with the location of a trusted Certificate Authority-based certificate. This file is often provided by the 
- Kafka administrator and is generally unique to the specific Kafka cluster deployment. The certificate is in 
- JKS or PKCS12 format for JVM languages and PEM/ P12 for Nodejs or Python.
+The certificates are persisted in secret, with the name of the kafka cluster like: `dev-cluster-ca-cert`. 
+
+```sh
+oc describe secret dev-cluster-ca-cert
+Data
+====
+ca.crt:       1180 bytes
+ca.p12:       1191 bytes
+ca.password:  12 bytes
+```
+
+### PLAINTEXT connection
+
+The code in [cos tutorial](https://github.com/ibm-cloud-architecture/eda-quickstarts/tree/main/cos-tutorial) is using PLAINTEXT.
+
+```sh
+%prod.mp.messaging.connector.smallrye-kafka.security.protocol=PLAINTEXT
+# or in config map
+MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_BOOTSTRAP_SERVERS: dev-kafka-bootstrap.es-test.svc:9092
+MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+```
+
+* For internal communication, with PLAINTEXT and SASL the setting is
+
+```sh
+bootstrap.servers={kafka-cluster-name}-kafka-bootstrap.{namespace}.svc:9092
+security.protocol = SASL_PLAINTEXT (these clients do not require SSL-based encryption as they are local to the cluster)
+sasl.mechanism = PLAIN
+sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
+```
+
+In config map
+
+```
+MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SECURITY_PROTOCOL: SASL_PLAINTEXT
+MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+```
+
+in the deployment.yaml we need to get the jaas from the secret
+
+```
+- name: JAAS_CFG
+    valueFrom:
+    secretKeyRef:
+        key: sasl.jaas.config
+        name: scram-user
+```
+
+Then in application.properties use the env variable to set the jaas config.
+
+```
+%prod.mp.messaging.connector.smallrye-kafka.sasl.jaas.config=${JAAS_CFG}
+```
+
+### SASL_SSL connection
+
+In quarkus for example the config, in `application.properties`, will be:
+
+```sh
+%prod.kafka.security.protocol=SASL_SSL
+%prod.kafka.ssl.protocol=TLSv1.2
+%prod.kafka.ssl.truststore.location=/deployments/certs/server/ca.p12
+%prod.kafka.ssl.truststore.type=PKCS12
+%prod.kafka.ssl.truststore.password=${KAFKA_CERT_PWD}
+```
+for reactive messaging
+
+```
+%prod.mp.messaging.connector.smallrye-kafka.ssl.protocol=TLSv1.2
+%prod.mp.messaging.connector.smallrye-kafka.ssl.truststore.type=PKCS12
+%prod.mp.messaging.connector.smallrye-kafka.ssl.truststore.location=/deployments/certs/server/ca.p12
+%prod.mp.messaging.connector.smallrye-kafka.ssl.truststore.password=${KAFKA_SSL_TRUSTSTORE_PASSWORD}
+
+```
+
+Then in `deployment.yaml`
+
+```yaml
+- name: KAFKA_CERT_PWD
+  valueFrom:
+    secretKeyRef:
+        key: ca.password
+        name: kafka-cluster-ca-cert
+```
+
+The last piece is to mount the certificate from the secret to the expected location:
+
+```yaml
+volumeMounts:
+- mountPath: /deployments/certs/server
+    name: kafka-cert
+    readOnly: true
+    subPath: ""
+...
+volumes:
+- name: kafka-cert
+  secret:
+    optional: true
+    secretName: dev-cluster-ca-cert
+```
+
+
+### Other
+
+Alternatively we can package the certificate into the docker image of the application. This not recommended but here are some steps:
 
 Importing a certificate into one’s truststore also means trusting all certificates that are signed by that certificate.
 
@@ -105,20 +224,6 @@ openssl pkcs12 -export -in cert.pem -out cert.p12
 keytool -importkeystore -srckeystore cert.p12 -srcstoretype pkcs12 -destkeystore cert.jks
 ```
 
-* [sasl.mechanism](http://kafka.apache.org/documentation/#adminclientconfigs_sasl.mechanism) for authentication protocol used. Possible values are:
-
-```
-PLAIN (cleartext passwords, although they will be encrypted across the wire per security.protocol settings above)
-SCRAM-SHA-512 (modern Salted Challenge Response Authentication Mechanism)
-GSSAPI (Kerberos-supported authentication and the default if not specified otherwise)
-```
-
-* for java based app, the `sasl.jaas.config` strings is one of the following depending of the `sasl.mechanism` setting:
-
-```
-sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
-sasl.jaas.config = org.apache.kafka.common.security.scram.ScramLoginModule required username="{USERNAME}" password="{PASSWORD}";
-```
 
 For **external connection** to Strimzi cluster use the following, where USERNAME is a scram-user
 
@@ -144,21 +249,60 @@ export K_CLUSTER_NAME=mycluster
 export BOOTSTRAP="$(oc get route ${K_CLUSTER_NAME}-kafka-bootstrap -o jsonpath='{.spec.host}'):443"
 ```
 
-The `sasl.jaas.config` can come from an environment variable defines inside of a secret, 
+The `sasl.jaas.config` can come from an environment variable defined inside of a secret, 
 but in fact it is already defined in the scram user in Strimzi:
 
 ```sh
 oc get secret scram-user -o json | jq -r '.data["sasl.jaas.config"]' | base64 -d -
 ```
 
-* For internal communication, with PLAIN the setting is
+So here is a properties setting for quarkus and reactive microprofile inside a configmap
 
-```sh
-bootstrap.servers={kafka-cluster-name}-kafka-bootstrap.{namespace}.svc.cluster.local:9093
-security.protocol = SASL_PLAINTEXT (these clients do not require SSL-based encryption as they are local to the cluster)
-sasl.mechanism = PLAIN
-sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
+```yaml
+# in application.properties
+%prod.kafka.sasl.mechanism=SSL
+%prod.kafka.ssl.protocol=TLSv1.2
+%prod.kafka.ssl.truststore.location=/deployments/certs/server/ca.p12
+%prod.kafka.ssl.truststore.type=PKCS12
+%prod.kafka.ssl.truststore.password=${KAFKA_CERT_PWD}
+%prod.kafka.ssl.keystore.location=/deployments/certs/user/user.p12
+%prod.kafka.ssl.keystore.password=${USER_CERT_PWD}
+%prod.kafka.ssl.keystore.type=PKCS12
+# in deployment.yaml
+- name: KAFKA_CERT_PWD
+  valueFrom:
+    secretKeyRef:
+        key: ca.password
+        name: kafka-cluster-ca-cert
+- name: USER_CERT_PWD
+  valueFrom:
+    secretKeyRef:
+        key: user.password
+        name: tls-user
+...
+volumeMounts:
+- mountPath: /deployments/certs/server
+    name: kafka-cert
+    readOnly: true
+    subPath: ""
+- mountPath: /deployments/certs/user
+    name: user-cert
+    readOnly: true
+    subPath: ""
+...
+volumes:
+- name: kafka-cert
+  secret:
+    optional: true
+    secretName: kafka-cluster-ca-cert
+- name: user-cert
+  secret:
+    optional: true
+    defaultMode: 384
+    secretName: tls-user
+# can be overwritten by config nao
 ```
+
 
 * For internal authentication with mutual TLS the settings: 
 The certificates are mounted into the pod:

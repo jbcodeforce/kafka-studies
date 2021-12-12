@@ -36,6 +36,7 @@ nav:
   - Monitoring with Prometheus and Grafana: https://jbcodeforce.github.io/kp-data-replication/monitoring
   - Kafka FAQ: FAQ.md
   - To do: todo.md
+  - Go Back Home: https://jbcodeforce.github.io/
 
 theme: 
   name: material
