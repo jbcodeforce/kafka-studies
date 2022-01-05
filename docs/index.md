@@ -7,7 +7,7 @@ but I want to reference all the good content I read from different studies. This
 
 ## IBM kafka or Event Streams content
 
-* Developer ibm community: search kafka or event streams in [developer.ibm.com/](https://developer.ibm.com/)
+* Developer IBM community: search kafka or event streams in [developer.ibm.com/](https://developer.ibm.com/)
 * [Tutorial: User authentication and authorization in Apache Kafka](https://developer.ibm.com/tutorials/kafka-authn-authz/)
 * [developer.ibm: Kafka fundamentals](https://developer.ibm.com/articles/event-streams-kafka-fundamentals)
 * [developer.ibm: How persistence works in an Apache Kafka deployment](https://developer.ibm.com/articles/how-persistence-works-in-apache-kafka/)
@@ -26,11 +26,14 @@ In the docker compose the Kafka defines two listeners, for internal communicatio
 A Quarkus app, for example, running with `quarkus dev` will connect to localhost:9092. 
 But a container in the same network needs to access the `kafka` node via DNS name and port 29092. 
 
-To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
+To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) 
 
 ```shell
 docker run -it --network=host edenhill/kafkacat -b kafka:29092 -L
 ```
+
+See the [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
+
 
 In [the eda-quickstarts repository](https://github.com/ibm-cloud-architecture/eda-quickstarts) we have the last up to date docker compose under 
 `environment/local/strimzi`.
@@ -115,7 +118,7 @@ ca.password:  12 bytes
 
 ### PLAINTEXT connection
 
-The code in [cos tutorial](https://github.com/ibm-cloud-architecture/eda-quickstarts/tree/main/cos-tutorial) is using PLAINTEXT.
+The code in [cloud object storage tutorial](https://github.com/ibm-cloud-architecture/eda-quickstarts/tree/main/cos-tutorial) is using PLAINTEXT.
 
 ```sh
 %prod.mp.messaging.connector.smallrye-kafka.security.protocol=PLAINTEXT
@@ -124,7 +127,7 @@ MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_BOOTSTRAP_SERVERS: dev-kafka-bootstrap.es-
 MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SECURITY_PROTOCOL: PLAINTEXT
 ```
 
-* For internal communication, with PLAINTEXT and SASL the setting is
+* For internal communication, with PLAINTEXT and SASL the settings are
 
 ```sh
 bootstrap.servers={kafka-cluster-name}-kafka-bootstrap.{namespace}.svc:9092
@@ -133,14 +136,14 @@ sasl.mechanism = PLAIN
 sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username="{USERNAME}" password="{PASSWORD}";
 ```
 
-In config map
+In a config map, used to change those properties we will have: 
 
 ```
 MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SECURITY_PROTOCOL: SASL_PLAINTEXT
 MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_SASL_MECHANISM: SCRAM-SHA-512
 ```
 
-in the deployment.yaml we need to get the jaas from the secret
+in the `deployment.yaml`, we need to get the jaas from the secret
 
 ```
 - name: JAAS_CFG
@@ -150,15 +153,15 @@ in the deployment.yaml we need to get the jaas from the secret
         name: scram-user
 ```
 
-Then in application.properties use the env variable to set the jaas config.
+Then in `application.properties` use the env variable to set the jaas config.
 
-```
+```sh
 %prod.mp.messaging.connector.smallrye-kafka.sasl.jaas.config=${JAAS_CFG}
 ```
 
 ### SASL_SSL connection
 
-In quarkus for example the config, in `application.properties`, will be:
+In quarkus, the config, in `application.properties`, will be:
 
 ```sh
 %prod.kafka.security.protocol=SASL_SSL
@@ -167,13 +170,14 @@ In quarkus for example the config, in `application.properties`, will be:
 %prod.kafka.ssl.truststore.type=PKCS12
 %prod.kafka.ssl.truststore.password=${KAFKA_CERT_PWD}
 ```
-for reactive messaging
+
+for Microprofile 3.x reactive messaging
 
 ```
 %prod.mp.messaging.connector.smallrye-kafka.ssl.protocol=TLSv1.2
 %prod.mp.messaging.connector.smallrye-kafka.ssl.truststore.type=PKCS12
 %prod.mp.messaging.connector.smallrye-kafka.ssl.truststore.location=/deployments/certs/server/ca.p12
-%prod.mp.messaging.connector.smallrye-kafka.ssl.truststore.password=${KAFKA_SSL_TRUSTSTORE_PASSWORD}
+%prod.mp.messaging.connector.smallrye-kafka.ssl.truststore.password=${KAFKA_CERT_PWD}
 
 ```
 
@@ -300,11 +304,11 @@ volumes:
     optional: true
     defaultMode: 384
     secretName: tls-user
-# can be overwritten by config nao
+# can be overwritten by config map
 ```
 
 
-* For internal authentication with mutual TLS the settings: 
+* For internal authentication with mutual TLS the settings look like below.  
 The certificates are mounted into the pod:
 
 ```
@@ -440,20 +444,18 @@ Outside of my personal notes, this repository include running Apps:
 
 ### Event streams
 
-Product documentation to access event streams.
+* Event streams on OpenShift with SASL and TLS encryption connection on external route. We need the following quarkus properties:
 
-* Event streams / kafka on OpenShift with TLS connection on external route. We need the following quarkus properties:
-
- ```shell
+```shell
  # get environment variables from configmap
  quarkus.openshift.env.configmaps=vaccine-order-ms-cm
  # use docker compose kafka
  %dev.kafka.bootstrap.servers=kafka:9092
- ```
+```
 
- with matching config map
+with matching config map
 
- ```yaml
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -461,22 +463,17 @@ metadata:
 data:
   KAFKA_BOOTSTRAP_SERVERS: eda-dev-kafka-bootstrap-eventstreams.gse-eda-2021-1-0143c5dd31acd8e030a1d6e0ab1380e3-0000.us-east.containers.appdomain.cloud:443
   KAFKA_SSL_PROTOCOL: TLSv1.2
-  KAFKA_USER: scram
+  KAFKA_USER: scram-user
   KAFKA_SSL_TRUSTSTORE_LOCATION: /deployments/certs/server/ca.p12
   KAFKA_SSL_TRUSTSTORE_TYPE: PKCS12
   SHIPMENT_PLAN_TOPIC: vaccine_shipment_plans
   KAFKA_SASL_MECHANISM: SCRAM-SHA-512
   KAFKA_SECURITY_PROTOCOL: SASL_SSL
- ```
-
- and secrets
-
- ```
- ```
-
-See example in project []()
+```
 
 ## Kafka Connect with Debezium
+
+See project []()
 
 ## Kafka with Quarkus
 
@@ -485,11 +482,16 @@ Here is a template code for quarkus based Kafka consumer: [quarkus-event-driven-
 Read this interesting guide with Quarkus and kafka streaming: [Quarkus using Kafka Streams](https://quarkus.io/guides/kafka-streams), which is implemented in the quarkus-reactive-msg producer, aggregator folders.
 
 To generate the starting code for the producer we use the quarkus maven plugin with kafka extension:
-`mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=producer -Dextensions="kafka"`
+
+```
+mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=producer -Dextensions="kafka"
+```
 
 for the aggregator:
 
-`mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=aggregator -Dextensions="kafka-streams,resteasy-jsonb"`
+```
+mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=aggregator -Dextensions="kafka-streams,resteasy-jsonb"
+```
 
 Interesting how to generate reference value to a topic with microprofile reactive messaging. `stations` is a hash:
 

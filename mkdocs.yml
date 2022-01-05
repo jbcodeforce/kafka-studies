@@ -1,5 +1,8 @@
 site_name: Apache Kafka Studies
 repo_url: https://github.com/jbcodeforce/kafka-studies.git
+docs_dir: docs
+site_dir: public
+edit_uri: edit/master/docs
 nav:
   - Introduction: index.md
   - Apache Kafka summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/
@@ -11,13 +14,13 @@ nav:
     - Product documentation: https://ibm.github.io/event-streams/about/overview/
     - Github ibm messaging: https://github.com/ibm-messaging
     - Vertx kafka starter app: https://github.com/ibm-messaging/kafka-java-vertx-starter
-    - Event streams: https://github.com/ibm-messaging/event-streams-samples
-  - Quickstarts:  https://github.com/ibm-cloud-architecture/eda-quickstarts
+    - Event streams samples: https://github.com/ibm-messaging/event-streams-samples
+  - EDA Quickstarts:  https://github.com/ibm-cloud-architecture/eda-quickstarts
   - Kafka streaming:
     - EDA kstreams note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/
-    - My notes: kstreams.md
+    - My kstream notes: kstreams.md
     - My kstream samples: https://github.com/jbcodeforce/kafka-streams-samples
-    - Item aggregator: https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator
+    - Item aggregator: https://github.com/ibm-cloud-architecture/refarch-eda-item-inventory
   - Kafka Connect: 
     - Summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-connect
     - MQ Labs: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/
@@ -25,10 +28,11 @@ nav:
     - Lab repo: https://github.com/jbcodeforce/eda-kconnect-lab
   - End to end code:
       - KC container: https://ibm-cloud-architecture.github.io/refarch-kc/
-      - Item aggregator integration: https://github.com/jbcodeforce/refarch-eda-item-inventory
       - Perf tool and schema registry lab: https://github.com/ibm-cloud-architecture/refarch-eda-tools
   - Reactive with kafka:
     - reactive messaging with microprofile: https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/
+    - reactive producer: https://github.com/ibm-cloud-architecture/eda-quickstarts/tree/main/quarkus-reactive-kafka-producer
+    - reactive consumer: https://github.com/ibm-cloud-architecture/eda-quickstarts/tree/main/quarkus-reactive-kafka-consumer
   - Kafka with Python: python.md
   - Mirror Maker 2.0: 
     - EDA note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/
@@ -37,13 +41,42 @@ nav:
   - Kafka FAQ: FAQ.md
   - To do: todo.md
   - Go Back Home: https://jbcodeforce.github.io/
-
 theme: 
   name: material
+  feature:
+    tabs: true
+  palette:
+    scheme: default
+    primary: 'magenta dark'
+  language: en
+  features:
+      - navigation.instant
+      - navigation.tracking
+      - navigation.tabs.sticky
+      - navigation.top
+  social:
+    - type: 'github'
+      link: 'https://github.com/jbcodeforce'
+    - type: 'twitter'
+      link: 'https://twitter.com/agileitarch'
+    - type: 'linkedin'
+      link: 'https://linkedin.com/in/jeromeboyer'
 extra_css: ["extra.css"]
+plugins:
+  - search:
+      lang: en
+  - minify:
+      minify_html: true
 markdown_extensions:
+  - attr_list
   - admonition
   - codehilite
   - footnotes
   - pymdownx.smartsymbols
   - pymdownx.superfences
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.tabbed
+  - pymdownx.highlight
+  - pymdownx.details
