@@ -18,9 +18,9 @@ nav:
   - EDA Quickstarts:  https://github.com/ibm-cloud-architecture/eda-quickstarts
   - Kafka streaming:
     - EDA kstreams note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/
-    - My kstream notes: kstreams.md
-    - My kstream samples: https://github.com/jbcodeforce/kafka-streams-samples
+    - My kstream samples:  https://jbcodeforce.github.io/kafka-streams-samples/
     - Item aggregator: https://github.com/ibm-cloud-architecture/refarch-eda-item-inventory
+    - Store aggregator: https://github.com/ibm-cloud-architecture/refarch-eda-store-inventory
   - Kafka Connect: 
     - Summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-connect
     - MQ Labs: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/

@@ -1,18 +1,15 @@
-# Reefer container management microservice done with kafka streams and microprofile
+# Basic Kafka Streams samples
 
-We recommend to read how we build this service explanations in [this book view](https://ibm-cloud-architecture.github.io/refarch-kc-container-ms/kstreams/)
+See also 
 
 ### Build
 
 Build with maven
+
 ```
 mvn package
 ```
 
-Compile, tests and build container
-```
-./scripts/buildDocker.sh LOCAL | IBMCLOUD | ICP
-```
 
 ### Run
 

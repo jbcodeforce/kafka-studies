@@ -337,6 +337,73 @@ then
 fi
 ```
 
+### Kraft mode
+
+It is now possible to run Apache Kafka without Apache ZooKeeper!  It is called the [Kafka Raft metadata mode](https://cwiki.apache.org/confluence/display/KAFKA/KIP-500%3A+Replace+ZooKeeper+with+a+Self-Managed+Metadata+Quorum).
+
+Available for testing in the Kafka 3.1 release. When the Kafka cluster is in KRaft mode, it does not store its metadata in ZooKeeper.
+
+* The first step is to generate an ID for your new cluster, using the kafka-storage tool:
+
+```sh
+./bin/kafka-storage.sh random-uuid
+```
+
+* Format Storage Directories. If you are running in single-node mode, you can do this with one command:
+
+```sh
+$ ./bin/kafka-storage.sh format -t <uuid> -c ./config/kraft/server.properties
+Formatting /tmp/kraft-combined-logs
+```
+
+If you are using multiple nodes, then you should run the format command on each node.  Be sure to use the same cluster ID for each one.
+
+* Start the Kafka Server
+
+```sh
+$ ./bin/kafka-server-start.sh ./config/kraft/server.properties
+```
+
+Here is docker compose declaration:
+
+```yaml
+```
+
+#### Controller servers
+
+In KRaft mode, only a small group of specially selected servers can act as controllers (unlike the ZooKeeper-based mode, where any server can become the
+Controller).  The specially selected controller servers will participate in the metadata quorum.  Each controller server is either active, or a hot
+standby for the current active controller server.
+
+You will typically select 3 or 5 servers for this role, depending on factors like cost and the number of concurrent failures your system should withstand
+without availability impact. 
+
+Each Kafka server now has a new configuration key called `process.roles` which can have the following values:
+
+* If `process.roles` is set to `broker`, the server acts as a broker in KRaft mode.
+* If `process.roles` is set to `controller`, the server acts as a controller in KRaft mode.
+* If `process.roles` is set to `broker,controller`, the server acts as both a broker and a controller in KRaft mode.
+* If `process.roles` is not set at all then we are assumed to be in ZooKeeper mode.  As mentioned earlier, you can't currently transition back and forth between ZooKeeper mode and KRaft mode without reformatting.
+
+Nodes that act as both brokers and controllers are referred to as "combined" nodes.  Combined nodes are simpler to operate for simple use cases and allow you to avoid some fixed memory overheads associated with JVMs. 
+
+#### Quorum Voters
+
+All nodes in the system must set the `controller.quorum.voters` configuration.  This identifies the quorum controller servers that should be used.  All the controllers must be enumerated.
+This is similar to how, when using ZooKeeper, the `zookeeper.connect` configuration must contain all the ZooKeeper servers.  Unlike with the ZooKeeper config, however, `controller.quorum.voters`
+also has IDs for each node.  The format is id1@host1:port1,id2@host2:port2, etc.
+
+So if you have 10 brokers and 3 controllers named controller1, controller2, controller3, you might have the following configuration on controller1:
+
+```
+process.roles=controller
+node.id=1
+listeners=CONTROLLER://controller1.example.com:9093
+controller.quorum.voters=1@controller1.example.com:9093,2@controller2.example.com:9093,3@controller3.example.com:9093
+```
+
+Each broker and each controller must set `controller.quorum.voters`. 
+
 ### For Confluent
 
 See [Rick Osowski's gist script](https://gist.github.com/osowski/6abf268e9d7ab521481cc35523bc50f6)

@@ -1,8 +1,16 @@
 # My own Apache Kafka Studies
 
-Some Apache kKafka, Kafka streams , Kafka Connect, Strimzi, monitoring studies...
+Some Apache Kafka, Kafka Connect, Strimzi, studies...
 
-Better Read the [BOOK format](https://jbcodeforce.github.io/kafka-studies/).
+Better Read the [BOOK format](https://jbcodeforce.github.io/kafka-studies/) for knowledge sharing.
+
+UPDATED 03/24/2022
+
+## Labs
+
+* [apicurio folder](apicurio) for a poc on schema management
+
+For Kafka Streams see the [dedicated kafka-stream-samples project](https://github.com/jbcodeforce/kafka-streams-samples)
 
 ## Building this booklet locally
 
