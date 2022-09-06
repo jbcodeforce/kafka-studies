@@ -6,7 +6,7 @@ services:
     ports:
       - 8090:8080
   zookeeper:
-    image: quay.io/strimzi/kafka:latest-kafka-2.8.1
+    image: quay.io/strimzi/kafka:latest-kafka-3.1.0
     container_name: zookeeper
     command: [
       "sh", "-c",
@@ -18,7 +18,7 @@ services:
       LOG_DIR: /tmp/logs
 
   kafka:
-    image: quay.io/strimzi/kafka:latest-kafka-2.8.1
+    image: quay.io/strimzi/kafka:latest-kafka-3.1.0
     container_name: kafka
     command: [
       "sh", "-c",
