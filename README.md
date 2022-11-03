@@ -1,4 +1,4 @@
-# My own Apache Kafka Studies
+# [My own Apache Kafka Studies](https://jbcodeforce.github.io/kafka-studies/)
 
 Some Apache kKafka, Kafka streams , Kafka Connect, Strimzi, monitoring studies...
 

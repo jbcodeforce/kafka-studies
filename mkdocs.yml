@@ -5,11 +5,7 @@ nav:
   - Apache Kafka summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/
   - Producer Consumer practices: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/
   - Strimzi: strimzi.md
-  - Event Streams:
-    - Product documentation: https://ibm.github.io/event-streams/about/overview/
-    - Github ibm messaging: https://github.com/ibm-messaging
-    - Vertx kafka starter app: https://github.com/ibm-messaging/kafka-java-vertx-starter
-    - Event streams: https://github.com/ibm-messaging/event-streams-samples
+  - Sizing: sizing/index.md
   - Kafka streaming:
     - EDA kstreams note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/
     - My notes: kstreams.md
@@ -37,9 +33,25 @@ nav:
 theme: 
   name: material
 extra_css: ["extra.css"]
+features:
+      - content.code.annotate
+      - content.tooltips
+      - navigation.instant
+      - navigation.tabs.sticky
 markdown_extensions:
+  - abbr
+  - attr_list
+  - md_in_html
   - admonition
   - codehilite
   - footnotes
   - pymdownx.smartsymbols
   - pymdownx.superfences
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.tabbed
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.details
