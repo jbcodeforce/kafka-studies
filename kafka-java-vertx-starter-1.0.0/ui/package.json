@@ -100,7 +100,7 @@
     "@storybook/addon-info": "^5.3.19",
     "@storybook/addon-knobs": "^5.3.19",
     "@storybook/addon-storysource": "^5.3.19",
-    "@storybook/react": "^5.3.19",
+    "@storybook/react": "^7.1.1",
     "@testing-library/jest-dom": "^5.10.1",
     "@testing-library/react": "^10.3.0",
     "@testing-library/react-hooks": "^3.3.0",
