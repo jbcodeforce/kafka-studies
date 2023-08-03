@@ -2,8 +2,7 @@ site_name: Apache Kafka Studies
 repo_url: https://github.com/jbcodeforce/kafka-studies.git
 nav:
   - Introduction: index.md
-  - Apache Kafka summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/
-  - Producer Consumer practices: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/
+  - Apache Kafka summary: https://jbcodeforce.github.io/eda-studies/techno/kafka/
   - Strimzi: strimzi.md
   - Sizing: sizing/index.md
   - Kafka streaming:
@@ -12,7 +11,7 @@ nav:
     - My kstream samples: https://github.com/jbcodeforce/kafka-streams-samples
     - Item aggregator: https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator
   - Kafka Connect: 
-    - Summary: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-connect
+    - Summary: https://jbcodeforce.github.io/eda-studies/techno/kafka-connect/
     - MQ Labs: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/
     - RabbitMQ Lab: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-rabbitmq/
     - Lab repo: https://github.com/jbcodeforce/eda-kconnect-lab

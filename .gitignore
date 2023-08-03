@@ -9,4 +9,5 @@ kafka-java-vertx-starter-1.0.0/truststore.p12
 data/
 **/certs/*.*
 frequent-flyer-notification-engine/target/
+**/logs/
 

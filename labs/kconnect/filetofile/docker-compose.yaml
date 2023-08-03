@@ -1,13 +1,9 @@
-version: '2'
+version: '3.7'
 services:
-  apicurio:
-    container_name: apicurio
-    image: quay.io/apicurio/apicurio-registry-mem
-    ports:
-      - 8090:8080
   zookeeper:
-    image: quay.io/strimzi/kafka:latest
+    image: quay.io/strimzi/kafka:latest-kafka-3.4.1
     container_name: zookeeper
+    hostname: zookeeper
     command: [
       "sh", "-c",
       "bin/zookeeper-server-start.sh config/zookeeper.properties"
@@ -16,10 +12,10 @@ services:
       - "2181:2181"
     environment:
       LOG_DIR: /tmp/logs
-
   kafka:
-    image: quay.io/strimzi/kafka:latest
+    image: quay.io/strimzi/kafka:latest-kafka-3.4.1
     container_name: kafka
+    hostname: kafka
     command: [
       "sh", "-c",
       "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} \
@@ -41,6 +37,11 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  addTopics:
+    image:  quay.io/strimzi/kafka:latest-kafka-3.4.1
+    depends_on:
+      - kafka
+    entrypoint: [ "bash",  "-c", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create  --if-not-exists --replication-factor 1 --partitions 1 --topic filedata" ]
   kafdrop:
     image: obsidiandynamics/kafdrop
     container_name: kafdrop
@@ -51,3 +52,14 @@ services:
       KAFKA_BROKERCONNECT: "kafka:29092"
     depends_on:
       - kafka
+  kconnect:
+    image: quay.io/strimzi/kafka:latest-kafka-3.4.1
+    container_name: kconnect
+    hostname: kconnect
+    volumes:
+      - ${PWD}:/home/kafka/kconnect/
+      - ${PWD}/logs:/opt/kafka/logs
+    command: [
+      "sh", "-c",
+      "bin/connect-standalone.sh /home/kafka/kconnect/connect-standalone.properties /home/kafka/kconnect/source-connector.properties /home/kafka/kconnect/sink-connector.properties"
+    ]
