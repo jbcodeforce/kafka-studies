@@ -121,7 +121,9 @@ Going into details will kill any simple estimations:
 * compression could be used to reduce payload size
 * Each topic may have different retention, partition numbers, strategy...
 * The I/O throughput is impacted by caching strategy...
+
 ## Deeper dive discussion
+
 ### Kafka Brokers 
 
 #### Concepts

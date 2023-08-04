@@ -1,17 +1,17 @@
 # Apache Kafka Studies
 
-This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated contents are  defined in [the Kafka overview EDA article](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-overview/), and [the producer and consumer one](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/).
+This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated contents are  defined in [the Kafka overview article](https://jbcodeforce.github.io/eda-studies/techno/kafka/), and [the producer](https://jbcodeforce.github.io/eda-studies/techno/kafka/producer) and [consumer blog](https://jbcodeforce.github.io/eda-studies/techno/kafka/consumer).
 
 
 ## Kafka local
 
 The docker compose in this repo, starts one zookeeper and one Kafka broker locally using last Strimzi release, one Apicurio for schema registry and Kafdrop for UI.
 
-In the docker compose the Kafka defines two listeners, for internal communication using the DNS name `kafka` and port 29092 and one listener for external communication on port 9092.
+In the docker compose the Kafka defines two listeners, for internal communication using the DNS name `kafka` on port 29092 and one listener for external communication on port 9092.
 
 ![](./images/docker-kafka.png)
 
-A quarkus app, for example, running with `quarkus:dev` will connect to localhost:9092. But a container in the same network needs to access kafka node. 
+A quarkus app, for example, running with `quarkus:dev` will connect to localhost:9092. But a container in the same network needs to access kafka via its hostname. 
 
 To start [kafkacat](https://hub.docker.com/r/edenhill/kafkacat) and [kafkacat doc to access sample consumer - producer](https://github.com/edenhill/kafkacat#examples)
 
@@ -21,9 +21,9 @@ docker run -it --network=host edenhill/kafkacat -b kafka:9092 -L
 
 ## Security summary
 
-For deep dive on security administration [see confluent article](https://docs.confluent.io/platform/current/security/general-overview.html) and [product documentation](http://kafka.apache.org/documentation/#security).
+For deeper dive on security administration [see Confluent article](https://docs.confluent.io/platform/current/security/general-overview.html) and [Apache Kafka product documentation](http://kafka.apache.org/documentation/#security).
 
-The settings that are important:
+The settings that are important to consider:
 
 * [security.protocol](http://kafka.apache.org/documentation/#adminclientconfigs_security.protocol)
 See how the listeners are configured in Kafka. The valid values are:
@@ -34,7 +34,8 @@ SSL (using SSL transport layer & certificate-based authentication)
 SASL_PLAINTEXT (using PLAINTEXT transport layer & SASL-based authentication)
 SASL_SSL (using SSL transport layer & SASL-based authentication)
 ```
-In Strimzi the following yaml extract defines the listeners type and port: `tls` boolean is for the traffic encryptio, while `authentication.type` will define the matching security protocol.
+
+In Strimzi the following yaml defines the different listeners type and port: `tls` boolean is for the traffic encryption, while `authentication.type` will define the matching security protocol.
 
 ```yaml
 listeners:
@@ -56,9 +57,13 @@ listeners:
           type: scram-sha-512
 ```
 
-* `ssl.truststore.location` and `ssl.truststore.password`: when doing TLS encryption we need to provide our Kafka clients with the location of a trusted Certificate Authority-based certificate. This file is often provided by the Kafka administrator and is generally unique to the specific Kafka cluster deployment. The certificate in in JKS format for JVM languages and PEM/ P12 for nodejs or Python.
+* `ssl.truststore.location` and `ssl.truststore.password`: when doing TLS encryption we need to provide our Kafka clients with the location of a trusted Certificate Authority-based certificate. This file is often provided by the Kafka administrator and is generally unique to the specific Kafka cluster deployment. The certificate is in JKS format for JVM languages and PEM/ P12 for nodejs or Python.
 
-To extract a PEM-based certificate from a JKS-based truststore, you can use the following command: `keytool -exportcert -keypass {truststore-password} -keystore {provided-kafka-truststore.jks} -rfc -file {desired-kafka-cert-output.pem}`
+To extract a PEM-based certificate from a JKS-based truststore, we can use the following command: 
+
+```
+keytool -exportcert -keypass {truststore-password} -keystore {provided-kafka-truststore.jks} -rfc -file {desired-kafka-cert-output.pem}
+```
 
 * [sasl.mechanism](http://kafka.apache.org/documentation/#adminclientconfigs_sasl.mechanism) for authentication protocol used. Possible values are:
 
@@ -86,7 +91,7 @@ ssl.truststore.location={/provided/to/you/by/the/kafka/administrator}
 ssl.truststore.password={__provided_to_you_by_the_kafka_administrator__}
 ```
 
-To get the user password get the user secret:
+To get the user password get the user secret (oc or kubectl CLIs):
 
 ```shell
 oc get secret scram-user -o jsonpath='{.data.admin_password}' | base64 --decode && echo ""
@@ -99,13 +104,13 @@ expost K_CLUSTER_NAME=mycluster
 export BOOTSTRAP="$(oc get route ${K_CLUSTER_NAME}-kafka-bootstrap -o jsonpath='{.spec.host}'):443"
 ```
 
-The `sasl.jaas.config` can come from an environment variable inside of a secret, but in fact it is already defined in the scram user in Strimzi:
+The `sasl.jaas.config` can come from an environment variable inside of a secret, but in fact it is already predefined in the scram user in Strimzi:
 
 ```sh
 oc get secret my-user -o json | jq -r '.data["sasl.jaas.config"]' | base64 -d -
 ```
 
-* For internal communication, with PLAIN the setting is
+* For internal communication, with PLAIN the setting is:
 
 ```sh
 bootstrap.servers={kafka-cluster-name}-kafka-bootstrap.{namespace}.svc.cluster.local:9093
@@ -117,9 +122,10 @@ sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule requi
 * For internal authentication with mutual TLS the settings:
 
 ```
+security.protocol=SSL 
 ```
 
-Remember that if the application does not run in the same namespace as the kafka cluster then copy the secrets with something like
+Remember that if the application does not run in the same namespace as the kafka cluster then copy the secrets to the namespace with something like:
 
 ```sh
 if [[ -z $(oc get secret ${TLS_USER} 2> /dev/null) ]]
@@ -136,10 +142,9 @@ fi
 ```
 
 
-
 ## Using Kafdrop
 
-For Kafdrop configuration see the kafka properties and `startKafDrop.sh` in scripts folder.
+For Kafdrop configuration see the `kafka.properties` file and `startKafDrop.sh` in the scripts folder.
 
 To get the user password:
 
@@ -161,12 +166,12 @@ username="scram-user" password="";
 
 ## Using Apicurio
 
-Once started define a schema in json and upload it to the api: http://apicurio:8080/api. Here is an example of command:
+Once Apicurio is started, define a schema in json and upload it to the api: http://apicurio:8080/api. Here is an example of command:
 
 Schema:
 ```
 {   
-    "namespace": "ibm.gse.eda.vaccine.orderoptimizer",
+    "namespace": "acme.vaccine.orderoptimizer",
     "doc": "Avro data schema for Reefer events",
     "type":"record",
     "name":"Reefer",
@@ -204,7 +209,7 @@ curl -X POST -H "Content-type: application/json; artifactType=AVRO" \
 ```
 
 
-## This repository content
+## This repository includes
 
 Outside of my personal notes, some folders include running app:
 
@@ -215,33 +220,19 @@ Outside of my personal notes, some folders include running app:
 
 ## Source of information
 
-* [Our event driven reference architecture content](https://ibm-cloud-architecture.github.io/refarch-eda/)
-* [Container shipment solution](https://ibm-cloud-architecture.github.io/refarch-kc/)
-* [Start by reading Kafka introduction - a must read!](https://Kafka.apache.org/intro/)
-* [IBM Event Streams Product Documentation](https://ibm.github.io/event-streams)
-
+* [My notes on event-driven architecture](https://jbcodeforce.github.io/eda-studies/)
 * [Another introduction from Confluent, one of the main contributors of the open source.](http://www.confluent.io/blog/introducing-Kafka-streams-stream-processing-made-simple)
 
-* [Planning event streams installation](https://ibm.github.io/event-streams/installing/planning/)
-* [Develop Stream Application using Kafka](https://Kafka.apache.org/15/documentation/streams/)
-* [Tutorial on access control, user authentication and authorization from IBM.](https://developer.ibm.com/tutorials/kafka-authn-authz/)
-* [Kafka on Kubernetes using stateful sets](https://github.com/kubernetes/contrib/tree/master/statefulsets/Kafka)
-* [IBM Developer article - learn kafka](https://developer.ibm.com/messaging/event-streams/docs/learn-about-Kafka/)
+* [Planning IBM event-streams installation](https://ibm.github.io/event-automation/es/installing/planning/)
 * [Using Kafka Connect to connect to enterprise MQ systems - Andrew Schofield](https://medium.com/@andrew_schofield/using-kafka-connect-to-connect-to-enterprise-mq-systems-5674d53fe55e)
 * [Does Apache Kafka do ACID transactions? - Andrew Schofield](https://medium.com/@andrew_schofield/does-apache-kafka-do-acid-transactions-647b207f3d0e)
 * [Spark and Kafka with direct stream, and persistence considerations and best practices](http://aseigneurin.github.io/2016/05/07/spark-Kafka-achieving-zero-data-loss.html)
 * [Example in scala for processing Tweets with Kafka Streams](https://www.madewithtea.com/processing-tweets-with-Kafka-streams.html)
 
-## Kafka programming
 
-* [Producer & Consumer considerations](https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-producers-consumers/)
-* [Multithreading consumer study note from confluent]()
+### Strimzi
 
-### Event streams
-
-Product documentation to access event streams.
-
-* Event streams / kafka on OpenShift with TLS connection on external route. We need the following quarkus properties:
+* This is an example of configuration to do a TLS connection on external route to a Strimzi deployed on k8s. 
 
  ```shell
  # get environment variables from configmap
@@ -267,15 +258,6 @@ data:
   KAFKA_SASL_MECHANISM: SCRAM-SHA-512
   KAFKA_SECURITY_PROTOCOL: SASL_SSL
  ```
-
- and secrets
-
- ```
- ```
-
-See example in project []()
-
-## Kafka Connect with Debezium
 
 ## Kafka with Quarkus
 
@@ -321,5 +303,3 @@ docker-compose up
 docker run --tty --rm -i --network kafkanet debezium/tooling:1.0
 $ kafkacat -b kafka1:9092 -C -o beginning -q -t temperatures-aggregated
 ```
-
-## Kafka with Apache Camel 3.0
