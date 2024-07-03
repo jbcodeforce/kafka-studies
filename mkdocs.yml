@@ -6,7 +6,7 @@ nav:
   - Strimzi: strimzi.md
   - Sizing: sizing/index.md
   - Kafka streaming:
-    - EDA kstreams note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-streams/
+    - EDA kstreams note: https://jbcodeforce.github.io/eda-studies/techno/kstreams/
     - My notes: kstreams.md
     - My kstream samples: https://github.com/jbcodeforce/kafka-streams-samples
     - Item aggregator: https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator
@@ -26,8 +26,8 @@ nav:
     - EDA note: https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/
     - Labs: https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/kafka-mm2/
   - Monitoring with Prometheus and Grafana: https://jbcodeforce.github.io/kp-data-replication/monitoring
-  - Kafka FAQ: FAQ.md
-  - To do: todo.md
+
+
 
 theme: 
   name: material

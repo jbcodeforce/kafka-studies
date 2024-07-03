@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   apicurio:
     container_name: apicurio
@@ -6,7 +6,7 @@ services:
     ports:
       - 8090:8080
   zookeeper:
-    image: quay.io/strimzi/kafka:latest
+    image: quay.io/strimzi/kafka:latest-kafka-3.7.1
     container_name: zookeeper
     command: [
       "sh", "-c",
@@ -18,7 +18,7 @@ services:
       LOG_DIR: /tmp/logs
 
   kafka:
-    image: quay.io/strimzi/kafka:latest
+    image: quay.io/strimzi/kafka:latest-kafka-3.7.1
     container_name: kafka
     command: [
       "sh", "-c",

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-mgr-cm
+data:
+  APP_VERSION: 0.0.1
+  KAFKA_BOOTSTRAP_SERVERS: dev-kafka-bootstrap.smq-dev.svc:9093
+  ORDER_TOPIC: orders
+  KAFKA_SECURITY_PROTOCOL: SSL
+  
+
+  
