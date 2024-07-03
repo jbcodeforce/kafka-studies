@@ -1,0 +1,1358 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../sizing/">
+      
+      
+        <link rel="next" href="../python/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>My notes - Apache Kafka Studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-streams-examples" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Apache Kafka Studies" class="md-header__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Kafka Studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              My notes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jbcodeforce/kafka-studies.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Apache Kafka Studies" class="md-nav__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Apache Kafka Studies
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jbcodeforce/kafka-studies.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Apache Kafka summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strimzi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strimzi
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sizing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sizing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka streaming
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka streaming
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kstreams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EDA kstreams note
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    My notes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    My notes
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-1-mask-credit-card-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 1: mask credit card number
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#joining-3-streams-with-reference-data-to-build-a-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      Joining 3 streams with reference data to build a document
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refarch-container-the-container-inventory-management-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refarch container the container inventory management implementation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#some-useful-kafka-streams-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Some useful Kafka streams APIs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-driven-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Driven Development
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Driven Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container inventory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container-to-order-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container to Order Assignment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-streams-flows-are-resilient" class="md-nav__link">
+    <span class="md-ellipsis">
+      How streams flows are resilient?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to scale?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-readings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Further readings
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/kafka-streams-samples" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    My kstream samples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Item aggregator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka Connect
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka Connect
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MQ Labs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-rabbitmq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RabbitMQ Lab
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab repo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    End to end code
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            End to end code
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-kc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    KC container
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Item-Inventory integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-cloud-architecture/refarch-eda-tools" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Perf tool and schema registry lab
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reactive with kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reactive with kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    reactive messaging with microprofile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Mirror Maker 2.0
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Mirror Maker 2.0
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EDA note
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/kafka-mm2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Labs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/kp-data-replication/monitoring" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring with Prometheus and Grafana
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lab-1-mask-credit-card-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lab 1: mask credit card number
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#joining-3-streams-with-reference-data-to-build-a-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      Joining 3 streams with reference data to build a document
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refarch-container-the-container-inventory-management-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Refarch container the container inventory management implementation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#some-useful-kafka-streams-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Some useful Kafka streams APIs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-driven-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Test Driven Development
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Test Driven Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container inventory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container-to-order-assignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container to Order Assignment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-streams-flows-are-resilient" class="md-nav__link">
+    <span class="md-ellipsis">
+      How streams flows are resilient?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-scale" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to scale?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#further-readings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Further readings
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="kafka-streams-examples">Kafka Streams examples<a class="headerlink" href="#kafka-streams-examples" title="Permanent link">&para;</a></h1>
+<p>In this article we are presenting how to use the Kafka Streams API combined with Kafka event sourcing to implement different interesting use cases.</p>
+<p>The use cases are implemented inside the kstreams-play java project as unit tests.  Some of the domain classes are defined in the <code>src/java</code> folder. Streams topology are done in the unit test but could also be part of a service class to be used as an example running with kafka.</p>
+<h2 id="lab-1-mask-credit-card-number">Lab 1: mask credit card number<a class="headerlink" href="#lab-1-mask-credit-card-number" title="Permanent link">&para;</a></h2>
+<p>Using a simple kstream to change data on the fly, like for example encrypt a credit card number. Test is <a href="">EncryptCreditCardTest</a>. This is the first test to use the TopologyTestDriver class to run business logic outside of kafka. The class uses org.apache.kafka.common.serialization.Serdes and String serdesm and a JSON serdes for the domain class Purchase.</p>
+<p>The other interesting approach is to use domain object with builder class and DSL to define the model:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Purchase</span><span class="p">.</span><span class="na">builder</span><span class="p">(</span><span class="n">p</span><span class="p">).</span><span class="na">maskCreditCard</span><span class="p">().</span><span class="na">build</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="joining-3-streams-with-reference-data-to-build-a-document">Joining 3 streams with reference data to build a document<a class="headerlink" href="#joining-3-streams-with-reference-data-to-build-a-document" title="Permanent link">&para;</a></h2>
+<p>This is a simple example of joining 3 sources of kafka streams to build a merged document, with some reference data loaded from a topic:</p>
+<ul>
+<li>The shipment status is a reference table and loaded inside a kafka topic: shipment-status</li>
+<li>The order includes items and customer id reference</li>
+<li>Customer is about the customer profile</li>
+<li>Products is about products inventory. </li>
+<li>The outcome is an order report document that merge most of the attributes of the 3 streams.</li>
+</ul>
+<h2 id="refarch-container-the-container-inventory-management-implementation">Refarch container the container inventory management implementation<a class="headerlink" href="#refarch-container-the-container-inventory-management-implementation" title="Permanent link">&para;</a></h2>
+<p>The component can be represented in the figure below:</p>
+<p><img alt="" src="./images/kstreams-container.png" /></p>
+<p>For getting started with Kafka Streams API read <a href="https://kafka.apache.org/documentation/streams/">this tutorial</a>.</p>
+<p>The container topics includes all the events about a refrigerator container life cycle. The application is Java based and deployed in Liberty packaged into a docker image deployable on Kubernetes. The service exposes some RESTful APIs to get a container by ID. No CUD operations are defined as all those operations are done via events. The Streams implementation keeps data in Ktable.</p>
+<p>As a java based microservice we have two approaches to implement the service: springboot and microprofile. Knowing we will deploy on kubernetes cluster with Istio we will have a lot of the resiliency and scalability addressed for us. <a href="https://microprofile.io/">Microprofile</a> adds a lot of nice capabilities like SSL, open API, JAXRS, injection, metrics... we can leverage for this application. Microprofile is supported by Open Liberty as well as many servers.</p>
+<p>The <a href="https://kafka.apache.org/documentation/streams/">Apache Kafka Streams API</a> is a client library for building applications and microservices, where the input and output data are stored in Kafka clusters. It simplifies the implementation of the stateless or stateful event processing to transform and enrich data. It supports time windowing processing.</p>
+<p>We encourage to do <a href="https://kafka.apache.org/21/documentation/streams/tutorial">this Streams tutorial</a>. </p>
+<p>The features we want to illustrate in this implementation, using KStreams are:</p>
+<ul>
+<li>Listen to ContainerAddedToInventory event from the <code>containers</code> topic and maintains a stateful table of containers. </li>
+<li>Listen to OrderCreated event from <code>orders</code> and assign a container from the inventory based on the pickup location and the container location and its characteristics.</li>
+<li>Implemented as JAXRS application deployed on Liberty and packaged with dockerfile.</li>
+<li>Deploy to kubernetes or run with docker-compose</li>
+</ul>
+<h2 id="some-useful-kafka-streams-apis">Some useful Kafka streams APIs<a class="headerlink" href="#some-useful-kafka-streams-apis" title="Permanent link">&para;</a></h2>
+<p>The stream configuration looks similar to the Kafka consumer and producer configuration. </p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">StreamsConfig</span><span class="p">.</span><span class="na">APPLICATION_ID_CONFIG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;container-streams&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">StreamsConfig</span><span class="p">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;localhost:9092&quot;</span><span class="p">);</span><span class="w">    </span>
+<span class="w">    </span><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">StreamsConfig</span><span class="p">.</span><span class="na">DEFAULT_KEY_SERDE_CLASS_CONFIG</span><span class="p">,</span><span class="w"> </span><span class="n">Serdes</span><span class="p">.</span><span class="na">String</span><span class="p">().</span><span class="na">getClass</span><span class="p">());</span>
+<span class="w">    </span><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">StreamsConfig</span><span class="p">.</span><span class="na">DEFAULT_VALUE_SERDE_CLASS_CONFIG</span><span class="p">,</span><span class="w"> </span><span class="n">Serdes</span><span class="p">.</span><span class="na">String</span><span class="p">().</span><span class="na">getClass</span><span class="p">());</span>
+</code></pre></div>
+<p>The StreamsConfig is a specific configuration for Streams app.  </p>
+<p>One of the interesting class is the <code>KStream</code> to manage a stream of structured events. Kstreams represents unbounded collection of immutable events.</p>
+<p>Two classes are supporting the order and container processing:</p>
+<ul>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-container-ms/blob/master/kstreams/src/main/java/ibm/labs/kc/streams/containerManager/ContainerInventoryView.java">ContainerInventoryView</a></li>
+<li><a href="https://github.com/ibm-cloud-architecture/refarch-kc-container-ms/blob/master/kstreams/src/main/java/ibm/labs/kc/streams/containerManager/ContainerOrderAssissgnment.java">ContainerOrderAssignment</a></li>
+</ul>
+<p>We are using the Streams DSL APIs to do the processing. Here is an example of terminal stream to print what is coming to the <code>orders</code> topic:</p>
+<div class="highlight"><pre><span></span><code><span class="w">   </span><span class="kd">final</span><span class="w"> </span><span class="n">StreamsBuilder</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StreamsBuilder</span><span class="p">();</span>
+<span class="w">    </span><span class="n">builder</span><span class="p">.</span><span class="na">stream</span><span class="p">(</span><span class="s">&quot;orders&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">foreach</span><span class="p">((</span><span class="n">key</span><span class="p">,</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">parser</span><span class="p">.</span><span class="na">fromJson</span><span class="p">((</span><span class="n">String</span><span class="p">)</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">OrderEvent</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">getPayload</span><span class="p">();</span>
+<span class="w">                    </span><span class="c1">// TODO do something to the order</span>
+<span class="w">                    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;received order &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<span class="w">                </span><span class="p">});</span>
+
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">Topology</span><span class="w"> </span><span class="n">topology</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">final</span><span class="w"> </span><span class="n">KafkaStreams</span><span class="w"> </span><span class="n">streams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">KafkaStreams</span><span class="p">(</span><span class="n">topology</span><span class="p">,</span><span class="w"> </span><span class="n">props</span><span class="p">);</span>
+<span class="w">    </span><span class="n">streams</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+</code></pre></div>
+<p>We want now to implement the container inventory. We want to support the following events:</p>
+<ul>
+<li>ContainerAddedToInventory, ContainerRemovedFromInventory</li>
+<li>ContainerAtLocation</li>
+<li>ContainerOnMaintenance, ContainerOffMaintenance,</li>
+<li>ContainerAssignedToOrder, ContainerReleasedFromOrder</li>
+<li>ContainerGoodLoaded, ContainerGoodUnLoaded</li>
+<li>ContainerOnShip, ContainerOffShip</li>
+<li>ContainerOnTruck, ContainerOffTruck</li>
+</ul>
+<p>We want the container event to keep a timestamp, a version, a type, and a payload representing the data describing a Reefer container. The Key is the containerID. The java class for the container event is <a href="https://github.com/ibm-cloud-architecture/refarch-kc-container-ms/blob/master/kstreams/src/main/java/ibm/labs/kc/model/events/ContainerEvent.java">here</a>.</p>
+<p>Using a TDD approach we will start by the tests to implement the solution.</p>
+<p>For more information on the Streams DSL API, <a href="https://kafka.apache.org/21/documentation/streams/developer-guide/dsl-api.html">keep this page close to you</a>. </p>
+<h2 id="test-driven-development">Test Driven Development<a class="headerlink" href="#test-driven-development" title="Permanent link">&para;</a></h2>
+<p>We want to document two major test suites. One for building the internal view of the container inventory, the other to support the container to order assignment.</p>
+<h3 id="container-inventory">Container inventory<a class="headerlink" href="#container-inventory" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>When the service receives a ContainerAdded event it needs to add it to the table and be able to retreive it by ID</p>
+</blockquote>
+<ol>
+<li>To support the Get By ID we are adding a Service class with the operation exposed as RESTful resource using JAXRS annotations. We already described this approach in the <a href="https://github.com/ibm-cloud-architecture/refarch-kc-ms">fleetms project</a>.</li>
+</ol>
+<p>To test a stream application without Kafka backbone there is a test utility available <a href="https://kafka.apache.org/documentation/streams/developer-guide/testing.html#unit-testing-processors">here</a>. The settings are simple: get the properties, define the serialisation of the key and value of the event to get from kafka, define the stream process flow, named topology, send the input and get the output.</p>
+<p>The <a href="https://github.com/ibm-cloud-architecture/refarch-kc-container-ms/blob/master/kstreams/src/test/java/ut">test TestContainerInventory</a> is illustrating how to use the <a href="https://kafka.apache.org/21/javadoc/org/apache/kafka/streams/TopologyTestDriver.html">TopologyTestDriver</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">Properties</span><span class="w"> </span><span class="n">props</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ApplicationConfig</span><span class="p">.</span><span class="na">getStreamsProperties</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">StreamsConfig</span><span class="p">.</span><span class="na">BOOTSTRAP_SERVERS_CONFIG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dummy:1234&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">TopologyTestDriver</span><span class="w"> </span><span class="n">testDriver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TopologyTestDriver</span><span class="p">(</span>
+<span class="w">                </span><span class="n">buildProcessFlow</span><span class="p">(),</span><span class="w"> </span><span class="n">props</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">ConsumerRecordFactory</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ConsumerRecordFactory</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;containers&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="k">new</span><span class="w"> </span><span class="n">StringSerializer</span><span class="p">(),</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StringSerializer</span><span class="p">());</span>
+<span class="w">    </span><span class="n">ConsumerRecord</span><span class="o">&lt;</span><span class="kt">byte</span><span class="o">[]</span><span class="p">,</span><span class="kt">byte</span><span class="o">[]&gt;</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">factory</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;containers&quot;</span><span class="p">,</span><span class="n">ce</span><span class="p">.</span><span class="na">getContainerID</span><span class="p">(),</span><span class="w"> </span><span class="n">parser</span><span class="p">.</span><span class="na">toJson</span><span class="p">(</span><span class="n">ce</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">testDriver</span><span class="p">.</span><span class="na">pipeInput</span><span class="p">(</span><span class="n">record</span><span class="p">);</span>
+</code></pre></div>
+<p>We are using the String default serialization for the key and the ContainerEvent, and use Gson to serialize and deserialize the json.</p>
+<p>So the test is to prepare a ContainerEvent with type = "ContainerAdded" and then get the payload, persist it in the table and access to the table via the concept of <code>store</code> and validate the data.</p>
+<p>Below is the access to the store and compare the expected results</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">KeyValueStore</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">store</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">testDriver</span><span class="p">.</span><span class="na">getKeyValueStore</span><span class="p">(</span><span class="s">&quot;queryable-container-store&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">containerStrg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">store</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">ce</span><span class="p">.</span><span class="na">getContainerID</span><span class="p">());</span>
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="na">assertNotNull</span><span class="p">(</span><span class="n">containerStrg</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="na">assertTrue</span><span class="p">(</span><span class="n">containerStrg</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="n">ce</span><span class="p">.</span><span class="na">getContainerID</span><span class="p">()));</span>
+<span class="w">    </span><span class="n">Assert</span><span class="p">.</span><span class="na">assertTrue</span><span class="p">(</span><span class="n">containerStrg</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;atDock&quot;</span><span class="p">));</span>
+</code></pre></div>
+<p>Now the tricky part is in the Stream process flow. The idea is to process the ContainerEvent as streams (of String) and extract the payload (a Container), then generate the Container in a new stream, group by the key and then save to a table. We separate the code in a function so e can move it into the real application after.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="kd">public</span><span class="w">  </span><span class="n">Topology</span><span class="w"> </span><span class="nf">buildProcessFlow</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">final</span><span class="w"> </span><span class="n">StreamsBuilder</span><span class="w"> </span><span class="n">builder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StreamsBuilder</span><span class="p">();</span>
+<span class="w">       </span><span class="c1">// containerEvent is a string, map values help to change the type and data of the inpit values</span>
+<span class="w">        </span><span class="n">builder</span><span class="p">.</span><span class="na">stream</span><span class="p">(</span><span class="n">CONTAINERS_TOPIC</span><span class="p">).</span><span class="na">mapValues</span><span class="p">((</span><span class="n">containerEvent</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                 </span><span class="c1">// the container payload is of interest to keep in table</span>
+<span class="w">                 </span><span class="n">Container</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jsonParser</span><span class="p">.</span><span class="na">fromJson</span><span class="p">((</span><span class="n">String</span><span class="p">)</span><span class="n">containerEvent</span><span class="p">,</span><span class="w"> </span><span class="n">ContainerEvent</span><span class="p">.</span><span class="na">class</span><span class="p">).</span><span class="na">getPayload</span><span class="p">();</span>
+<span class="w">                 </span><span class="k">return</span><span class="w"> </span><span class="n">jsonParser</span><span class="p">.</span><span class="na">toJson</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+<span class="w">             </span><span class="p">}).</span><span class="na">groupByKey</span><span class="p">()</span><span class="w">  </span><span class="c1">// the keys are kept so we can group by key to prepare for the tabl</span>
+<span class="w">                </span><span class="p">.</span><span class="na">reduce</span><span class="p">((</span><span class="n">container</span><span class="p">,</span><span class="n">container1</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;received container &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">container1</span><span class="w"> </span><span class="p">);</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">container1</span><span class="p">;</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                     </span><span class="n">Materialized</span><span class="p">.</span><span class="na">as</span><span class="p">(</span><span class="s">&quot;queryable-container-store&quot;</span><span class="p">));</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">builder</span><span class="p">.</span><span class="na">build</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<p>The trick is to use the <code>reduce()</code> function that get the container and save it to the store that we can specify.</p>
+<p>The unit test runs successfully with the command: <code>mvn -Dtest=TestContainerInventory test</code>.</p>
+<p>This logic can be integrated in a View class. So we can refactor the test and add new class (see ContainerInventoryView class) to move the logic into the applciation. From a design point of view this class is a DAO. Now that we are not using the Testing tool, we need the real streams.</p>
+<p>In class ContainerInventoryView:</p>
+<div class="highlight"><pre><span></span><code><span class="w">   </span><span class="kd">private</span><span class="w"> </span><span class="n">KafkaStreams</span><span class="w"> </span><span class="n">streams</span><span class="p">;</span>
+<span class="w">   </span><span class="c1">// ..</span>
+<span class="w">    </span><span class="n">Properties</span><span class="w"> </span><span class="n">props</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ApplicationConfig</span><span class="p">.</span><span class="na">getStreamsProperties</span><span class="p">(</span><span class="s">&quot;container-streams&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">props</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">ConsumerConfig</span><span class="p">.</span><span class="na">AUTO_OFFSET_RESET_CONFIG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;earliest&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">streams</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">KafkaStreams</span><span class="p">(</span><span class="n">buildProcessFlow</span><span class="p">(),</span><span class="w"> </span><span class="n">props</span><span class="p">);</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">streams</span><span class="p">.</span><span class="na">cleanUp</span><span class="p">();</span><span class="w"> </span>
+<span class="w">        </span><span class="n">streams</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Throwable</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<p>As illustrated above, the streams API is a continuous running Thread, so it needs to be started only one time. We will address scaling separatly.  So we isolate the DAO as a Singleton, and start it when the deployed application starts, via a ServletContextListener. </p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">EventLoop</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">ServletContextListener</span><span class="p">{</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">contextInitialized</span><span class="p">(</span><span class="n">ServletContextEvent</span><span class="w"> </span><span class="n">sce</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Initialize the Container consumer</span>
+<span class="w">        </span><span class="n">ContainerInventoryView</span><span class="w"> </span><span class="n">cView</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">ContainerInventoryView</span><span class="p">)</span><span class="n">ContainerInventoryView</span><span class="p">.</span><span class="na">instance</span><span class="p">();</span>
+<span class="w">        </span><span class="n">cView</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+</code></pre></div>
+<p>Now we can add the getById operation, package as a war, deploy it to Liberty. </p>
+<h3 id="container-to-order-assignment">Container to Order Assignment<a class="headerlink" href="#container-to-order-assignment" title="Permanent link">&para;</a></h3>
+<p>The business logic we want to implement is to get an order with the source pickup city, the type of product, the quantity and the expected pickup date, manage the internal list of containers and search for a container located close to the pickup city from the order.</p>
+<p>The test to validate this logic is under <code>kstreams/src/test/java/ut/TestContainerAssignment</code>. </p>
+<p>The story will not be completed if we do not talk about how th application get the order. As presented in the design and <a href="https://github.com/ibm-cloud-architecture/refarch-kc-order-ms">order command microservice</a> implementation, when an order is created an event is generated to the <code>orders</code> topic. So we need to add another Streams processing and start the process flow in the context listener.</p>
+<p><img alt="" src="../images/container-to-order.png" /></p>
+<h3 id="run-tests">Run tests<a class="headerlink" href="#run-tests" title="Permanent link">&para;</a></h3>
+<p>Recall with maven we can run all the unit tests, one test and skip integration tests.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Test a unique test</span>
+$<span class="w">  </span>mvn<span class="w"> </span>-Dtest<span class="o">=</span>TestContainerInventory<span class="w"> </span><span class="nb">test</span>
+<span class="c1"># Skip all tests</span>
+mvn<span class="w"> </span>install<span class="w"> </span>-DskipTests
+<span class="c1"># Skip integration test</span>
+mvn<span class="w"> </span>install<span class="w"> </span>-DskipITs
+<span class="c1"># Run everything</span>
+mvn<span class="w"> </span>install
+</code></pre></div>
+<h2 id="how-streams-flows-are-resilient">How streams flows are resilient?<a class="headerlink" href="#how-streams-flows-are-resilient" title="Permanent link">&para;</a></h2>
+<p>Specifying the replicas factor at the topic level, with a cluster of kafka brokers, combine with transactional event produce, ensure to do not lose messages. The producer client code has the list of all the brokers to contact in case of failure and will try to connect to any broker in the list. </p>
+<h2 id="how-to-scale">How to scale?<a class="headerlink" href="#how-to-scale" title="Permanent link">&para;</a></h2>
+<h2 id="further-readings">Further readings<a class="headerlink" href="#further-readings" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.confluent.io/blog/kafka-streams-take-on-watermarks-and-triggers/">Kafka Streams’ Take on Watermarks and Triggers</a> what continuous refinement with operational parameters means: </li>
+<li><a href="https://docs.confluent.io/current/tutorials/examples/microservices-orders/docs/index.html#tutorial-microservices-orders">Tutorial: Introduction to Streaming Application Development</a></li>
+<li><a href="https://www.confluent.io/blog/kafka-consumer-multi-threaded-messaging/">Multi threaded messaging</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>

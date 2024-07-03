@@ -1,0 +1,1429 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Mirror Maker 2.0 Studies - Apache Kafka Studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mirror-maker-20-studies" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Apache Kafka Studies" class="md-header__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Kafka Studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Mirror Maker 2.0 Studies
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jbcodeforce/kafka-studies.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Apache Kafka Studies" class="md-nav__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Apache Kafka Studies
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jbcodeforce/kafka-studies.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Apache Kafka summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strimzi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strimzi
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sizing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sizing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka streaming
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka streaming
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kstreams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EDA kstreams note
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kstreams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    My notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/kafka-streams-samples" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    My kstream samples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Item aggregator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka Connect
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka Connect
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MQ Labs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-rabbitmq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RabbitMQ Lab
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab repo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    End to end code
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            End to end code
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-kc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    KC container
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Item-Inventory integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-cloud-architecture/refarch-eda-tools" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Perf tool and schema registry lab
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reactive with kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reactive with kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    reactive messaging with microprofile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Mirror Maker 2.0
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Mirror Maker 2.0
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EDA note
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/kafka-mm2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Labs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/kp-data-replication/monitoring" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring with Prometheus and Grafana
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pre-requisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pre-requisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      General concepts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-1-from-kafka-local-as-source-to-event-streams-on-cloud-as-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: From Kafka local as source to Event Streams on Cloud as Target
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-2-run-mirror-maker-2-cluster-close-to-target-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: Run Mirror Maker 2 Cluster close to target cluster
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-3-from-event-streams-to-local-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 3: From Event Streams to local cluster
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-4-from-event-streams-on-cloud-to-strimzi-cluster-on-openshift" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 4: From Event Streams On Cloud to Strimzi Cluster on Openshift
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#typical-errors-in-mirror-maker-2-traces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Typical errors in Mirror Maker 2 traces
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="mirror-maker-20-studies">Mirror Maker 2.0 Studies<a class="headerlink" href="#mirror-maker-20-studies" title="Permanent link">&para;</a></h1>
+<p>Mirror Maker 2.0 is the new replication feature of Kafka 2.4. In this note we are presenting different test scenarios for topic replication.</p>
+<ul>
+<li>Replicate from local cluster to Event Streams on Cloud (See detail <a href="#scenario-1-from-kafka-local-as-source-to-event-streams-on-cloud-as-target">in the scenario 1 section</a>)</li>
+<li>Replicate from <a href="https://strimzi.io/">Strimzi</a> 'local' Kafka cluster running on OpenShift to Event Streams on Cloud. (See detail <a href="#scenario-2-run-mirror-maker-2-cluster-close-to-target-cluster">in the scenario 2 section</a>)</li>
+<li>Replicate from <a href="#scenario-3-from-event-streams-to-local-cluster">Event Streams on cloud being the source cluster to local Kafka cluster</a> running on local machine (started via docker-compose) using Strimzi Kafka docker image.</li>
+<li>Replicate from <a href="#scenario-5-from-event-streams-on-premise-to-event-streams-on-cloud">Event Streams on premise running on Openshift being the source cluster to Event Stream on the Cloud as target cluster</a>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>Source</th>
+<th>Target</th>
+<th style="text-align: center;">Connect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Local</td>
+<td>Event Streams on Cloud</td>
+<td style="text-align: center;">Local</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Strimzi on OCP</td>
+<td>Event Streams on Cloud</td>
+<td style="text-align: center;">OCP / Roks</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Event Streams on Cloud</td>
+<td>Local</td>
+<td style="text-align: center;">Local</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Event Streams on Cloud</td>
+<td>Strimzi on OCP</td>
+<td style="text-align: center;">OCP/ Roks</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Event Streams on OCP</td>
+<td>Event Streams on Cloud</td>
+<td style="text-align: center;">OCP / Roks</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>mirror-maker-2</code> folder includes, scripts, code and configurations to support those scenarios.</p>
+<h2 id="pre-requisites">Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>You need to have one Event Streams service created on IBM Cloud.</li>
+<li>You may need to use Event Streams CLI. So follow <a href="https://cloud.ibm.com/docs/services/EventStreams?topic=eventstreams-cli#cli">those instructions</a> to get it.</li>
+</ul>
+<p>The following ibmcloud CLI command presents the Event Stream cluster's metadata, like the broker list and the cluster ID:</p>
+<div class="highlight"><pre><span></span><code>ibmcloud<span class="w"> </span>es<span class="w"> </span>cluster
+</code></pre></div>
+<p>For other CLI commands see <a href="https://cloud.ibm.com/docs/services/EventStreams?topic=eventstreams-cli_reference">this summary</a>.</p>
+<ul>
+<li>To run local cluster we use docker-compose and docker. The docker compose file to start a local 3 Kafka brokers and 2 Zookeepers cluster is in <code>mirror-maker-2/local-cluster</code> folder. This compose file uses a local docker network called <code>kafkanet</code>. The docker image used for Kafka is coming from Strimzi open source project and is for the Kafka 2.4 version.</li>
+<li>When the Event Streams service is created, add a service credentials and get the brokers list and api key information. We will use them in a setenv.sh script file under <code>mirror-maker-2</code> folder to define environment variables.</li>
+</ul>
+<h2 id="general-concepts">General concepts<a class="headerlink" href="#general-concepts" title="Permanent link">&para;</a></h2>
+<p>As <a href="https://strimzi.io/docs/master/#con-configuring-mirror-maker-deployment-configuration-kafka-mirror-maker">Mirror maker 2.0</a> is using kafka Connect framework, we recommend to review our summary <a href="https://ibm-cloud-architecture.github.io/refarch-eda/kafka/connect/">in this note</a>. </p>
+<p>The figure below illustrates the mirror maker internal components running within Kafka Connect.</p>
+<p><img alt="" src="images/mm-k-connect.png" /></p>
+<p>In distributed mode, Mirror Maker creates the following topics to the target cluster:</p>
+<ul>
+<li>mm2-configs.source.internal: This topic will store the connector and task configurations.</li>
+<li>mm2-offsets.source.internal: This topic is used to store offsets for Kafka Connect.</li>
+<li>mm2-status.source.internal: This topic will store status updates of connectors and tasks.</li>
+<li>source.heartbeats</li>
+<li>source.checkpoints.internal</li>
+</ul>
+<p>A typical mirror maker configuration is done via property file and defines source and target clusters with their connection properties and the replication flow definitions. Here is a simple example for a local cluster to a target cluster using TLS v1.2 and Sasl authentication protocol.</p>
+<div class="highlight"><pre><span></span><code><span class="na">clusters</span><span class="o">=</span><span class="s">source, target</span>
+<span class="na">source.bootstrap.servers</span><span class="o">=</span><span class="s">${KAFKA_SOURCE_BROKERS}</span>
+<span class="na">target.bootstrap.servers</span><span class="o">=</span><span class="s">${KAFKA_TARGET_BROKERS}</span>
+<span class="na">target.security.protocol</span><span class="o">=</span><span class="s">SASL_SSL</span>
+<span class="na">target.ssl.protocol</span><span class="o">=</span><span class="s">TLSv1.2</span>
+<span class="na">target.ssl.endpoint.identification.algorithm</span><span class="o">=</span><span class="s">https</span>
+<span class="na">target.sasl.mechanism</span><span class="o">=</span><span class="s">PLAIN</span>
+<span class="na">target.sasl.jaas.config</span><span class="o">=</span><span class="s">org.apache.kafka.common.security.plain.PlainLoginModule required username=&quot;token&quot; password=${KAFKA_TARGET_APIKEY};</span>
+<span class="c1"># enable and configure individual replication flows</span>
+<span class="na">source-&gt;target.enabled</span><span class="o">=</span><span class="s">true</span>
+<span class="na">source-&gt;target.topics</span><span class="o">=</span><span class="s">products</span>
+<span class="na">tasks.max</span><span class="o">=</span><span class="s">10</span>
+</code></pre></div>
+<ul>
+<li>White listed topics are set with the <code>source-&gt;target.topics</code> attribute of the replication flow and uses <a href="https://www.vogella.com/tutorials/JavaRegularExpressions/article.html">Java regular expression</a> syntax.</li>
+<li>Blacklisted topics: by default the following pattern is applied:</li>
+</ul>
+<p><div class="highlight"><pre><span></span><code><span class="na">blacklist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">[follower</span><span class="se">\.</span><span class="s">replication</span><span class="se">\.</span><span class="s">throttled</span><span class="se">\.</span><span class="s">replicas, leader</span><span class="se">\.</span><span class="s">replication</span><span class="se">\.</span><span class="s">throttled</span><span class="se">\.</span><span class="s">replicas, message</span><span class="se">\.</span><span class="s">timestamp</span><span class="se">\.</span><span class="s">difference</span><span class="se">\.</span><span class="s">max</span><span class="se">\.</span><span class="s">ms, message</span><span class="se">\.</span><span class="s">timestamp</span><span class="se">\.</span><span class="s">type, unclean</span><span class="se">\.</span><span class="s">leader</span><span class="se">\.</span><span class="s">election</span><span class="se">\.</span><span class="s">enable, min</span><span class="se">\.</span><span class="s">insync</span><span class="se">\.</span><span class="s">replicas]</span>
+</code></pre></div>
+but can be also specified with the properties: <code>topics.blacklist</code>. Comma-separated lists are also supported and Java regular expression.</p>
+<p>Internally <code>MirrorSourceConnector</code> and <code>MirrorCheckpointConnector</code> will
+create multiple tasks (up to <code>tasks.max</code> property), <code>MirrorHeartbeatConnector</code>
+creates only one single task. <code>MirrorSourceConnector</code> will have one task per topic-partition to replicate, while <code>MirrorCheckpointConnector</code> will have one task per consumer group. The Kafka connect framework uses the coordinator API, with the <code>assign()</code> API, so there is no consumer group while fetching data from source topic. There is no call to <code>commit()</code> neither: the rebalancing occurs only when there is a new topic created that matches the whitelist pattern.</p>
+<h2 id="scenario-1-from-kafka-local-as-source-to-event-streams-on-cloud-as-target">Scenario 1: From Kafka local as source to Event Streams on Cloud as Target<a class="headerlink" href="#scenario-1-from-kafka-local-as-source-to-event-streams-on-cloud-as-target" title="Permanent link">&para;</a></h2>
+<p>The test scenario goal is to send the product definitions in the local <code>products</code> topic and then start mirror maker to see the data replicated to the <code>source.products</code> topic in Event Streams cluster.</p>
+<p><img alt="" src="../images/local-to-es.png" /></p>
+<ul>
+<li>Set the environment variables in <code>setenv.sh</code> script for the source broker to be your local cluster, and the target to be event streams. Be sure to also set Event Streams APIKEY:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">KAFKA_SOURCE_BROKERS</span><span class="o">=</span>kafka1:9092,kafka2:9093,kafka3:9094
+
+<span class="nb">export</span><span class="w"> </span><span class="nv">KAFKA_TARGET_BROKERS</span><span class="o">=</span>broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093
+<span class="nb">export</span><span class="w"> </span><span class="nv">KAFKA_TARGET_APIKEY</span><span class="o">=</span><span class="s2">&quot;&lt;password attribut in event streams credentials&gt;&quot;</span>
+</code></pre></div>
+<ul>
+<li>It may be needed to create the topics in the target cluster. This depends if mirror maker 2.0 is able to access the AdminClient API. Normally we observed with Event streams APIKEY it is possible to create topic with AdminClient, so there is no need to do the following commands. For other configuration where Access Control policies do not authorize program to create topic dynamically, the commands performed by and admin user will create the needed topic. (the mm2 prefix is the one used by mirror maker, but the name of the topic could be defined in the mirror maker properties)</li>
+</ul>
+<div class="highlight"><pre><span></span><code>ibmcloud<span class="w"> </span>es<span class="w"> </span>topic-create<span class="w"> </span>-n<span class="w"> </span>mm2-configs.source.internal<span class="w"> </span>-p<span class="w"> </span><span class="m">1</span><span class="w">  </span>-c<span class="w"> </span>cleanup.policy<span class="o">=</span>compact
+ibmcloud<span class="w"> </span>es<span class="w"> </span>topic-create<span class="w"> </span>-n<span class="w"> </span>mm2-offsets.source.internal<span class="w"> </span>-p<span class="w"> </span><span class="m">25</span><span class="w"> </span>-c<span class="w"> </span>cleanup.policy<span class="o">=</span>compact
+ibmcloud<span class="w"> </span>es<span class="w"> </span>topic-create<span class="w"> </span>-n<span class="w"> </span>mm2-status.source.internal<span class="w"> </span>-p<span class="w"> </span><span class="m">5</span><span class="w"> </span>-c<span class="w"> </span>cleanup.policy<span class="o">=</span>compact
+ibmcloud<span class="w"> </span>es<span class="w"> </span>topic-create<span class="w"> </span>-n<span class="w"> </span>source.products<span class="w"> </span>-p<span class="w"> </span><span class="m">1</span>
+ibmcloud<span class="w"> </span>es<span class="w"> </span>topic-create<span class="w"> </span>-n<span class="w"> </span>source.heartbeats<span class="w"> </span>-p<span class="w"> </span><span class="m">1</span><span class="w"> </span>-c<span class="w"> </span>cleanup.policy<span class="o">=</span>compact
+ibmcloud<span class="w"> </span>es<span class="w"> </span>topic-create<span class="w"> </span>-n<span class="w"> </span>source.checkpoints.internal<span class="w"> </span>-p<span class="w"> </span><span class="m">1</span><span class="w"> </span>-c<span class="w"> </span>cleanup.policy<span class="o">=</span>compact
+</code></pre></div>
+<ul>
+<li>In one Terminal window, start the local cluster using <code>docker-compose</code> under the <code>mirror-maker-2/local-cluster</code> folder: <code>docker-compose up &amp;</code>. The data are persisted on the local disk in this folder.</li>
+<li>If this is the first time you started the source cluster, you need to create the <code>products</code> topic. Start a Kafka container to access the Kafka tools with the command:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/home<span class="w"> </span>--network<span class="w"> </span>kafkanet<span class="w"> </span>strimzi/kafka:latest-kafka-2.4.0<span class="w"> </span>bash
+</code></pre></div>
+<p>Then in the bash shell, go to <code>/home/local-cluster</code> folder and execute the script: <code>./createProductsTopic.sh</code>. Verify topic is created with the command: <code>/opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka1:9092 --list</code></p>
+<ul>
+<li>Send some products data to this topic. For that we use a docker python image. The docker file to build this image is <code>python-kafka/Dockerfile-python</code> so the command to build this image (if you change the image name be sure to use the new name in future command) is: <code>docker build -f Dockerfile-python -t jbcodeforce/python37 .</code></li>
+</ul>
+<p>Once the image is built, start the python environment with the following commands:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>./setenv.sh
+docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/home<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">KAFKA_BROKERS</span><span class="o">=</span><span class="nv">$KAFKA_SOURCE_BROKERS</span><span class="w"> </span>--network<span class="w"> </span>kafkanet<span class="w"> </span>jbcodeforce/python37<span class="w">   </span>bash
+</code></pre></div>
+<p>In this isolated python container bash shell do the following to send the 5 first products:</p>
+<div class="highlight"><pre><span></span><code>$ echo $KAFKA_BROKERS
+kafka1:9092,kafka2:9093,kafka3:9094
+$ python SendProductToKafka.py ./data/products.json
+
+[KafkaProducer] - {&#39;bootstrap.servers&#39;: &#39;kafka1:9092,kafka2:9093,kafka3:9094&#39;, &#39;group.id&#39;: &#39;ProductsProducer&#39;}
+{&#39;product_id&#39;: &#39;P01&#39;, &#39;description&#39;: &#39;Carrots&#39;, &#39;target_temperature&#39;: 4, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 1}
+{&#39;product_id&#39;: &#39;P02&#39;, &#39;description&#39;: &#39;Banana&#39;, &#39;target_temperature&#39;: 6, &#39;target_humidity_level&#39;: 0.6, &#39;content_type&#39;: 2}
+{&#39;product_id&#39;: &#39;P03&#39;, &#39;description&#39;: &#39;Salad&#39;, &#39;target_temperature&#39;: 4, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 1}
+{&#39;product_id&#39;: &#39;P04&#39;, &#39;description&#39;: &#39;Avocado&#39;, &#39;target_temperature&#39;: 6, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 1}
+{&#39;product_id&#39;: &#39;P05&#39;, &#39;description&#39;: &#39;Tomato&#39;, &#39;target_temperature&#39;: 4, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 2}
+[KafkaProducer] - Message delivered to products [0]
+[KafkaProducer] - Message delivered to products [0]
+[KafkaProducer] - Message delivered to products [0]
+[KafkaProducer] - Message delivered to products [0]
+[KafkaProducer] - Message delivered to products [0]
+</code></pre></div>
+<ul>
+<li>To validate the data are in the source topic we can use the kafka console consumer. Here are the basic commands:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/home<span class="w"> </span>--network<span class="w"> </span>kafkanet<span class="w"> </span>strimzi/kafka:latest-kafka-2.4.0<span class="w"> </span>bash
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>bin
+$<span class="w"> </span>./kafka-console-consumer.sh<span class="w"> </span>--bootstrap-server<span class="w"> </span>kafka1:9092<span class="w"> </span>--topic<span class="w"> </span>products<span class="w"> </span>--from-beginning
+</code></pre></div>
+<ul>
+<li>Define the event streams cluster properties file for the Kafka tool command. Set the password attribute of the <code>jaas.config</code> to match Event Streams APIKEY. The <code>eventstream.properties</code> file looks like:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="na">bootstrap.servers</span><span class="o">=</span><span class="s">broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093</span>
+<span class="na">security.protocol</span><span class="o">=</span><span class="s">SASL_SSL</span>
+<span class="na">ssl.protocol</span><span class="o">=</span><span class="s">TLSv1.2</span>
+<span class="na">sasl.mechanism</span><span class="o">=</span><span class="s">PLAIN</span>
+<span class="na">sasl.jaas.config</span><span class="o">=</span><span class="s">org.apache.kafka.common.security.plain.PlainLoginModule required username=&quot;token&quot; password=....;</span>
+</code></pre></div>
+<ul>
+<li>Restart the <code>kafka-console-consumer</code> with the bootstrap URL to access to Event Streams and with the replicated topic: <code>source.products</code>. Use the previously created properties file to get authentication properties so the command looks like:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/home/setenv.sh
+./kafka-console-consumer.sh<span class="w"> </span>--bootstrap-server<span class="w"> </span><span class="nv">$KAFKA_TARGET_BROKERS</span><span class="w"> </span>--consumer.config<span class="w"> </span>/home/eventstream.properties<span class="w"> </span>--topic<span class="w"> </span>source.products<span class="w"> </span>--from-beginning
+</code></pre></div>
+<ul>
+<li>Now we are ready to start Mirror Maker 2.0, close to the local cluster, using, yet another docker image:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/home<span class="w"> </span>--network<span class="w"> </span>kafkanet<span class="w"> </span>strimzi/kafka:latest-kafka-2.4.0<span class="w"> </span>bash
+$<span class="w"> </span>/home/local-cluster/launchMM2.sh
+</code></pre></div>
+<p><em>This <code>launchMM2.sh</code> script is updating a template properties file with the values of the environment variables and calls with this updated file: <code>/opt/kafka/bin/connect-mirror-maker.sh mm2.properties</code></em></p>
+<p>The trace includes a ton of messages, which displays different Kafka connect consumers and producers, workers and tasks. The logs can be found in the <code>/tmp/logs</code> folder within the docker container. The table includes some of the elements of this configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Worker clientId=connect-2, groupId=target-mm2</td>
+<td>Herder for target cluster topics but reading source topic</td>
+</tr>
+<tr>
+<td>Producer clientId=producer-1</td>
+<td>Producer to taget cluster</td>
+</tr>
+<tr>
+<td>Consumer clientId=consumer-target-mm2-1, groupId=target-mm2]</td>
+<td>Subscribed to 25 partition(s): mm2-offsets.target.internal-0 to 24</td>
+</tr>
+<tr>
+<td>Consumer clientId=consumer-target-mm2-2, groupId=target-mm2]</td>
+<td>Subscribed to 5 partition(s): mm2-status.target.internal-0 to 4</td>
+</tr>
+<tr>
+<td>Consumer clientId=consumer-target-mm2-3, groupId=target-mm2]</td>
+<td>Subscribed to partition(s): mm2-configs.target.internal-0</td>
+</tr>
+<tr>
+<td>Worker clientId=connect-2, groupId=target-mm2 . Starting connectors and tasks using config offset 6.</td>
+<td>This trace shows mirror maker will start to consume message from the offset 6. A previous run has already committed the offset for this client id. This illustrate a Mirror Maker restarts</td>
+</tr>
+<tr>
+<td>Starting connector MirrorHeartbeatConnector and Starting task MirrorHeartbeatConnector-0</td>
+<td></td>
+</tr>
+<tr>
+<td>Starting connector MirrorCheckpointConnector</td>
+<td></td>
+</tr>
+<tr>
+<td>Starting connector MirrorSourceConnector</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>As expected, in the consumer console we can see the 5 product messages arriving to the <code>source.topics</code> after the replication complete.</p>
+<div class="highlight"><pre><span></span><code>{&#39;bootstrap.servers&#39;: &#39;kafka1:9092,kafka2:9093,kafka3:9094&#39;, &#39;group.id&#39;: &#39;ProductsProducer&#39;}
+  {&#39;product_id&#39;: &#39;P01&#39;, &#39;description&#39;: &#39;Carrots&#39;, &#39;target_temperature&#39;: 4, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 1}
+  {&#39;product_id&#39;: &#39;P02&#39;, &#39;description&#39;: &#39;Banana&#39;, &#39;target_temperature&#39;: 6, &#39;target_humidity_level&#39;: 0.6, &#39;content_type&#39;: 2}
+  {&#39;product_id&#39;: &#39;P03&#39;, &#39;description&#39;: &#39;Salad&#39;, &#39;target_temperature&#39;: 4, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 1}
+  {&#39;product_id&#39;: &#39;P04&#39;, &#39;description&#39;: &#39;Avocado&#39;, &#39;target_temperature&#39;: 6, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 1}
+  {&#39;product_id&#39;: &#39;P05&#39;, &#39;description&#39;: &#39;Tomato&#39;, &#39;target_temperature&#39;: 4, &#39;target_humidity_level&#39;: 0.4, &#39;content_type&#39;: 2}
+</code></pre></div>
+<h2 id="scenario-2-run-mirror-maker-2-cluster-close-to-target-cluster">Scenario 2: Run Mirror Maker 2 Cluster close to target cluster<a class="headerlink" href="#scenario-2-run-mirror-maker-2-cluster-close-to-target-cluster" title="Permanent link">&para;</a></h2>
+<p>This scenario is similar to the scenario 1 but Mirror Maker 2.0 now, runs within an OpenShift cluster in the same data center as Event Streams cluster, so closer to the target cluster:</p>
+<p><img alt="" src="images/mm2-local-to-es.png" /></p>
+<p>We have created an Event Streams cluster on Washington DC data center. We have Strimzi operators deployed in Washington data center OpenShift Cluster.</p>
+<p>Producers are running locally on the same OpenShift cluster, where vanilla Kafka is running, or can run remotely using exposed Kafka brokers Openshift route. (The black rectangles in the figure above represent those producers.)</p>
+<p>What needs to be done:</p>
+<ul>
+<li>Get a OpenShift cluster in the same data center as Event Streams service: See this <a href="https://cloud.ibm.com/kubernetes/catalog/about?platformType=openshift">product introduction</a>.</li>
+<li>Create a project in OpenShift, for example: <code>mirror-maker-2-to-es</code>. Remember it is mapped to a namespace in Kubernetes.</li>
+<li>At the minimum, to run Mirror Maker 2, we need to deploy the Strimzi Custom Resource Definitions, and the Mirror Maker 2.0 operator. See the detail in sections from the <a href="strimzi-deploy.md">deployment note</a>. The 0.17.0 source is in <a href="https://github.com/strimzi/strimzi-kafka-operator/releases">this repository</a>, unzip and use the <code>install</code> folder with Strimzi installation instructions.</li>
+</ul>
+<p><em>The service account and role binding do not need to be re-installed if you did it previously.</em></p>
+<ul>
+<li>
+<p>If not done yet, create a secret for the API KEY of the Event Streams cluster:
+<code>oc create secret generic es-api-secret --from-literal=password=&lt;replace-with-event-streams-apikey&gt;</code></p>
+</li>
+<li>
+<p>As the vanilla kafka source cluster is using TLS to communicate between client and brokers, we need to create a k8s secret for a Java truststore created from the <code>ca.cert</code> of the source cluster. This certificate is also in another secret: <code>my-cluster-clients-ca-cert</code>. </p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># build a local crt file from the secret: </span>
+oc<span class="w"> </span>extract<span class="w"> </span>secret/my-cluster-clients-ca-cert<span class="w"> </span>--keys<span class="o">=</span>ca.crt<span class="w"> </span>--to<span class="o">=</span>-<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
+<span class="c1"># Verify the certificate:</span>
+openssl<span class="w"> </span>x509<span class="w"> </span>-in<span class="w"> </span>ca.crt<span class="w"> </span>-text
+<span class="c1"># transform it for java truststore.jks:</span>
+keytool<span class="w"> </span>-import<span class="w"> </span>-trustcacerts<span class="w"> </span>-alias<span class="w"> </span>root<span class="w"> </span>-file<span class="w"> </span>ca.crt<span class="w"> </span>-keystore<span class="w"> </span>truststore.jks<span class="w"> </span>-storepass<span class="w"> </span>password<span class="w"> </span>-noprompt
+<span class="c1"># create a secret from file</span>
+oc<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>kafka-truststore<span class="w"> </span>--from-file<span class="o">=</span>./truststore.jks
+<span class="c1"># Verify the created secret</span>
+oc<span class="w"> </span>describe<span class="w"> </span>secret<span class="w"> </span>kafka-truststore
+</code></pre></div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>At this step, we have two options, one using the Mirror Maker Operator and get the configuration of it via a yaml file, or use properties file and a special docker image. As of 3/20/2020 we have found an issue on Strimzi 0.17-rc2 MM operator, so we are proposing to use the properties approach as <a href="sc2-mm2.md">documented in this separated note</a>.</p>
+</div>
+<ul>
+<li>Define source and target cluster properties in mirror maker 2.0 <code>kafka-to-es-mm2.yml</code> descriptor file. We strongly recommend to study the schema definition of this <a href="https://github.com/strimzi/strimzi-kafka-operator/blob/2d35bfcd99295bef8ee98de9d8b3c86cb33e5842/install/cluster-operator/048-Crd-kafkamirrormaker2.yaml#L648-L663">custom resource from this page</a>. The <a href="https://github.com/jbcodeforce/kafka-studies/blob/master/mirror-maker-2/local-cluster/kafka-to-es-mm2.yml">yaml file we used is here</a>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>connectCluster defined the cluster alias used for Kafka Connect, it must match a cluster in the list at <code>spec.clusters</code>.
+The config part can match the Kafka configuration for consumer or producer, except properties starting by ssl, sasl, security, listeners, rest, bootstarp.servers which are declared at the cluster definition level. Also we have some challenges to make the connection to event streams working, as of Strimzi version 0.17 RC2, we need to add an empty <code>tls: {}</code> stanza to get connected. Also below, the declaration is using the previously defined secret for event streams API key.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;event-streams-wdc-as-target&quot;</span>
+<span class="w">    </span><span class="nt">bootstrapServers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">broker-3...</span>
+<span class="w">    </span><span class="nt">tls</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">    </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">passwordSecret</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">es-api-secret</span><span class="w">  </span>
+<span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">password</span><span class="w"> </span>
+<span class="w">      </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">token</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plain</span>
+</code></pre></div>
+<ul>
+<li>Deploy Mirror maker 2.0 within this project. </li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc apply -f kafka-to-es-mm2.yaml 
+</code></pre></div>
+<p>This commmand create a kubernetes deployment as illustrated below, with one pod as the replicas is set to 1. If we need to add parallel processing because of the topic to replicate has multiple partitions, or there are a lot of topics to replicate, then adding pods will help to scale horizontally. The pods are in the same consumer group, so Kafka Brokers will do the partition rebalancing among those new added consumers.</p>
+<p><img alt="" src="images/mm2-deployment.png" /></p>
+<ul>
+<li>To validate the replication works, we will connect a consumer to the <code>source.products</code> topic on Event Streams. So we define a target cluster property file (<code>eventstreams.properties</code>) like:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="na">bootstrap.servers</span><span class="o">=</span><span class="s">broker-3-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-q.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093</span>
+<span class="na">security.protocol</span><span class="o">=</span><span class="s">SASL_SSL</span>
+<span class="na">ssl.protocol</span><span class="o">=</span><span class="s">TLSv1.2</span>
+<span class="na">sasl.mechanism</span><span class="o">=</span><span class="s">PLAIN</span>
+<span class="na">sasl.jaas.config</span><span class="o">=</span><span class="s">org.apache.kafka.common.security.plain.PlainLoginModule required username=&quot;token&quot; password=&quot;am_...&quot;;</span>
+</code></pre></div>
+<ul>
+<li>Start a producer to send product records to the source Kafka cluster. If you have done the scenario 1, the first product definitions may be already in the target cluster, so we can send a second batch of products using a second data file:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">KAFKA_BROKERS</span><span class="o">=</span><span class="s2">&quot;my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">KAFKA_CERT</span><span class="o">=</span><span class="s2">&quot;/home/ca.crt&quot;</span>
+docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/home<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">KAFKA_CERT</span><span class="o">=</span><span class="nv">$KAFKA_CERT</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">KAFKA_BROKERS</span><span class="o">=</span><span class="nv">$KAFKA_BROKERS</span><span class="w"> </span>jbcodeforce/python37<span class="w">   </span>bash
+python<span class="w"> </span>SendProductToKafka.py<span class="w"> </span>./data/products2.json
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The python code uses the CA certificate and not the java truststore. The Kafka option is <code>ssl.ca.location</code>. If the code was done in Java then the trustore needs to be part of the docker image or mounted from a kubernetes secret into the expected file inside the container.</p>
+</div>
+<p>As an alternate to use this external producer, we can start a producer as pod inside Openshift, and then send the product one by one:</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>run<span class="w"> </span>kafka-producer<span class="w"> </span>-ti<span class="w"> </span>--image<span class="o">=</span>strimzi/kafka:latest-kafka-2.4.0<span class="w">  </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bin/kafka-console-producer.sh<span class="w"> </span>--broker-list<span class="w"> </span>my-cluster-kafka-bootstrap:9092<span class="w"> </span>--topic<span class="w"> </span>products
+If<span class="w"> </span>you<span class="w"> </span>don<span class="w"> </span>t<span class="w"> </span>see<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span><span class="w"> </span>prompt,<span class="w"> </span>try<span class="w"> </span>pressing<span class="w"> </span>enter.
+
+&gt;<span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;P01&#39;</span>,<span class="w"> </span><span class="s1">&#39;description&#39;</span>:<span class="w"> </span><span class="s1">&#39;Carrots&#39;</span>,<span class="w"> </span><span class="s1">&#39;target_temperature&#39;</span>:<span class="w"> </span><span class="m">4</span>,<span class="w"> </span><span class="s1">&#39;target_humidity_level&#39;</span>:<span class="w"> </span><span class="m">0</span>.4,<span class="w"> </span><span class="s1">&#39;content_type&#39;</span>:<span class="w"> </span><span class="m">1</span><span class="o">}</span>
+&gt;<span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;P02&#39;</span>,<span class="w"> </span><span class="s1">&#39;description&#39;</span>:<span class="w"> </span><span class="s1">&#39;Banana&#39;</span>,<span class="w"> </span><span class="s1">&#39;target_temperature&#39;</span>:<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="s1">&#39;target_humidity_level&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;content_type&#39;</span>:<span class="w"> </span><span class="m">2</span><span class="o">}</span>
+&gt;<span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;P03&#39;</span>,<span class="w"> </span><span class="s1">&#39;description&#39;</span>:<span class="w"> </span><span class="s1">&#39;Salad&#39;</span>,<span class="w"> </span><span class="s1">&#39;target_temperature&#39;</span>:<span class="w"> </span><span class="m">4</span>,<span class="w"> </span><span class="s1">&#39;target_humidity_level&#39;</span>:<span class="w"> </span><span class="m">0</span>.4,<span class="w"> </span><span class="s1">&#39;content_type&#39;</span>:<span class="w"> </span><span class="m">1</span><span class="o">}</span>
+&gt;<span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;P04&#39;</span>,<span class="w"> </span><span class="s1">&#39;description&#39;</span>:<span class="w"> </span><span class="s1">&#39;Avocado&#39;</span>,<span class="w"> </span><span class="s1">&#39;target_temperature&#39;</span>:<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="s1">&#39;target_humidity_level&#39;</span>:<span class="w"> </span><span class="m">0</span>.4,<span class="w"> </span><span class="s1">&#39;content_type&#39;</span>:<span class="w"> </span><span class="m">1</span><span class="o">}</span>
+&gt;<span class="o">{</span><span class="s1">&#39;product_id&#39;</span>:<span class="w"> </span><span class="s1">&#39;P05&#39;</span>,<span class="w"> </span><span class="s1">&#39;description&#39;</span>:<span class="w"> </span><span class="s1">&#39;Tomato&#39;</span>,<span class="w"> </span><span class="s1">&#39;target_temperature&#39;</span>:<span class="w"> </span><span class="m">4</span>,<span class="w"> </span><span class="s1">&#39;target_humidity_level&#39;</span>:<span class="w"> </span><span class="m">0</span>.4,<span class="w"> </span><span class="s1">&#39;content_type&#39;</span>:<span class="w"> </span><span class="m">2</span><span class="o">}</span>
+</code></pre></div>
+<ul>
+<li>To validate the source <code>products</code> topic has records, start a consumer as pod on Openshift within the source Kafka cluster using the Strimzi/kafka image.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>run<span class="w"> </span>kafka-consumer<span class="w"> </span>-ti<span class="w"> </span>--image<span class="o">=</span>strimzi/kafka:latest-kafka-2.4.0<span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bin/kafka-console-consumer.sh<span class="w"> </span>--bootstrap-server<span class="w"> </span>my-cluster-kafka-bootstrap:9092<span class="w"> </span>--topic<span class="w"> </span>products<span class="w"> </span>--from-beginning
+</code></pre></div>
+<ul>
+<li>Finally to validate the product records are replicated to the Event Streams <code>source.products</code> we need to start a consumer connected to Event streams.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>run<span class="w"> </span>kafka-consumer<span class="w"> </span>-ti<span class="w"> </span>--image<span class="o">=</span>strimzi/kafka:latest-kafka-2.4.0<span class="w"> </span>--rm<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span>bin/kafka-console-consumer.sh<span class="w"> </span>--bootstrap-server<span class="w"> </span>broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093<span class="w"> </span>--consumer-property<span class="w"> </span>ssl.protocol<span class="o">=</span>TLSv1.2<span class="w"> </span>--consumer-property<span class="w"> </span>security.protocol<span class="o">=</span>SASL_SSL<span class="w"> </span>--consumer-property<span class="w"> </span>sasl.jaas.config<span class="o">=</span><span class="s2">&quot;org.apache.kafka.common.security.plain.PlainLoginModule required username=token password=am_rbb9e794mMwhE-KGPYo0hhW3h91e28OhT8IlruFe5;&quot;</span><span class="w"> </span>--consumer-property<span class="w"> </span>sasl.mechanism<span class="o">=</span>PLAIN<span class="w"> </span>--topic<span class="w"> </span>source.products<span class="w"> </span>--from-beginning
+</code></pre></div>
+<h2 id="scenario-3-from-event-streams-to-local-cluster">Scenario 3: From Event Streams to local cluster<a class="headerlink" href="#scenario-3-from-event-streams-to-local-cluster" title="Permanent link">&para;</a></h2>
+<p>For this scenario the source is Event Streams on IBM Cloud and the target is a local server (may be on a laptop using vanilla Kafka image (Strimzi kafka 2.4 docker image) started with docker compose). This target cluster runs two zookeeper nodes, and three kafka nodes. We need 3 kafka brokers as mirror maker created topics with a replication factor set to 3.</p>
+<p><img alt="" src="images/mm2-scen3.png" /></p>
+<p>This time the producer adds headers to the Records sent so we can validate headers replication. The file <code>es-cluster/es-mirror-maker.properties</code> declares the mirroring settings as below:</p>
+<div class="highlight"><pre><span></span><code><span class="na">clusters</span><span class="o">=</span><span class="s">source, target</span>
+<span class="na">source.bootstrap.servers</span><span class="o">=</span><span class="s">broker-3-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-1-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-0-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-5-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-2-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093,broker-4-qnprtqnp7hnkssdz.kafka.svc01.us-east.eventstreams.cloud.ibm.com:9093</span>
+<span class="na">source.security.protocol</span><span class="o">=</span><span class="s">SASL_SSL</span>
+<span class="na">source.ssl.protocol</span><span class="o">=</span><span class="s">TLSv1.2</span>
+<span class="na">source.sasl.mechanism</span><span class="o">=</span><span class="s">PLAIN</span>
+<span class="na">source.sasl.jaas.config</span><span class="o">=</span><span class="s">org.apache.kafka.common.security.plain.PlainLoginModule required username=&quot;token&quot; password=&quot;985...&quot;;</span>
+<span class="na">target.bootstrap.servers</span><span class="o">=</span><span class="s">kafka1:9092,kafka2:9093,kafka3:9094</span>
+<span class="c1"># enable and configure individual replication flows</span>
+<span class="na">source-&gt;target.enabled</span><span class="o">=</span><span class="s">true</span>
+<span class="na">source-&gt;target.topics</span><span class="o">=</span><span class="s">orders</span>
+</code></pre></div>
+<ul>
+<li>
+<p>Start the target cluster runnning on your laptop using:</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>up
+</code></pre></div>
+</li>
+<li>
+<p>Start <a href="https://cwiki.apache.org/confluence/display/KAFKA/KIP-382%3A+MirrorMaker+2.0">mirror maker2.0</a>: </p>
+<p>By using a new container, start another kakfa 2.4+ docker container, connected to the  brokers via the <code>kafkanet</code> network, and mounting the configuration in the <code>/home</code>:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>--network<span class="w"> </span>kafkanet<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/home<span class="w"> </span>strimzi/kafka:latest-kafka-2.4.0<span class="w"> </span>bash
+</code></pre></div>
+<p>Inside this container starts mirror maker 2.0 using the script: <code>/opt/kakfa/bin/connect-mirror-maker.sh</code></p>
+<div class="highlight"><pre><span></span><code>/opt/kakfa/bin/connect-mirror-maker.sh<span class="w"> </span>/home/strimzi-mm2.properties
+</code></pre></div>
+<p>The <code>strimzi-mm2.properties</code> properties file given as argument defines the source and target clusters and the topics to replicate:</p>
+<div class="highlight"><pre><span></span><code><span class="na">clusters</span><span class="o">=</span><span class="s">source, target</span>
+<span class="na">source.bootstrap.servers</span><span class="o">=</span><span class="s">my-cluster-kafka-bootstrap-jb-kafka-strimzi.gse-eda-demos-fa9ee67c9ab6a7791435450358e564cc-0001.us-east.containers.appdomain.cloud:443</span>
+<span class="na">source.security.protocol</span><span class="o">=</span><span class="s">SSL</span>
+<span class="na">source.ssl.truststore.password</span><span class="o">=</span><span class="s">password</span>
+<span class="na">source.ssl.truststore.location</span><span class="o">=</span><span class="s">/home/truststore.jks</span>
+<span class="na">target.bootstrap.servers</span><span class="o">=</span><span class="s">kafka1:9092,kafka2:9093,kafka3:9094</span>
+<span class="c1"># enable and configure individual replication flows</span>
+<span class="na">source-&gt;target.enabled</span><span class="o">=</span><span class="s">true</span>
+<span class="na">source-&gt;target.topics</span><span class="o">=</span><span class="s">orders</span>
+</code></pre></div>
+<p>As the source cluster is deployed on Openshift, the exposed route to access the brokers is using TLS connection. So we need the certificate and create a truststore to be used by those Java programs. All kafka tools are done in java or scala so running in a JVM, which needs truststore for keep trusted TLS certificates. 
+When running from a remote system to get the certificate do the following steps:</p>
+<ol>
+<li>
+<p>Get the host ip address from the Route resource</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>get<span class="w"> </span>routes<span class="w"> </span>my-cluster-kafka-bootstrap<span class="w"> </span>-o<span class="o">=</span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.ingress[0].host}{&quot;\n&quot;}&#39;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Get the TLS certificate from the broker</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>get<span class="w"> </span>secrets
+oc<span class="w"> </span>extract<span class="w"> </span>secret/my-cluster-cluster-ca-cert<span class="w"> </span>--keys<span class="o">=</span>ca.crt<span class="w"> </span>--to<span class="o">=</span>-<span class="w"> </span>&gt;<span class="w"> </span>ca.crt
+</code></pre></div>
+</li>
+<li>
+<p>Transform the certificate fo java truststore</p>
+<div class="highlight"><pre><span></span><code>keytool<span class="w"> </span>-import<span class="w"> </span>-trustcacerts<span class="w"> </span>-alias<span class="w"> </span>root<span class="w"> </span>-file<span class="w"> </span>ca.crt<span class="w"> </span>-keystore<span class="w"> </span>truststore.jks<span class="w"> </span>-storepass<span class="w"> </span>password<span class="w"> </span>-noprompt
+</code></pre></div>
+</li>
+</ol>
+<p>For Openshift or Kubernetes deployment, the mirror maker descriptor needs to declare the TLS stamza:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mirrors</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sourceCluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-cluster-source&quot;</span>
+<span class="nt">targetCluster</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;my-cluster-target&quot;</span>
+<span class="nt">sourceConnector</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">replication.factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">offset-syncs.topic.replication.factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">sync.topic.acls.enabled</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span>
+<span class="nt">targetConnector</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">tls</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">trustedCertificates</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-cluster-cluster-cert</span>
+<span class="w">        </span><span class="nt">certificate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ca.crt</span>
+</code></pre></div>
+</li>
+<li>
+<p>The consumer may be started in second or third step. To start it, you can use a new container or use one of the running kafka broker container. Using the <code>Docker perspective</code> in Visual Code, we can get into a bash shell within one of the Kafka broker container. The local folder is mounted to <code>/home</code>. Then the script, <code>consumeFromLocal.sh source.orders</code> will get messages from the replicated topic: <code>source.orders</code></p>
+</li>
+</ul>
+<h2 id="scenario-4-from-event-streams-on-cloud-to-strimzi-cluster-on-openshift">Scenario 4: From Event Streams On Cloud to Strimzi Cluster on Openshift<a class="headerlink" href="#scenario-4-from-event-streams-on-cloud-to-strimzi-cluster-on-openshift" title="Permanent link">&para;</a></h2>
+<p>We are reusing the Event Streams on Cloud cluster on Washington DC data center as source target and the vanilla Kafka 2.4 cluster as target, also running within Washington data center in a OpenShift Cluster. As both clusters are in the same data center, we deploy Mirror Maker 2.0 close to target kafka cluster.</p>
+<p><img alt="" src="images/mm2-test1.png" /></p>
+<h2 id="typical-errors-in-mirror-maker-2-traces">Typical errors in Mirror Maker 2 traces<a class="headerlink" href="#typical-errors-in-mirror-maker-2-traces" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Plugin class loader for connector: 'org.apache.kafka.connect.mirror.MirrorCheckpointConnector' was not found. <ul>
+<li>This error message is a light issue in kafka 2.4 and does not impact the replication. In Kafka 2.5 this message is for DEBUG logs.</li>
+</ul>
+</li>
+<li>Error while fetching metadata with correlation id 2314 : {source.heartbeats=UNKNOWN_TOPIC_OR_PARTITION}:<ul>
+<li>Those messages may come from multiple reasons. One is the name topic is not created. In Event Streams topics needs to be created via CLI or User Interface. It can also being related to the fact the consumer polls on a topic that has just been created and the leader for this topic-partition is not yet available, you are in the middle of a leadership election.</li>
+<li>The advertised listener may not be set or found.</li>
+</ul>
+</li>
+<li>Exception on not being able to create Log directory: do the following: <code>export LOG_DIR=/tmp/logs</code></li>
+<li>ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to flush, timed out while waiting for producer to flush outstanding 1 messages</li>
+<li>ERROR WorkerSourceTask{id=MirrorSourceConnector-0} Failed to commit offsets (org.apache.kafka.connect.runtime.SourceTaskOffsetCommitter:114)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,160 @@
+<mxfile host="65bd71144e">
+    <diagram id="ECk-W2Kgk9PYdsbS1auK" name="Page-1">
+        <mxGraphModel dx="899" dy="705" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="AWS region" style="shape=mxgraph.ibm.box;prType=cloud;fontStyle=0;verticalAlign=top;align=left;spacingLeft=32;spacingTop=4;fillColor=none;rounded=0;whiteSpace=wrap;html=1;strokeColor=#4376BB;strokeWidth=3;dashed=0;container=1;spacing=-4;collapsible=0;expand=0;recursiveResize=0;" parent="1" vertex="1">
+                    <mxGeometry x="37" y="27" width="793" height="413" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="VPC" style="shape=mxgraph.ibm.box;prType=vpc;fontStyle=0;verticalAlign=top;align=left;spacingLeft=32;spacingTop=4;rounded=0;whiteSpace=wrap;html=1;strokeWidth=2;dashed=0;container=1;spacing=-4;collapsible=0;expand=0;recursiveResize=0;strokeColor=#00CC66;" parent="2" vertex="1">
+                    <mxGeometry x="15" y="33" width="765" height="347" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Zone" style="shape=mxgraph.ibm.box;prType=zone;fontStyle=0;verticalAlign=top;align=left;spacingLeft=32;spacingTop=4;fillColor=#E0E0E0;rounded=0;whiteSpace=wrap;html=1;strokeColor=#919191;strokeWidth=1;dashed=0;container=1;spacing=-4;collapsible=0;expand=0;recursiveResize=0;" parent="3" vertex="1">
+                    <mxGeometry x="518" y="20" width="222" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Zone" style="shape=mxgraph.ibm.box;prType=zone;fontStyle=0;verticalAlign=top;align=left;spacingLeft=32;spacingTop=4;fillColor=#E0E0E0;rounded=0;whiteSpace=wrap;html=1;strokeColor=#919191;strokeWidth=1;dashed=0;container=1;spacing=-4;collapsible=0;expand=0;recursiveResize=0;" parent="3" vertex="1">
+                    <mxGeometry x="28" y="20" width="202" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Zone" style="shape=mxgraph.ibm.box;prType=zone;fontStyle=0;verticalAlign=top;align=left;spacingLeft=32;spacingTop=4;fillColor=#E0E0E0;rounded=0;whiteSpace=wrap;html=1;strokeColor=#919191;strokeWidth=1;dashed=0;container=1;spacing=-4;collapsible=0;expand=0;recursiveResize=0;" parent="3" vertex="1">
+                    <mxGeometry x="258" y="20" width="232" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="OpenShift Worker Nodes subnet" style="shape=mxgraph.ibm.box;prType=subnet;fontStyle=0;verticalAlign=top;align=left;spacingLeft=32;spacingTop=4;rounded=0;whiteSpace=wrap;html=1;strokeWidth=1;dashed=0;container=1;spacing=-4;collapsible=0;expand=0;recursiveResize=0;opacity=50;fillColor=#f8cecc;strokeColor=#b85450;" parent="5" vertex="1">
+                    <mxGeometry x="-249" y="30" width="749" height="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="" style="group" vertex="1" connectable="0" parent="7">
+                    <mxGeometry x="25" y="50" width="677.5" height="212" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="" style="group" parent="76" vertex="1" connectable="0">
+                    <mxGeometry x="304" y="179" width="85" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/vpc/BlockStorage.svg;strokeColor=#00CC66;" parent="11" vertex="1">
+                    <mxGeometry width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/vpc/BlockStorage.svg;strokeColor=#00CC66;" parent="11" vertex="1">
+                    <mxGeometry x="55" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="" style="group" parent="76" vertex="1" connectable="0">
+                    <mxGeometry x="516.5" y="179" width="137" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="" style="group" parent="19" vertex="1" connectable="0">
+                    <mxGeometry width="85" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/vpc/BlockStorage.svg;strokeColor=#00CC66;" parent="10" vertex="1">
+                    <mxGeometry width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/vpc/BlockStorage.svg;strokeColor=#00CC66;" parent="10" vertex="1">
+                    <mxGeometry x="55" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="EBS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="19" vertex="1">
+                    <mxGeometry x="77" y="2" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="EBS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="76" vertex="1">
+                    <mxGeometry x="376.5" y="181" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="Kafka Cluster" style="fontStyle=0;verticalAlign=top;align=center;spacingTop=-2;fillColor=none;rounded=0;whiteSpace=wrap;html=1;strokeColor=#919191;strokeWidth=2;dashed=1;container=1;collapsible=0;expand=0;recursiveResize=0;" parent="76" vertex="1">
+                    <mxGeometry width="677.5" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="74" value="network" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;strokeWidth=0;" parent="48" vertex="1">
+                    <mxGeometry x="324" y="140" width="60" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="network" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;strokeWidth=0;" parent="48" vertex="1">
+                    <mxGeometry x="61.5" y="140" width="60" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="" style="group" parent="76" vertex="1" connectable="0">
+                    <mxGeometry x="27.5" y="17" width="150" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="EC2&lt;br&gt;&lt;br&gt;rook / ceph" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="55" vertex="1">
+                    <mxGeometry x="19" width="131" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="EC2&lt;br&gt;&lt;br&gt;rook / ceph" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="55" vertex="1">
+                    <mxGeometry x="11" y="7" width="129" height="93" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="EC2&lt;br&gt;&lt;br&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="55" vertex="1">
+                    <mxGeometry y="14" width="130" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="Broker pods" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="55" vertex="1">
+                    <mxGeometry x="19" y="43.5" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="PVC" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="55" vertex="1">
+                    <mxGeometry x="20" y="70" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" value="PV" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="55" vertex="1">
+                    <mxGeometry x="20" y="90" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" value="" style="group" parent="76" vertex="1" connectable="0">
+                    <mxGeometry x="278.5" y="17" width="150" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="EC2&lt;br&gt;&lt;br&gt;rook / ceph" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="56" vertex="1">
+                    <mxGeometry x="19" width="131" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="58" value="EC2&lt;br&gt;&lt;br&gt;rook / ceph" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="56" vertex="1">
+                    <mxGeometry x="11" y="7" width="129" height="93" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="EC2&lt;br&gt;&lt;br&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="56" vertex="1">
+                    <mxGeometry y="14" width="130" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" value="Broker pods" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="56" vertex="1">
+                    <mxGeometry x="19" y="43.5" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="PVC" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="56" vertex="1">
+                    <mxGeometry x="20" y="70" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="PV" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="56" vertex="1">
+                    <mxGeometry x="20" y="90" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="" style="group" parent="76" vertex="1" connectable="0">
+                    <mxGeometry x="513.5" y="17" width="150" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="EC2&lt;br&gt;&lt;br&gt;rook / ceph" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="63" vertex="1">
+                    <mxGeometry x="19" width="131" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="EC2&lt;br&gt;&lt;br&gt;rook / ceph" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="63" vertex="1">
+                    <mxGeometry x="11" y="7" width="129" height="93" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="EC2&lt;br&gt;&lt;br&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#00CC66;align=left;horizontal=1;verticalAlign=top;" parent="63" vertex="1">
+                    <mxGeometry y="14" width="130" height="96" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="Broker pods" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="63" vertex="1">
+                    <mxGeometry x="19" y="43.5" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="68" value="PVC" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="63" vertex="1">
+                    <mxGeometry x="20" y="70" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" value="PV" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" parent="63" vertex="1">
+                    <mxGeometry x="20" y="90" width="90" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="network" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;strokeWidth=0;" parent="76" vertex="1">
+                    <mxGeometry x="558.5" y="140" width="60" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="group" parent="76" vertex="1" connectable="0">
+                    <mxGeometry x="40" y="180" width="137" height="32" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="group" parent="20" vertex="1" connectable="0">
+                    <mxGeometry width="85" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/vpc/BlockStorage.svg;strokeColor=#00CC66;" parent="21" vertex="1">
+                    <mxGeometry width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;fontColor=#4277BB;labelBackgroundColor=#ffffff;fontSize=12;spacingTop=3;image;image=img/lib/ibm/vpc/BlockStorage.svg;strokeColor=#00CC66;" parent="21" vertex="1">
+                    <mxGeometry x="55" width="30" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="EBS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="20" vertex="1">
+                    <mxGeometry x="77" y="2" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" style="edgeStyle=none;html=1;" parent="76" source="52" target="22" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;startArrow=none;" parent="76" source="72" target="23" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=none;" parent="76" source="52" target="72" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="114" y="184" as="sourcePoint"/>
+                        <mxPoint x="140.98088552475724" y="315.306976220485" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

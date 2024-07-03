@@ -1,0 +1,1360 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+        <link rel="next" href="strimzi/">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+    
+    
+      
+        <title>Apache Kafka Studies</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.6543a935.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#apache-kafka-studies" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="Apache Kafka Studies" class="md-header__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Apache Kafka Studies
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introduction
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jbcodeforce/kafka-studies.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="Apache Kafka Studies" class="md-nav__button md-logo" aria-label="Apache Kafka Studies" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Apache Kafka Studies
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jbcodeforce/kafka-studies.git" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka local
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-kafdrop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Kafdrop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-apicurio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Apicurio
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#this-repository-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      This repository includes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-of-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source of information
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Source of information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strimzi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strimzi
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-with-quarkus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka with Quarkus
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Apache Kafka summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="strimzi/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Strimzi
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sizing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sizing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka streaming
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka streaming
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kstreams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EDA kstreams note
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="kstreams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    My notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/kafka-streams-samples" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    My kstream samples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Item aggregator
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Kafka Connect
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kafka Connect
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka-connect/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Summary
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-mq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MQ Labs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/connect-rabbitmq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RabbitMQ Lab
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab repo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    End to end code
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            End to end code
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-kc/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    KC container
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/jbcodeforce/eda-kconnect-lab/tree/master/item-aggregator" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Item-Inventory integration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/ibm-cloud-architecture/refarch-eda-tools" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Perf tool and schema registry lab
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Reactive with kafka
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Reactive with kafka
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://developer.ibm.com/technologies/java/articles/develop-reactive-microservices-with-microprofile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    reactive messaging with microprofile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="python/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kafka with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Mirror Maker 2.0
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            Mirror Maker 2.0
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/technology/kafka-mirrormaker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    EDA note
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ibm-cloud-architecture.github.io/refarch-eda/use-cases/kafka-mm2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Labs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://jbcodeforce.github.io/kp-data-replication/monitoring" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Monitoring with Prometheus and Grafana
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka local
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-kafdrop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Kafdrop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-apicurio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Apicurio
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#this-repository-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      This repository includes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-of-information" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source of information
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Source of information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#strimzi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strimzi
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-with-quarkus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka with Quarkus
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="apache-kafka-studies">Apache Kafka Studies<a class="headerlink" href="#apache-kafka-studies" title="Permanent link">&para;</a></h1>
+<p>This repository regroups a set of personal studies and quick summaries on Kafka. Most of the curated contents are  defined in <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka/">the Kafka overview article</a>, and <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka/producer">the producer</a> and <a href="https://jbcodeforce.github.io/eda-studies/techno/kafka/consumer">consumer blog</a>.</p>
+<h2 id="kafka-local">Kafka local<a class="headerlink" href="#kafka-local" title="Permanent link">&para;</a></h2>
+<p>The docker compose in this repo, starts one zookeeper and one Kafka broker locally using last Strimzi release, one Apicurio for schema registry and Kafdrop for UI.</p>
+<p>In the docker compose the Kafka defines two listeners, for internal communication using the DNS name <code>kafka</code> on port 29092 and one listener for external communication on port 9092.</p>
+<p><img alt="" src="images/docker-kafka.png" /></p>
+<p>A quarkus app, for example, running with <code>quarkus:dev</code> will connect to localhost:9092. But a container in the same network needs to access kafka via its hostname. </p>
+<p>To start <a href="https://hub.docker.com/r/edenhill/kafkacat">kafkacat</a> and <a href="https://github.com/edenhill/kafkacat#examples">kafkacat doc to access sample consumer - producer</a></p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--network<span class="o">=</span>host<span class="w"> </span>edenhill/kafkacat<span class="w"> </span>-b<span class="w"> </span>kafka:9092<span class="w"> </span>-L
+</code></pre></div>
+<h2 id="security-summary">Security summary<a class="headerlink" href="#security-summary" title="Permanent link">&para;</a></h2>
+<p>For deeper dive on security administration <a href="https://docs.confluent.io/platform/current/security/general-overview.html">see Confluent article</a> and <a href="http://kafka.apache.org/documentation/#security">Apache Kafka product documentation</a>.</p>
+<p>The settings that are important to consider:</p>
+<ul>
+<li><a href="http://kafka.apache.org/documentation/#adminclientconfigs_security.protocol">security.protocol</a>
+See how the listeners are configured in Kafka. The valid values are:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>PLAINTEXT (using PLAINTEXT transport layer &amp; no authentication - default value).
+SSL (using SSL transport layer &amp; certificate-based authentication)
+SASL_PLAINTEXT (using PLAINTEXT transport layer &amp; SASL-based authentication)
+SASL_SSL (using SSL transport layer &amp; SASL-based authentication)
+</code></pre></div>
+<p>In Strimzi the following yaml defines the different listeners type and port: <code>tls</code> boolean is for the traffic encryption, while <code>authentication.type</code> will define the matching security protocol.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">listeners</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">plain</span>
+<span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9092</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internal</span>
+<span class="w">        </span><span class="nt">tls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls</span>
+<span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9093</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internal</span>
+<span class="w">        </span><span class="nt">tls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tls</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">external</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">route</span>
+<span class="w">        </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">9094</span>
+<span class="w">        </span><span class="nt">tls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span>
+<span class="w">        </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scram-sha-512</span>
+</code></pre></div>
+<ul>
+<li><code>ssl.truststore.location</code> and <code>ssl.truststore.password</code>: when doing TLS encryption we need to provide our Kafka clients with the location of a trusted Certificate Authority-based certificate. This file is often provided by the Kafka administrator and is generally unique to the specific Kafka cluster deployment. The certificate is in JKS format for JVM languages and PEM/ P12 for nodejs or Python.</li>
+</ul>
+<p>To extract a PEM-based certificate from a JKS-based truststore, we can use the following command: </p>
+<div class="highlight"><pre><span></span><code>keytool -exportcert -keypass {truststore-password} -keystore {provided-kafka-truststore.jks} -rfc -file {desired-kafka-cert-output.pem}
+</code></pre></div>
+<ul>
+<li><a href="http://kafka.apache.org/documentation/#adminclientconfigs_sasl.mechanism">sasl.mechanism</a> for authentication protocol used. Possible values are:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>PLAIN (cleartext passwords, although they will be encrypted across the wire per security.protocol settings above)
+SCRAM-SHA-512 (modern Salted Challenge Response Authentication Mechanism)
+GSSAPI (Kerberos-supported authentication and the default if not specified otherwise)
+</code></pre></div>
+<ul>
+<li>for java based app, the <code>sasl.jaas.config</code> strings are:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sasl.jaas.config = org.apache.kafka.common.security.plain.PlainLoginModule required username=&quot;{USERNAME}&quot; password=&quot;{PASSWORD}&quot;;
+sasl.jaas.config = org.apache.kafka.common.security.scram.ScramLoginModule required username=&quot;{USERNAME}&quot; password=&quot;{PASSWORD}&quot;;
+</code></pre></div>
+<p>For <strong>external connection</strong> to Strimzi cluster use the following, where USERNAME is a scram-user</p>
+<div class="highlight"><pre><span></span><code>bootstrap.servers<span class="o">={</span>kafka-cluster-name<span class="o">}</span>-kafka-bootstrap-<span class="o">{</span>namespace<span class="o">}</span>.<span class="o">{</span>kubernetes-cluster-fully-qualified-domain-name<span class="o">}</span>:443
+security.protocol<span class="o">=</span>SASL_SSL
+sasl.mechanism<span class="o">=</span>SCRAM-SHA-512
+sasl.jaas.config<span class="o">=</span>org.apache.kafka.common.security.scram.ScramLoginModule<span class="w"> </span>required<span class="w"> </span><span class="nv">username</span><span class="o">=</span><span class="s2">&quot;{USERNAME}&quot;</span><span class="w"> </span><span class="nv">password</span><span class="o">=</span><span class="s2">&quot;{PASSWORD}&quot;</span><span class="p">;</span>
+ssl.truststore.location<span class="o">={</span>/provided/to/you/by/the/kafka/administrator<span class="o">}</span>
+ssl.truststore.password<span class="o">={</span>__provided_to_you_by_the_kafka_administrator__<span class="o">}</span>
+</code></pre></div>
+<p>To get the user password get the user secret (oc or kubectl CLIs):</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>scram-user<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.admin_password}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+</code></pre></div>
+<p>To get the Bootstrap URL use: </p>
+<div class="highlight"><pre><span></span><code>expost K_CLUSTER_NAME=mycluster
+export BOOTSTRAP=&quot;$(oc get route ${K_CLUSTER_NAME}-kafka-bootstrap -o jsonpath=&#39;{.spec.host}&#39;):443&quot;
+</code></pre></div>
+<p>The <code>sasl.jaas.config</code> can come from an environment variable inside of a secret, but in fact it is already predefined in the scram user in Strimzi:</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>my-user<span class="w"> </span>-o<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.data[&quot;sasl.jaas.config&quot;]&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span>-
+</code></pre></div>
+<ul>
+<li>For internal communication, with PLAIN the setting is:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>bootstrap.servers<span class="o">={</span>kafka-cluster-name<span class="o">}</span>-kafka-bootstrap.<span class="o">{</span>namespace<span class="o">}</span>.svc.cluster.local:9093
+security.protocol<span class="w"> </span><span class="o">=</span><span class="w"> </span>SASL_PLAINTEXT<span class="w"> </span><span class="o">(</span>these<span class="w"> </span>clients<span class="w"> </span><span class="k">do</span><span class="w"> </span>not<span class="w"> </span>require<span class="w"> </span>SSL-based<span class="w"> </span>encryption<span class="w"> </span>as<span class="w"> </span>they<span class="w"> </span>are<span class="w"> </span><span class="nb">local</span><span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>cluster<span class="o">)</span>
+sasl.mechanism<span class="w"> </span><span class="o">=</span><span class="w"> </span>PLAIN
+sasl.jaas.config<span class="w"> </span><span class="o">=</span><span class="w"> </span>org.apache.kafka.common.security.plain.PlainLoginModule<span class="w"> </span>required<span class="w"> </span><span class="nv">username</span><span class="o">=</span><span class="s2">&quot;{USERNAME}&quot;</span><span class="w"> </span><span class="nv">password</span><span class="o">=</span><span class="s2">&quot;{PASSWORD}&quot;</span><span class="p">;</span>
+</code></pre></div>
+<ul>
+<li>For internal authentication with mutual TLS the settings:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>security.protocol=SSL 
+</code></pre></div>
+<p>Remember that if the application does not run in the same namespace as the kafka cluster then copy the secrets to the namespace with something like:</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-z<span class="w"> </span><span class="k">$(</span>oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="si">${</span><span class="nv">TLS_USER</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null<span class="k">)</span><span class="w"> </span><span class="o">]]</span>
+<span class="k">then</span>
+<span class="w">   </span><span class="c1"># As the project is personal to the user, we can keep a generic name for the secret</span>
+<span class="w">   </span>oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="si">${</span><span class="nv">TLS_USER</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KAFKA_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.metadata.name=&quot;tls-user&quot;&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.metadata.namespace=&quot;&#39;</span><span class="si">${</span><span class="nv">YOUR_PROJECT_NAME</span><span class="si">}</span><span class="s1">&#39;&quot;&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
+<span class="k">fi</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-z<span class="w"> </span><span class="k">$(</span>oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="si">${</span><span class="nv">SCRAM_USER</span><span class="si">}</span><span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>/dev/null<span class="k">)</span><span class="w"> </span><span class="o">]]</span>
+<span class="k">then</span>
+<span class="w">    </span><span class="c1"># As the project is personal to the user, we can keep a generic name for the secret</span>
+<span class="w">    </span>oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span><span class="si">${</span><span class="nv">SCRAM_USER</span><span class="si">}</span><span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">KAFKA_NS</span><span class="si">}</span><span class="w"> </span>-o<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w">  </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.metadata.name=&quot;scram-user&quot;&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.metadata.namespace=&quot;&#39;</span><span class="si">${</span><span class="nv">YOUR_PROJECT_NAME</span><span class="si">}</span><span class="s1">&#39;&quot;&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>oc<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>-
+<span class="k">fi</span>
+</code></pre></div>
+<h2 id="using-kafdrop">Using Kafdrop<a class="headerlink" href="#using-kafdrop" title="Permanent link">&para;</a></h2>
+<p>For Kafdrop configuration see the <code>kafka.properties</code> file and <code>startKafDrop.sh</code> in the scripts folder.</p>
+<p>To get the user password:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get certificate to put in truststore</span>
+oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>kafka-cluster-ca-cert<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.ca\.p12}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span>&gt;./certs/kafka.p12
+<span class="c1"># Get certificate password</span>
+oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>kafka-cluster-ca-cert<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.ca\.password}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span>
+<span class="c1"># Get user passwor from the jaas config</span>
+oc<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>scram-user<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.sasl\.jaas\.config}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>--decode<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+</code></pre></div>
+<p>Those results are set in the properties:</p>
+<div class="highlight"><pre><span></span><code><span class="na">ssl.truststore.password</span><span class="o">=</span>
+<span class="na">username</span><span class="o">=</span><span class="s">&quot;scram-user&quot; password=&quot;&quot;;</span>
+</code></pre></div>
+<h2 id="using-apicurio">Using Apicurio<a class="headerlink" href="#using-apicurio" title="Permanent link">&para;</a></h2>
+<p>Once Apicurio is started, define a schema in json and upload it to the api: http://apicurio:8080/api. Here is an example of command:</p>
+<p>Schema:
+<div class="highlight"><pre><span></span><code>{   
+    &quot;namespace&quot;: &quot;acme.vaccine.orderoptimizer&quot;,
+    &quot;doc&quot;: &quot;Avro data schema for Reefer events&quot;,
+    &quot;type&quot;:&quot;record&quot;,
+    &quot;name&quot;:&quot;Reefer&quot;,
+    &quot;fields&quot;:[
+            {
+                &quot;name&quot;: &quot;reefer_id&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;doc&quot;: &quot;Reefer container ID&quot;
+            },
+            {
+                &quot;name&quot;: &quot;status&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;doc&quot;: &quot;Reefer Container ID status. Could be an Enum&quot;
+            },
+            {
+                &quot;name&quot;: &quot;location&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;doc&quot;: &quot;Reefer container location&quot;
+            },
+            {
+                &quot;name&quot;: &quot;date_available&quot;,
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;doc&quot;: &quot;Date when the inventory will be available&quot;
+            }
+     ]
+}
+</code></pre></div></p>
+<p>Upload it to schema registry</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-type: application/json; artifactType=AVRO&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>-H<span class="w"> </span><span class="s2">&quot;X-Registry-ArtifactId: vaccine.reefers-value&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--data<span class="w"> </span>@<span class="si">${</span><span class="nv">scriptDir</span><span class="si">}</span>/../data/avro/schemas/reefer.avsc<span class="w"> </span>http://localhost:8080/api/artifacts
+</code></pre></div>
+<h2 id="this-repository-includes">This repository includes<a class="headerlink" href="#this-repository-includes" title="Permanent link">&para;</a></h2>
+<p>Outside of my personal notes, some folders include running app:</p>
+<ul>
+<li><a href="https://github.com/jbcodeforce/kafka-studies/tree/master/python-kafka">python-kafka</a> for simple reusable code for event consumer and producer with python.</li>
+<li><a href="https://github.com/jbcodeforce/kafka-studies/tree/master/kafka-java-vertx-starter-1.0.0">Kafka Vertx starter code</a> from the event streams team, within one app to test a deployed event stream deployment</li>
+<li><a href="https://github.com/jbcodeforce/kafka-studies/tree/master/vertx-kafka">vertx consumer and producer</a> as separate quarkus apps.</li>
+</ul>
+<h2 id="source-of-information">Source of information<a class="headerlink" href="#source-of-information" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://jbcodeforce.github.io/eda-studies/">My notes on event-driven architecture</a></li>
+<li>
+<p><a href="http://www.confluent.io/blog/introducing-Kafka-streams-stream-processing-made-simple">Another introduction from Confluent, one of the main contributors of the open source.</a></p>
+</li>
+<li>
+<p><a href="https://ibm.github.io/event-automation/es/installing/planning/">Planning IBM event-streams installation</a></p>
+</li>
+<li><a href="https://medium.com/@andrew_schofield/using-kafka-connect-to-connect-to-enterprise-mq-systems-5674d53fe55e">Using Kafka Connect to connect to enterprise MQ systems - Andrew Schofield</a></li>
+<li><a href="https://medium.com/@andrew_schofield/does-apache-kafka-do-acid-transactions-647b207f3d0e">Does Apache Kafka do ACID transactions? - Andrew Schofield</a></li>
+<li><a href="http://aseigneurin.github.io/2016/05/07/spark-Kafka-achieving-zero-data-loss.html">Spark and Kafka with direct stream, and persistence considerations and best practices</a></li>
+<li><a href="https://www.madewithtea.com/processing-tweets-with-Kafka-streams.html">Example in scala for processing Tweets with Kafka Streams</a></li>
+</ul>
+<h3 id="strimzi">Strimzi<a class="headerlink" href="#strimzi" title="Permanent link">&para;</a></h3>
+<ul>
+<li>This is an example of configuration to do a TLS connection on external route to a Strimzi deployed on k8s. </li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># get environment variables from configmap</span>
+quarkus.openshift.env.configmaps<span class="o">=</span>vaccine-order-ms-cm
+<span class="c1"># use docker compose kafka</span>
+%dev.kafka.bootstrap.servers<span class="o">=</span>kafka:9092
+</code></pre></div>
+<p>with matching config map</p>
+<p><code>yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vaccine-order-ms-cm
+data:
+  KAFKA_BOOTSTRAP_SERVERS: eda-dev-kafka-bootstrap-eventstreams.gse-eda-2021-1-0143c5dd31acd8e030a1d6e0ab1380e3-0000.us-east.containers.appdomain.cloud:443
+  KAFKA_SSL_PROTOCOL: TLSv1.2
+  KAFKA_USER: scram
+  KAFKA_SSL_TRUSTSTORE_LOCATION: /deployments/certs/server/ca.p12
+  KAFKA_SSL_TRUSTSTORE_TYPE: PKCS12
+  SHIPMENT_PLAN_TOPIC: vaccine_shipment_plans
+  KAFKA_SASL_MECHANISM: SCRAM-SHA-512
+  KAFKA_SECURITY_PROTOCOL: SASL_SSL</code></p>
+<h2 id="kafka-with-quarkus">Kafka with Quarkus<a class="headerlink" href="#kafka-with-quarkus" title="Permanent link">&para;</a></h2>
+<p>Here is a template code for quarkus based Kafka consumer: <a href="https://github.com/jbcodeforce/quarkus-event-driven-consumer-microservice-template">quarkus-event-driven-consumer-microservice-template</a>.</p>
+<p>Read this interesting guide with Quarkus and kafka streaming: <a href="https://quarkus.io/guides/kafka-streams">Quarkus using Kafka Streams</a>, which is implemented in the quarkus-reactive-msg producer, aggregator folders.</p>
+<p>To generate the starting code for the producer we use the quarkus maven plugin with kafka extension:
+<code>mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=producer -Dextensions="kafka"</code></p>
+<p>for the aggregator:</p>
+<p><code>mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create -DprojectGroupId=jbcodeforce.kafka.study -DprojectArtifactId=aggregator -Dextensions="kafka-streams,resteasy-jsonb"</code></p>
+<p>Interesting how to generate reference value to a topic with microprofile reactive messaging. <code>stations</code> is a hash:</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="nd">@Outgoing</span><span class="p">(</span><span class="s">&quot;weather-stations&quot;</span><span class="p">)</span><span class="w">                               </span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Flowable</span><span class="o">&lt;</span><span class="n">KafkaRecord</span><span class="o">&lt;</span><span class="n">Integer</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="nf">weatherStations</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">List</span><span class="o">&lt;</span><span class="n">KafkaRecord</span><span class="o">&lt;</span><span class="n">Integer</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">stationsAsJson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stations</span><span class="p">.</span><span class="na">stream</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">KafkaRecord</span><span class="p">.</span><span class="na">of</span><span class="p">(</span>
+<span class="w">                    </span><span class="n">s</span><span class="p">.</span><span class="na">id</span><span class="p">,</span>
+<span class="w">                    </span><span class="s">&quot;{ \&quot;id\&quot; : &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">id</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                    </span><span class="s">&quot;, \&quot;name\&quot; : \&quot;&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;\&quot; }&quot;</span><span class="p">))</span>
+<span class="w">            </span><span class="p">.</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">toList</span><span class="p">());</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Flowable</span><span class="p">.</span><span class="na">fromIterable</span><span class="p">(</span><span class="n">stationsAsJson</span><span class="p">);</span>
+<span class="w">    </span><span class="p">};</span>
+</code></pre></div>
+<p>Channels are mapped to Kafka topics using the Quarkus configuration file <code>application.properties</code>.</p>
+<p>To build and run:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># under producer folder</span>
+docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>src/main/docker/Dockerfile.jvm<span class="w"> </span>-t<span class="w"> </span>quarkstream/producer-jvm<span class="w"> </span>.
+<span class="c1"># under aggregator folder</span>
+docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>src/main/docker/Dockerfile.jvm<span class="w"> </span>-t<span class="w"> </span>quarkstream/aggregator-jvm<span class="w"> </span>.
+<span class="c1"># Run under quarkus-reactive-msg</span>
+docker-compose<span class="w"> </span>up
+<span class="c1"># Run kafkacat</span>
+docker<span class="w"> </span>run<span class="w"> </span>--tty<span class="w"> </span>--rm<span class="w"> </span>-i<span class="w"> </span>--network<span class="w"> </span>kafkanet<span class="w"> </span>debezium/tooling:1.0
+$<span class="w"> </span>kafkacat<span class="w"> </span>-b<span class="w"> </span>kafka1:9092<span class="w"> </span>-C<span class="w"> </span>-o<span class="w"> </span>beginning<span class="w"> </span>-q<span class="w"> </span>-t<span class="w"> </span>temperatures-aggregated
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.ad660dcc.min.js"></script>
+      
+    
+  </body>
+</html>
