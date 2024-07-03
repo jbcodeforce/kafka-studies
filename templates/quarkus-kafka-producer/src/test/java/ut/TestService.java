@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import ibm.eda.demo.ordermgr.domain.Address;
-import ibm.eda.demo.ordermgr.domain.OrderEntity;
-import ibm.eda.demo.ordermgr.domain.OrderService;
-import ibm.eda.demo.ordermgr.infra.kafka.KafkaConfiguration;
-import ibm.eda.demo.ordermgr.infra.kafka.OrderEventProducer;
-import ibm.eda.demo.ordermgr.infra.repo.OrderRepositoryMem;
+import acme.eda.demo.ordermgr.domain.Address;
+import acme.eda.demo.ordermgr.domain.OrderEntity;
+import acme.eda.demo.ordermgr.domain.OrderService;
+import acme.eda.demo.ordermgr.infra.kafka.KafkaConfiguration;
+import acme.eda.demo.ordermgr.infra.kafka.OrderEventProducer;
+import acme.eda.demo.ordermgr.infra.repo.OrderRepositoryMem;
 import it.eda.StrimziContainer;
 
 public class TestService {

@@ -22,7 +22,7 @@ spec:
         - /deployments/quarkus-run.jar
         command:
         - java
-        image: quay.io/ibmcase/eda-qs-order-ms
+        image: jbcodeforce/eda-qs-order-ms:latest
         imagePullPolicy: Always
         # imagePullPolicy: IfNotPresent
         env:

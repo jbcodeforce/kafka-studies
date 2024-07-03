@@ -2,33 +2,35 @@
 
 ## What the template does
 
-* Use Quarkus 2.5.1 and Microprofile 3.0 for health, metrics and open API extensions
-* Use Kafka producer API, with Json schema and Avro serialization
-* Use Apicurio schema registry Version 1.3.2 to be compatible with Event Streams Schema Registry. 
-As quarkus deev 2.5.x is using Apicurio 2.1.x, we use docker compose and the apicurio maven plugin to upload new definition(s) to the connected registry.
-* Support Domain driven design practices
+* Uses Quarkus 3.13 and Microprofile 3.0 for health, metrics and open API extensions.
+* Uses Kafka producer API, with Json schema and Avro serialization.
+* Uses Apicurio schema registry Version 1.3.2. 
+
+As quarkus dev 2.5.x is using Apicurio 2.1.x, we use docker compose and the apicurio maven plugin to upload new definition(s) to the connected registry.
+
+* Support Domain Driven Design practices
 * Use a Strimzi-Kafka test container class 
 
 ## Code structure
 
-The code is reusing the Domain Driven Design approach of layers to organize the code. From top down visibility we have:
+The code is reusing a Domain Driven Design approach of layers to organize the code. From top-down visibility we have:
 
-* **app**: application related classes to make it running.
-* **domain**: domain model and services supporting the business logic - Events are generate under the domain. It could have bean generated under infrastructure.
-* **infra**: to include the integration layer. This is where to find repository, the REST api or Kafka lower level component needed.
+* **app**: application related classes to make.
+* **domain**: domain model and services supporting the business logic - Events are generated under the domain (there are business events). It could have bean generated under infrastructure.
+* **infra**: to include the integration layer. This is where to find repository, the REST api or the Kafka lower level components.
 
-Normally events can be considered at the domain level, as it is a business decision to define what data elements to share with other. 
-It is also fine to consider them at the infrastructure level. In this template the avro schemas in `src/main/avro` use the package namespace: `ibm.eda.demo.ordermgr.infra.events` but this could
-be changed to be `ibm.eda.demo.ordermgr.domain.events`
+Normally events can be considered at the domain level, as it is a business decision to define what data elements to share with others. 
+It is also fine to consider them at the infrastructure level. In this template the avro schemas in `src/main/avro` use the package namespace: `acme.eda.demo.ordermgr.infra.events` but this could
+be changed to be `acme.eda.demo.ordermgr.domain.events`
 
 The REST resource delegates to a service where you may want to implement the business logic with the domain entities. 
-Will the service class it is easier to unit test the business logic by isolation. 
-The Resource class supports JAXRS and Microprofile annotation and is doing simple data mapping between the DTOs and the business entities. 
+With the service class it is easier to unit test the business logic by isolation. 
+The Resource class supports JAXRS and Microprofile annotations and is doing simple data mapping between the DTOs and the business entities. 
 
-The repository is a mockup, and it is using HashMap to keep the data, it helps to start quickly to demonstrate the application. 
+The repository is a mockup, and it is using HashMap to keep the data, it helps to start development quickly to demonstrate the application. 
 The event producer is using Avro schema and the pattern of writing to the topic immediately once the order is received at the API level. 
 
-The code proposes two KafkaProducers, one with schema registry integration, one without. 
+The code proposes two KafkaProducers, one with schema registry integration, one without: select the one you need for your own development.
 
 Each producer is annotated with a CDI name, 
 
@@ -59,8 +61,8 @@ to support your own business logic.
 For development purpose you can run the following command to start one kafka, one zookeeper and Apicurio for schema registry on port 8090.
 
 ```shell
-# under eda-quickstart/environment/local/strimzi 
-docker-compose -f kafka-2.8-apicurio-1.3.yaml up -d
+# under environment/local/strimzi 
+docker compose  up -d
 ```
 
 you should see four containers running:
@@ -75,7 +77,7 @@ you should see four containers running:
 To create the Kafka `orders` topic:
 
 ```shell
-# under eda-quickstart/environment/local/strimzi 
+# under environment/local/strimzi 
 ./createTopics.sh
 ```
 
@@ -188,7 +190,7 @@ deploy your app to OpenShift.
 Update the `deployment.yaml` to reflect the secret names you are using for TLS user and ca cert.
 
 Doing an `oc apply -k kustomize` will deploy the current
-`quay.io/ibmcase/eda-qs-order-ms` image to an OpenShift project. 
+`jbcodeforce/eda-qs-order-ms` image to an OpenShift project. 
 
 The following elements are created:
 
@@ -198,7 +200,6 @@ rolebinding.rbac.authorization.k8s.io/app-sa-view created
 configmap/qs-order-mgr-cm created
 service/eda-qs-order-ms created
 deployment.apps/qs-order-ms created
-kafkatopic.eventstreams.ibm.com/qs-orders created
 route.route.openshift.io/qs-order-ms created
 ```
 

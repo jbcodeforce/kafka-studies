@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qs-order-mgr-cm
+data:
+  APP_VERSION: 0.0.1
+  KAFKA_BOOTSTRAP_SERVERS: <address>
+  ES_APICURIO_URL: http://<addHost>apis/registry/v2
