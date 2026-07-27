@@ -1,5 +1,0 @@
-{
-  "topic": "mock_topic",
-  "producerPath": "/demoproduce",
-  "consumerPath": "/democonsume"
-}
